@@ -1,0 +1,31 @@
+/*
+  References:
+    https://github.com/jonathanharrell/hiq
+    https://github.com/pure-css/pure
+*/
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+    font-family: sans-serif;
+  box-sizing: border-box;
+  min-width: 300px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  background-color: var(--hiq-html-background-color, white);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: var(--hiq-body-background-color, white);
+}

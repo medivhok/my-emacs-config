@@ -1,10 +1,13 @@
 #+TITLE: My Emacs Configuration
+#+setupfile: export-setup.org
 #+STARTUP: overview
 #+PROPERTY: header-args:emacs-lisp :tangle ../init.el
+#+export_file_name: index
+#+options: H:2
 
 This is my [[https://gnu.org/software/emacs/][Emacs]] configuration and documentation.
 
-* Table of Contents
+* Table of Contents  :noexport:
 :PROPERTIES:
 :TOC:      :include all :depth 3 :ignore (this)
 :END:
@@ -105,6 +108,9 @@ This is my [[https://gnu.org/software/emacs/][Emacs]] configuration and document
 :END:
 
 * From Nothing To Something  (Bootstraping)
+:PROPERTIES:
+:html_container_class: container
+:END:
 
 We begin here our [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html][init file]], the first file that will be loaded to
 initialize Emacs.

@@ -1,0 +1,18 @@
+#+author: Jean Gregory Verret
+#+email: gregory.verret@gmail.com
+#+options: ':nil *:t -:t ::t <:t \n:nil ^:t arch:headline author:t
+#+options: broken-links:t c:nil creator:nil d:(not "LOGBOOK") date:t e:t
+#+options: email:nil f:t inline:t num:t p:nil pri:nil prop:nil stat:t tags:t
+#+options: tasks:t tex:t timestamp:t title:t toc:t todo:t |:t
+#+options: html-link-use-abs-url:nil html-postamble:auto html-preamble:t
+#+options: html-scripts:t html-style:nil html5-fancy:nil tex:t
+#+select_tags: export
+#+exclude_tags: noexport
+#+creator: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.4)
+#+html_doctype: html5
+#+html_container: div
+#+html_head: <link rel="stylesheet" href="css/styles.css" />
+#+html_link_home:
+#+html_link_up:
+#+html_mathjax: ""
+#+html_equation_reference_format: \eqref{%s}
