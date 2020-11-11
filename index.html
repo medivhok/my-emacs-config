@@ -1,0 +1,3437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2020-11-11 Wed 18:01 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Emacs Configuration</title>
+<meta name="generator" content="Org mode">
+<meta name="author" content="Jean Gregory Verret">
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
+<style>
+:root {
+--main-bg-color:   #282c34;
+--alt-bg-color:    #21242b;
+--main-fg-color:   #bbc2cf;
+--alt-fg-color:    #5b6268;
+--grey-color:      #3f444a;
+--red-color:       #ff6c6b;
+--orange-color:    #da8548;
+--green-color:     #98be65;
+--teal-color:      #4db5bd;
+--yellow-color:    #ecbe7b;
+--blue-color:      #51afef;
+--dark-blue-color: #2257a0;
+--magenta-color:   #c678dd;
+--violet-color:    #a9a1e1;
+--cyan-color:      #46d9ff;
+--dark-cyan-color: #5699af;
+}
+
+pre.src {
+background: var(--main-bg-color);
+color:#bbc2cf;
+}
+
+pre span.org-builtin {
+color: var(--magenta-color);
+font-weight: bold;
+}
+
+pre span.org-string {
+color: var(--teal-color);
+}
+
+pre span.org-keyword {
+color: var(--blue-color);
+}
+
+pre span.org-variable-name {color:var(--magenta-color);}
+pre span.org-function-name {color:var(--magenta-color);}
+pre span.org-type {color:var(--yellow-color);}
+pre span.org-preprocessor {color:#808080;font-weight:bold;}
+pre span.org-constant {color:var(--violet-color);}
+pre span.org-comment-delimiter {color:var(--dark-cyan-color);}
+pre span.org-comment {color:var(--dark-cyan-color);font-style:italic}
+</style>
+<script type="text/javascript">
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
+<!--/*--><![CDATA[/*><!--*/
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content">
+<header>
+<h1 class="title">My Emacs Configuration</h1>
+</header><p>
+This is my <a href="https://gnu.org/software/emacs/">Emacs</a> configuration and documentation.
+</p>
+
+<nav id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orge5aeea0">1. Bootstrapping (The Big Bang)</a>
+<ul>
+<li><a href="#orgf7aac65">1.1. Profiling</a></li>
+<li><a href="#org979ae7c">1.2. Cache Directory</a></li>
+<li><a href="#org1f14cf2">1.3. Packages Management</a>
+<ul>
+<li><a href="#orgc2195aa">1.3.1. <code>straight.el</code></a></li>
+<li><a href="#org336201f">1.3.2. <code>use-package</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgeb6acfa">2. Personalization</a>
+<ul>
+<li><a href="#org4514bf7">2.1. Personnal Infos</a>
+<ul>
+<li><a href="#org1d3a430">2.1.1. <code>user-full-name</code></a></li>
+<li><a href="#orgba3646a">2.1.2. <code>user-mail-address</code></a></li>
+</ul>
+</li>
+<li><a href="#org6dd6faf">2.2. Directory Structure</a>
+<ul>
+<li><a href="#org1b3f477">2.2.1. <code>medivhok:app-directory</code></a></li>
+<li><a href="#org00a8ddc">2.2.2. <code>medivhok:agenda-directory</code></a></li>
+<li><a href="#org29c96ec">2.2.3. <code>medivhok:budget-directory</code></a></li>
+<li><a href="#org60188dc">2.2.4. <code>medivhok:slip-box-directory</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org7e551b4">3. User Interface</a>
+<ul>
+<li><a href="#org40e5226">3.1. Theme</a>
+<ul>
+<li><a href="#orge462023">3.1.1. Fonts</a></li>
+<li><a href="#org1628eca">3.1.2. Icons</a></li>
+</ul>
+</li>
+<li><a href="#org7c9b398">3.2. Frames</a></li>
+<li><a href="#orgc1e3866">3.3. Scrolling</a></li>
+<li><a href="#orgadcd103">3.4. Visuals</a></li>
+<li><a href="#orgf287d02">3.5. Widgets</a></li>
+<li><a href="#org718a141">3.6. Windows</a></li>
+<li><a href="#orgce0e76e">3.7. Keybindings &amp; Co</a>
+<ul>
+<li><a href="#user-interface--keybindings--evil">3.7.1. <code>evil</code></a></li>
+<li><a href="#user-interface--keybindings--evil-collection">3.7.2. <code>evil-collection</code></a></li>
+<li><a href="#user-interface--keybindings--hydra">3.7.3. <code>hydra</code></a></li>
+<li><a href="#use-package--which-key">3.7.4. <code>which-key</code></a></li>
+<li><a href="#use-package--general">3.7.5. <code>general</code></a></li>
+<li><a href="#user-interface--keybindings">3.7.6. Keybindings</a></li>
+</ul>
+</li>
+<li><a href="#org38dcfcd">3.8. Dashboard</a></li>
+<li><a href="#orgc29ce9f">3.9. Keybindings</a></li>
+<li><a href="#orgbfdb4f8">3.10. Minibuffer</a>
+<ul>
+<li><a href="#use-package--amx">3.10.1. <code>amx</code></a></li>
+<li><a href="#use-package--counsel">3.10.2. <code>counsel</code></a></li>
+<li><a href="#use-package--ivy-rich">3.10.3. <code>ivy-rich</code></a></li>
+<li><a href="#org04826d3">3.10.4. <code>ivy-posframe</code></a></li>
+</ul>
+</li>
+<li><a href="#org67de310">3.11. Modeline</a>
+<ul>
+<li><a href="#org30fbcca">3.11.1. doom-modeline</a></li>
+<li><a href="#org3f1cf4e">3.11.2. minions</a></li>
+</ul>
+</li>
+<li><a href="#org7f8a6b5">3.12. Notifications</a></li>
+<li><a href="#org042655c">3.13. Help Interface (<code>helpful</code>)</a></li>
+</ul>
+</li>
+<li><a href="#orgedd414a">4. Applications</a>
+<ul>
+<li><a href="#org5c47ea1">4.1. Org Mode</a>
+<ul>
+<li><a href="#orgb4fe2a1">4.1.1. <code>org</code></a></li>
+<li><a href="#applications--org-mode--ob-tangle">4.1.2. <code>ob-tangle</code></a></li>
+<li><a href="#use-package--org-bullets">4.1.3. <code>org-bullets</code></a></li>
+<li><a href="#org7961359">4.1.4. <code>org-make-toc</code></a></li>
+<li><a href="#use-package--ox-odt">4.1.5. <code>ox-odt</code></a></li>
+<li><a href="#orgd06060a">4.1.6. <code>evil-org</code></a></li>
+</ul>
+</li>
+<li><a href="#org54070d3">4.2. Getting Things Done  (Agenda)</a>
+<ul>
+<li><a href="#orga007836">4.2.1. <code>org-capture</code></a></li>
+<li><a href="#orgd0be5c6">4.2.2. <code>org-refile</code></a></li>
+</ul>
+</li>
+<li><a href="#org45e16bf">4.3. Taking Smart Notes  (Slip Box)</a>
+<ul>
+<li><a href="#org24b118c">4.3.1. Variables</a></li>
+<li><a href="#org8cfd8e5">4.3.2. Packages</a></li>
+<li><a href="#orgf484bb2">4.3.3. Variables &amp; Constants</a></li>
+</ul>
+</li>
+<li><a href="#org53209c2">4.4. Application Functions</a></li>
+<li><a href="#orgedea1d6">4.5. You Need A Budget</a>
+<ul>
+<li><a href="#orga2ca2a0">4.5.1. <code>ledger-mode</code></a></li>
+<li><a href="#org125c3a2">4.5.2. <code>flycheck-ledger</code></a></li>
+<li><a href="#org70ddcd2">4.5.3. <code>evil-ledger</code></a></li>
+</ul>
+</li>
+<li><a href="#orgfb44d7b">4.6. Bibliography</a>
+<ul>
+<li><a href="#org06fc4a0">4.6.1. <code>bibtex-completion</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgefe5db1">5. Tools</a>
+<ul>
+<li><a href="#org7d84d04">5.1. Completions</a>
+<ul>
+<li><a href="#org65fe269">5.1.1. Company &amp; Co</a></li>
+<li><a href="#orgd9073de">5.1.2. Helm &amp; Co</a></li>
+</ul>
+</li>
+<li><a href="#org4e759d8">5.2. LSP Mode</a></li>
+<li><a href="#org1b650a4">5.3. PDF Reader</a></li>
+<li><a href="#org4d78a89">5.4. Generic Editing Configurations</a>
+<ul>
+<li><a href="#org6125387">5.4.1. Folding (<code>hideshow</code>)</a></li>
+<li><a href="#org6690da5">5.4.2. Parens &amp; Co. (<code>smartparens</code>)</a></li>
+<li><a href="#org5cdb3dc">5.4.3. evil-nerd-commenter</a></li>
+<li><a href="#org73a5973">5.4.4. ws-butler</a></li>
+<li><a href="#org691abcf">5.4.5. parinfer</a></li>
+<li><a href="#orga55efea">5.4.6. rainbow-delimiters</a></li>
+</ul>
+</li>
+<li><a href="#orgfece52d">5.5. Snippets</a>
+<ul>
+<li><a href="#use-package--yasnippet">5.5.1. <code>yasnippet</code></a></li>
+</ul>
+</li>
+<li><a href="#org26d7301">5.6. Git (<code>magit</code>)</a>
+<ul>
+<li><a href="#orgc186638">5.6.1. magit</a></li>
+<li><a href="#org36a2fec">5.6.2. evil-magit</a></li>
+<li><a href="#orgca33c5e">5.6.3. git-gutter</a></li>
+<li><a href="#org7b97455">5.6.4. git-link</a></li>
+<li><a href="#org9df4ef9">5.6.5. magit-todos</a></li>
+</ul>
+</li>
+<li><a href="#orgf08af5f">5.7. Project Management (<code>projectile</code>)</a>
+<ul>
+<li><a href="#orge633508">5.7.1. projectile</a></li>
+<li><a href="#org2642f6d">5.7.2. counsel-projectile</a></li>
+</ul>
+</li>
+<li><a href="#orge699196">5.8. Syntax Checking (<code>flycheck</code>)</a></li>
+</ul>
+</li>
+<li><a href="#orgfd3574f">6. Languages</a>
+<ul>
+<li><a href="#orgcb89e71">6.1. CSS</a></li>
+<li><a href="#org7f1b84a">6.2. Elisp</a>
+<ul>
+<li><a href="#org8598181">6.2.1. <code>cask</code></a></li>
+<li><a href="#org7ddd846">6.2.2. <code>cask-mode</code></a></li>
+<li><a href="#orge5960d9">6.2.3. <code>buttercup</code></a></li>
+</ul>
+</li>
+<li><a href="#org7978dd7">6.3. Haskell</a>
+<ul>
+<li><a href="#use-package--haskell-mode">6.3.1. <code>haskell-mode</code></a></li>
+<li><a href="#use-package--dante">6.3.2. <code>dante</code></a></li>
+<li><a href="#use-package--attrap">6.3.3. <code>attrap</code></a></li>
+</ul>
+</li>
+<li><a href="#orgdc4b3d0">6.4. Json (<code>json-mode</code>)</a></li>
+<li><a href="#orged64f07">6.5. LaTeX</a></li>
+<li><a href="#orgaa20067">6.6. YAML</a></li>
+<li><a href="#org91e2b77">6.7. XML (<code>nxml</code>)</a></li>
+</ul>
+</li>
+<li><a href="#orga02192c">7. Appendix</a>
+<ul>
+<li><a href="#orged2cd9a">7.1. Export Scripts</a>
+<ul>
+<li><a href="#org9d2be6d">7.1.1. Org Export Setup (<code>html-export.setup</code>)</a></li>
+<li><a href="#org7f2138a">7.1.2. The Build Script (<code>builddocs.sh</code>)</a></li>
+<li><a href="#org0609e91">7.1.3. The Publish Script (<code>publish.el</code>)</a></li>
+</ul>
+</li>
+<li><a href="#orged8e7a5">7.2. Source Files</a>
+<ul>
+<li><a href="#org9022ad7">7.2.1. <code>init.el</code></a></li>
+</ul>
+</li>
+<li><a href="#orgd007250">7.3. Tests Configurations</a>
+<ul>
+<li><a href="#orga7aa734">7.3.1. The Cask File</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+
+<div id="outline-container-orge5aeea0" class="outline-2">
+<h2 id="orge5aeea0"><span class="section-number-2">1</span> Bootstrapping (The Big Bang)</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+We begin here our <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html">init file</a>, the first file that will be loaded to
+initialize Emacs.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(add-to-list 'load-path <span class="org-string">"~/.config/emacs/"</span>)
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgf7aac65" class="outline-3">
+<h3 id="orgf7aac65"><span class="section-number-3">1.1</span> Profiling</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Make startup faster by reducing the frequency of garbage collection and then use
+a hook to measure Emacs startup time.
+</p>
+
+<p>
+The default is 800k (mesured in bytes).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> gc-cons-threshold (* 50 1000 1000))
+</pre>
+</div>
+
+<p>
+Profile emacs startup.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(add-hook 'emacs-startup-hook
+          (<span class="org-keyword">lambda</span> ()
+            (message <span class="org-string">"*** Emacs loaded in %s with %d garbage collections."</span>
+                     (format <span class="org-string">"%.2f seconds"</span>
+                             (float-time
+                              (time-subtract after-init-time before-init-time)))
+                     gcs-done)))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org979ae7c" class="outline-3">
+<h3 id="org979ae7c"><span class="section-number-3">1.2</span> Cache Directory</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+To keep our config directory clean, we are gonna use another directory
+for our cache. I don’t want a bunch of transient files showing up as
+untracked in the Git repository.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> user-emacs-directory <span class="org-string">"~/.cache/emacs/"</span>
+      backup-directory-alist `((<span class="org-string">"."</span> . ,(expand-file-name <span class="org-string">"backups"</span>
+                                                         user-emacs-directory)))
+      url-history-file (expand-file-name <span class="org-string">"url/history"</span> user-emacs-directory)
+      auto-save-list-file-prefix (expand-file-name <span class="org-string">"auto-save-list/.saves-"</span>
+                                                   user-emacs-directory)
+      projectile-known-projects-file (expand-file-name
+                                      <span class="org-string">"projectile-bookmarks.eld"</span>
+                                      user-emacs-directory))
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">Keep customization settings in a temporary file (thanks Ambrevar!).</span>
+(<span class="org-keyword">setq</span> custom-file
+      (<span class="org-keyword">if</span> (boundp 'server-socket-dir)
+          (expand-file-name <span class="org-string">"custom.el"</span> server-socket-dir)
+        (expand-file-name (format <span class="org-string">"emacs-custom-%s.el"</span> (user-uid))
+                          temporary-file-directory)))
+(load custom-file t)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1f14cf2" class="outline-3">
+<h3 id="org1f14cf2"><span class="section-number-3">1.3</span> Packages Management</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+And finally, we need to be able to download, install and load
+packages. For the download and the installation, <a href="https://github.com/raxod502/straight.el">straight.el</a>
+will be used, and for the loading, <a href="https://github.com/jwiegley/use-package">use-package</a> is gonna be the
+choosen one.
+</p>
+</div>
+
+<div id="outline-container-orgc2195aa" class="outline-4">
+<h4 id="orgc2195aa"><span class="section-number-4">1.3.1</span> <code>straight.el</code></h4>
+<div class="outline-text-4" id="text-1-3-1">
+<p>
+Packages need to be installed first (if not already installed), and loaded
+before we can use them.
+</p>
+
+<p>
+To install them, <a href="https://github.com/raxod502/straight.el">straight.el</a>, the next-generation, purely functional
+package manager for the Emacs hacker is used and to load them, <a href="https://github.com/jwiegley/use-package">use-package</a> is
+used and integrated to straight.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">defvar</span> <span class="org-variable-name">bootstrap-version</span>)
+(<span class="org-keyword">let</span> ((bootstrap-file
+       (expand-file-name <span class="org-string">"straight/repos/straight.el/bootstrap.el"</span>
+                         user-emacs-directory))
+      (bootstrap-version 5))
+  (<span class="org-keyword">unless</span> (file-exists-p bootstrap-file)
+    (<span class="org-keyword">with-current-buffer</span>
+        (url-retrieve-synchronously
+         <span class="org-string">"https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"</span>
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org336201f" class="outline-4">
+<h4 id="org336201f"><span class="section-number-4">1.3.2</span> <code>use-package</code></h4>
+<div class="outline-text-4" id="text-1-3-2">
+<p>
+Using straight, we can now download, install and load <i>use-package</i>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(straight-use-package 'use-package)
+(<span class="org-keyword">setq</span> straight-use-package-by-default t)
+(<span class="org-keyword">setq</span> use-package-verbose t)
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgeb6acfa" class="outline-2">
+<h2 id="orgeb6acfa"><span class="section-number-2">2</span> Personalization</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+
+<div id="outline-container-org4514bf7" class="outline-3">
+<h3 id="org4514bf7"><span class="section-number-3">2.1</span> Personnal Infos</h3>
+<div class="outline-text-3" id="text-2-1">
+</div>
+<div id="outline-container-org1d3a430" class="outline-4">
+<h4 id="org1d3a430"><span class="section-number-4">2.1.1</span> <code>user-full-name</code></h4>
+<div class="outline-text-4" id="text-2-1-1">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> user-full-name <span class="org-string">"Jean Gregory Verret"</span>)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgba3646a" class="outline-4">
+<h4 id="orgba3646a"><span class="section-number-4">2.1.2</span> <code>user-mail-address</code></h4>
+<div class="outline-text-4" id="text-2-1-2">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> user-mail-address <span class="org-string">"gregory.verret@gmail.com"</span>)
+(<span class="org-keyword">setq</span> org-directory <span class="org-string">"~/org/"</span>)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6dd6faf" class="outline-3">
+<h3 id="org6dd6faf"><span class="section-number-3">2.2</span> Directory Structure</h3>
+<div class="outline-text-3" id="text-2-2">
+</div>
+<div id="outline-container-org1b3f477" class="outline-4">
+<h4 id="org1b3f477"><span class="section-number-4">2.2.1</span> <code>medivhok:app-directory</code></h4>
+<div class="outline-text-4" id="text-2-2-1">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> medivhok:app-directory (file-name-as-directory <span class="org-string">"~/org"</span>))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org00a8ddc" class="outline-4">
+<h4 id="org00a8ddc"><span class="section-number-4">2.2.2</span> <code>medivhok:agenda-directory</code></h4>
+<div class="outline-text-4" id="text-2-2-2">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> medivhok:agenda-directory
+      (file-name-as-directory
+       (expand-file-name <span class="org-string">"agenda"</span>
+                         medivhok:app-directory)))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org29c96ec" class="outline-4">
+<h4 id="org29c96ec"><span class="section-number-4">2.2.3</span> <code>medivhok:budget-directory</code></h4>
+<div class="outline-text-4" id="text-2-2-3">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> medivhok:budget-directory
+      (file-name-as-directory
+       (expand-file-name <span class="org-string">"budget"</span>
+                         medivhok:app-directory)))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org60188dc" class="outline-4">
+<h4 id="org60188dc"><span class="section-number-4">2.2.4</span> <code>medivhok:slip-box-directory</code></h4>
+<div class="outline-text-4" id="text-2-2-4">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> medivhok:slip-box-directory
+      (file-name-as-directory
+       (expand-file-name <span class="org-string">"roam"</span>
+                         medivhok:app-directory)))
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7e551b4" class="outline-2">
+<h2 id="org7e551b4"><span class="section-number-2">3</span> User Interface</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org40e5226" class="outline-3">
+<h3 id="org40e5226"><span class="section-number-3">3.1</span> Theme</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+We configure the theme.
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package doom-themes
+  <span class="org-builtin">:config</span>
+  (<span class="org-keyword">setq</span> doom-themes-enable-bold t
+              doom-themes-enable-italic t)
+  (load-theme 'doom-one t)
+
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">Enable flashing mode-line on errors</span>
+  (doom-themes-visual-bell-config)
+
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">Corrects (and improves) org-mode's native fontification.</span>
+  (doom-themes-org-config))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orge462023" class="outline-4">
+<h4 id="orge462023"><span class="section-number-4">3.1.1</span> Fonts</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<p>
+The fonts.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(set-face-attribute 'default nil
+                    <span class="org-builtin">:font</span> <span class="org-string">"Hack Nerd Font"</span>
+                    <span class="org-builtin">:height</span> 130)
+(set-face-attribute 'fixed-pitch nil
+                    <span class="org-builtin">:font</span> <span class="org-string">"DroidSansMono Nerd Font"</span>
+                    <span class="org-builtin">:height</span> 120)
+(set-face-attribute 'variable-pitch nil
+                    <span class="org-builtin">:font</span> <span class="org-string">"Hack Nerd Font"</span>
+                    <span class="org-builtin">:height</span> 130
+                    <span class="org-builtin">:weight</span> 'regular)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1628eca" class="outline-4">
+<h4 id="org1628eca"><span class="section-number-4">3.1.2</span> Icons</h4>
+<div class="outline-text-4" id="text-3-1-2">
+</div>
+<ol class="org-ol">
+<li><a id="use-package--all-the-icons"></a><code>all-the-icons</code><br>
+<div class="outline-text-5" id="text-use-package--all-the-icons">
+<blockquote>
+<p>
+A utility package to collect various Icon Fonts and propertize them within Emacs. &#x2013; <a href="https://github.com/domtronn/all-the-icons.el">all-the-icons</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package all-the-icons
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="use-package--all-the-icons--preface"></a>Preface (<code>:preface</code>)<br>
+<div class="outline-text-5" id="text-use-package--all-the-icons--preface">
+<blockquote>
+<p>
+NOTE: This code is executed right away.
+</p>
+</blockquote>
+
+<p>
+We start the <a href="https://github.com/jwiegley/use-package#add-preface-occurring-before-everything-except-disabled">:preface</a> section of the <a href="#use-package--all-the-icons">use-package</a>.
+</p>
+
+<p>
+Show some nice symbols (ex.: <code>lambda</code> becomes \(\lambda\))
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-builtin">:preface</span>
+(global-prettify-symbols-mode 1)
+</pre>
+</div>
+</div>
+</li>
+<li><a id="orgdc8835b"></a>Closing Paren<br>
+<div class="outline-text-5" id="text-3-1-2-3">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">)
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org7c9b398" class="outline-3">
+<h3 id="org7c9b398"><span class="section-number-3">3.2</span> Frames</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+Set the frame transparency.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(set-frame-parameter (selected-frame) 'alpha '(90 . 90))
+(add-to-list 'default-frame-alist '(alpha . (90 . 90)))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc1e3866" class="outline-3">
+<h3 id="orgc1e3866"><span class="section-number-3">3.3</span> Scrolling</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+Improve scrolling.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-comment-delimiter">;; </span><span class="org-comment">One line at a time.</span>
+(<span class="org-keyword">setq</span> mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">Don't accelerate scrolling.</span>
+(<span class="org-keyword">setq</span> mouse-wheel-progressive-speed nil)
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">Scroll window under mouse.</span>
+(<span class="org-keyword">setq</span> mouse-wheel-follow-mouse 't)
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">Keyboard scroll one line at a time.</span>
+(<span class="org-keyword">setq</span> scroll-step 1)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgadcd103" class="outline-3">
+<h3 id="orgadcd103"><span class="section-number-3">3.4</span> Visuals</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+Line and column numbers.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> display-line-numbers-type 'relative
+      display-line-numbers-width-start t)
+(global-display-line-numbers-mode t)
+(column-number-mode)
+</pre>
+</div>
+
+<p>
+Set up the visible bell.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> visible-bell t)
+</pre>
+</div>
+
+<p>
+Highlight current line.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(global-hl-line-mode t)
+</pre>
+</div>
+
+<p>
+Time format.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> display-time-format <span class="org-string">"%l:%M %p %b %y"</span>
+      display-time-default-load-average nil)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq-default</span> fill-column 80)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf287d02" class="outline-3">
+<h3 id="orgf287d02"><span class="section-number-3">3.5</span> Widgets</h3>
+<div class="outline-text-3" id="text-3-5">
+<p>
+Disable the scroll bar and tooltips.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(scroll-bar-mode -1)
+(tooltip-mode -1)
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">We disable the tool and menu bar.</span>
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+</pre>
+</div>
+
+<p>
+Give some breathing room.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(set-fringe-mode 10)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org718a141" class="outline-3">
+<h3 id="org718a141"><span class="section-number-3">3.6</span> Windows</h3>
+<div class="outline-text-3" id="text-3-6">
+<p>
+Maximize windows by default.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgce0e76e" class="outline-3">
+<h3 id="orgce0e76e"><span class="section-number-3">3.7</span> Keybindings &amp; Co</h3>
+<div class="outline-text-3" id="text-3-7">
+<p>
+Keybindings is quite a powerful aspect of Emacs and we will install
+some helper utilities to help us with it.
+</p>
+</div>
+
+<div id="outline-container-user-interface--keybindings--evil" class="outline-4">
+<h4 id="user-interface--keybindings--evil"><span class="section-number-4">3.7.1</span> <code>evil</code></h4>
+<div class="outline-text-4" id="text-user-interface--keybindings--evil">
+<blockquote>
+<p>
+Now you see that evil will always triumph, because good is dumb. &#x2013; Dark Helmet
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package evil
+  <span class="org-builtin">:custom</span>
+  (evil-want-integration t)
+  (evil-want-keybinding nil)
+  (evil-want-C-u-scroll t)
+  (evil-want-C-i-jump nil)
+  (evil-respect-visual-line-mode t)
+
+  <span class="org-builtin">:config</span>
+  (evil-mode 1))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-user-interface--keybindings--evil-collection" class="outline-4">
+<h4 id="user-interface--keybindings--evil-collection"><span class="section-number-4">3.7.2</span> <code>evil-collection</code></h4>
+<div class="outline-text-4" id="text-user-interface--keybindings--evil-collection">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package evil-collection
+  <span class="org-builtin">:defer</span> t
+  <span class="org-builtin">:after</span> evil
+
+  <span class="org-builtin">:custom</span>
+  (evil-collection-outline-bind-tab-p nil))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-user-interface--keybindings--hydra" class="outline-4">
+<h4 id="user-interface--keybindings--hydra"><span class="section-number-4">3.7.3</span> <code>hydra</code></h4>
+<div class="outline-text-4" id="text-user-interface--keybindings--hydra">
+<blockquote>
+<p>
+make Emacs bindings that stick around. &#x2013; <a href="https://github.com/abo-abo/hydra">hydra</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package hydra
+  <span class="org-builtin">:defer</span> t)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-use-package--which-key" class="outline-4">
+<h4 id="use-package--which-key"><span class="section-number-4">3.7.4</span> <code>which-key</code></h4>
+<div class="outline-text-4" id="text-use-package--which-key">
+<blockquote>
+<p>
+Emacs package that displays available keybindings in popup. &#x2013; <a href="https://github.com/justbur/emacs-which-key">which-key</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package which-key
+  <span class="org-builtin">:custom</span>
+  (which-key-idle-delay 0.3)
+
+  <span class="org-builtin">:config</span>
+  (which-key-mode))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-use-package--general" class="outline-4">
+<h4 id="use-package--general"><span class="section-number-4">3.7.5</span> <code>general</code></h4>
+<div class="outline-text-4" id="text-use-package--general">
+<blockquote>
+<p>
+More convenient key definitions in emacs. &#x2013; <a href="https://github.com/noctuid/general.el">general.el</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package general
+  <span class="org-builtin">:config</span>
+  (general-evil-setup t))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-user-interface--keybindings" class="outline-4">
+<h4 id="user-interface--keybindings"><span class="section-number-4">3.7.6</span> Keybindings</h4>
+<div class="outline-text-4" id="text-user-interface--keybindings">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">defvar</span> <span class="org-variable-name">medivhok:leader-key</span> <span class="org-string">"SPC"</span>
+  <span class="org-doc">"The leader key."</span>)
+
+(<span class="org-keyword">defconst</span> <span class="org-variable-name">medivhok:non-normal-leader-key</span> <span class="org-string">"M-SPC"</span>
+  <span class="org-doc">"The 'non normal state' leader key."</span>)
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">medivhok/expand-menu-key</span> (menu-key <span class="org-type">&amp;optional</span> non-normal-menu-key)
+  <span class="org-doc">"Returns a string of the MENU-KEY prefixed by `</span><span class="org-doc"><span class="org-constant">medivhok:leader-key</span></span><span class="org-doc">' and</span>
+<span class="org-doc">a space. If NON-NORMAL-MENU-KEY is non nil, `</span><span class="org-doc"><span class="org-constant">medivhok:non-local-leader-key</span></span><span class="org-doc">'</span>
+<span class="org-doc">is used instead."</span>
+  (<span class="org-keyword">if</span> (null non-normal-menu-key)
+      (concat medivhok:leader-key <span class="org-string">" "</span> menu-key)
+    (concat medivhok:non-normal-leader-key <span class="org-string">" "</span> menu-key)))
+</pre>
+</div>
+
+<p>
+<code>medivhok:leader-menu</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(defhydra hydra-zoom ()
+  <span class="org-string">"zoom"</span>
+  (<span class="org-string">"-"</span> text-scale-decrease <span class="org-string">"out"</span>)
+  (<span class="org-string">"="</span> text-scale-increase <span class="org-string">"in"</span>))
+
+(general-create-definer medivhok:main-menu
+  <span class="org-builtin">:prefix</span> medivhok:leader-key
+  <span class="org-builtin">:non-normal-prefix</span> medivhok:non-normal-leader-key
+  <span class="org-builtin">:keymaps</span> 'override)
+
+(medivhok:main-menu
+  <span class="org-builtin">:states</span> 'normal
+  <span class="org-string">":"</span> 'execute-extended-command
+  <span class="org-string">"-"</span> '(hydra-zoom/text-scale-decrease
+        <span class="org-builtin">:which-key</span> <span class="org-string">"text-scale-decrease"</span>)
+  <span class="org-string">"="</span> '(hydra-zoom/text-scale-increase
+        <span class="org-builtin">:which-key</span> <span class="org-string">"text-scale-increase"</span>))
+</pre>
+</div>
+
+<p>
+<code>medivhok:local-mode-menu</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(general-create-definer medivhok:local-mode-menu
+  <span class="org-builtin">:prefix</span> (medivhok/expand-menu-key <span class="org-string">"m"</span>)
+  <span class="org-builtin">:non-normal-prefix</span> (medivhok/expand-menu-key <span class="org-string">"m"</span> t)
+  <span class="org-builtin">:keymaps</span> 'override)
+</pre>
+</div>
+
+<p>
+<code>medivhok:applications-menu</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(general-create-definer medivhok:applications-menu
+  <span class="org-builtin">:prefix</span> (medivhok/expand-menu-key <span class="org-string">"a"</span>)
+  <span class="org-builtin">:non-normal-prefix</span> (medivhok/expand-menu-key <span class="org-string">"a"</span> t)
+  <span class="org-builtin">:keymaps</span> 'override
+  nil '(<span class="org-builtin">:ignore</span> t <span class="org-builtin">:which-key</span> <span class="org-string">"applications"</span>))
+</pre>
+</div>
+
+<p>
+<code>medivhok:buffer-menu</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(general-create-definer medivhok:buffer-menu
+  <span class="org-builtin">:prefix</span> (medivhok/expand-menu-key <span class="org-string">"b"</span>)
+  <span class="org-builtin">:non-normal-prefix</span> (medivhok/expand-menu-key <span class="org-string">"b"</span> t)
+  <span class="org-builtin">:keymaps</span> 'override
+  nil '(<span class="org-builtin">:ignore</span> t <span class="org-builtin">:which-key</span> <span class="org-string">"buffer"</span>))
+
+(medivhok:buffer-menu
+  <span class="org-builtin">:states</span> 'normal
+  <span class="org-string">"b"</span> 'switch-to-buffer
+  <span class="org-string">"k"</span> 'kill-buffer
+  <span class="org-string">"d"</span> 'kill-current-buffer)
+</pre>
+</div>
+
+<p>
+<code>medivhok:emacs-menu</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(general-create-definer medivhok:emacs-menu
+  <span class="org-builtin">:prefix</span> (medivhok/expand-menu-key <span class="org-string">"e"</span>)
+  <span class="org-builtin">:non-normal-prefix</span> (medivhok/expand-menu-key <span class="org-string">"e"</span> t)
+  <span class="org-builtin">:keymaps</span> 'override
+  nil '(<span class="org-builtin">:ignore</span> t <span class="org-builtin">:which-key</span> <span class="org-string">"emacs"</span>))
+
+(medivhok:emacs-menu
+  <span class="org-builtin">:states</span> 'normal
+  <span class="org-string">"e"</span> '((<span class="org-keyword">lambda</span> ()
+          (<span class="org-keyword">interactive</span>)
+          (find-file
+           (expand-file-name <span class="org-string">"README.org"</span>
+                             (file-name-directory user-init-file))))
+        <span class="org-builtin">:which-key</span> <span class="org-string">"edit literate config"</span>)
+  <span class="org-string">"E"</span> '((<span class="org-keyword">lambda</span> ()
+          (<span class="org-keyword">interactive</span>)
+          (find-file
+           (expand-file-name <span class="org-string">"init.el"</span>
+                             (file-name-directory user-init-file))))
+        <span class="org-builtin">:which-key</span> <span class="org-string">"edit config"</span>))
+</pre>
+</div>
+
+<p>
+<code>medivhok:file-menu</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(general-create-definer medivhok:file-menu
+  <span class="org-builtin">:prefix</span> (medivhok/expand-menu-key <span class="org-string">"f"</span>)
+  <span class="org-builtin">:non-normal-prefix</span> (medivhok/expand-menu-key <span class="org-string">"f"</span> t)
+  <span class="org-builtin">:keymaps</span> 'override
+  nil '(<span class="org-builtin">:ignore</span> t <span class="org-builtin">:which-key</span> <span class="org-string">"file"</span>))
+
+(medivhok:file-menu
+  <span class="org-builtin">:states</span> 'normal
+  <span class="org-string">"f"</span> 'find-file
+  <span class="org-string">"r"</span> 'counsel-recentf)
+</pre>
+</div>
+
+<p>
+<code>medivhok:help-menu</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(general-create-definer medivhok:help-menu
+  <span class="org-builtin">:prefix</span> (medivhok/expand-menu-key <span class="org-string">"h"</span>)
+  <span class="org-builtin">:non-normal-prefix</span> (medivhok/expand-menu-key <span class="org-string">"h"</span> t)
+  <span class="org-builtin">:keymaps</span> 'override
+  nil '(<span class="org-builtin">:ignore</span> t <span class="org-builtin">:which-key</span> <span class="org-string">"help"</span>))
+
+(medivhok:help-menu
+  <span class="org-builtin">:states</span> 'normal
+  <span class="org-string">"a"</span> 'apropos-command
+  <span class="org-string">"b"</span> 'describe-bindings
+  <span class="org-string">"f"</span> 'describe-function
+  <span class="org-string">"i"</span> 'info
+  <span class="org-string">"k"</span> 'general-describe-keybindings
+  <span class="org-string">"s"</span> 'counsel-describe-symbol
+  <span class="org-string">"v"</span> 'describe-variable)
+</pre>
+</div>
+
+<p>
+<code>medivhok:notes-menu</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(general-create-definer medivhok:notes-menu
+  <span class="org-builtin">:prefix</span> (medivhok/expand-menu-key <span class="org-string">"n"</span>)
+  <span class="org-builtin">:non-normal-prefix</span> (medivhok/expand-menu-key <span class="org-string">"n"</span> t)
+  <span class="org-builtin">:keymaps</span> 'override
+  nil '(<span class="org-builtin">:ignore</span> t <span class="org-builtin">:which-key</span> <span class="org-string">"notes"</span>))
+</pre>
+</div>
+
+<p>
+<code>medivhok:window-menu</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(general-create-definer medivhok:window-menu
+  <span class="org-builtin">:prefix</span> (medivhok/expand-menu-key <span class="org-string">"w"</span>)
+  <span class="org-builtin">:non-normal-prefix</span> (medivhok/expand-menu-key <span class="org-string">"w"</span> t)
+  <span class="org-builtin">:keymaps</span> 'override
+  nil '(<span class="org-builtin">:ignore</span> t <span class="org-builtin">:which-key</span> <span class="org-string">"window"</span>))
+
+(medivhok:window-menu
+  <span class="org-builtin">:states</span> 'normal
+  <span class="org-string">"q"</span> 'delete-window
+  <span class="org-string">"s"</span> 'split-window-below
+  <span class="org-string">"\\"</span> 'split-window-right)
+</pre>
+</div>
+
+<p>
+<code>medivhok:quit-menu</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(general-create-definer medivhok:quit-menu
+  <span class="org-builtin">:prefix</span> (medivhok/expand-menu-key <span class="org-string">"q"</span>)
+  <span class="org-builtin">:non-normal-prefix</span> (medivhok/expand-menu-key <span class="org-string">"q"</span> t)
+  <span class="org-builtin">:keymaps</span> 'override
+  nil '(<span class="org-builtin">:ignore</span> t <span class="org-builtin">:which-key</span> <span class="org-string">"quit"</span>))
+
+(medivhok:quit-menu
+  <span class="org-builtin">:states</span> 'normal
+  <span class="org-string">"q"</span> 'save-buffers-kill-terminal)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org38dcfcd" class="outline-3">
+<h3 id="org38dcfcd"><span class="section-number-3">3.8</span> Dashboard</h3>
+<div class="outline-text-3" id="text-3-8">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package dashboard
+  <span class="org-builtin">:preface</span>
+  (<span class="org-keyword">setq</span> inhibit-startup-message t)
+
+  <span class="org-builtin">:config</span>
+  (dashboard-setup-startup-hook)
+  (<span class="org-keyword">setq</span> dashboard-startup-banner 'logo
+        dashboard-items '((recents . 5)
+                          (agenda . 5)))
+  (evil-collection-init 'dashboard))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc29ce9f" class="outline-3">
+<h3 id="orgc29ce9f"><span class="section-number-3">3.9</span> Keybindings</h3>
+</div>
+<div id="outline-container-orgbfdb4f8" class="outline-3">
+<h3 id="orgbfdb4f8"><span class="section-number-3">3.10</span> Minibuffer</h3>
+<div class="outline-text-3" id="text-3-10">
+</div>
+<div id="outline-container-use-package--amx" class="outline-4">
+<h4 id="use-package--amx"><span class="section-number-4">3.10.1</span> <code>amx</code></h4>
+<div class="outline-text-4" id="text-use-package--amx">
+<blockquote>
+<p>
+An alternative M-x interface for Emacs. &#x2013; <a href="https://github.com/DarwinAwardWinner/amx">amx</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package amx
+  <span class="org-builtin">:after</span> ivy
+
+  <span class="org-builtin">:custom</span>
+  (amx-backend 'ivy)
+
+  <span class="org-builtin">:config</span>
+  (amx-mode))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-use-package--counsel" class="outline-4">
+<h4 id="use-package--counsel"><span class="section-number-4">3.10.2</span> <code>counsel</code></h4>
+<div class="outline-text-4" id="text-use-package--counsel">
+<blockquote>
+<p>
+Ivy - a generic completion frontend for Emacs, Swiper - isearch with an
+overview, and more. Oh, man! &#x2013; <a href="https://github.com/abo-abo/swiper">swiper</a>
+</p>
+</blockquote>
+
+<div class="org-center">
+<p>
+NOTE: By installing <code>counsel</code>, <code>ivy</code> and <code>swiper</code> will automatically be installed as
+dependencies.
+</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package counsel
+</pre>
+</div>
+</div>
+<ol class="org-ol">
+<li><a id="use-package--counsel--after"></a>Load Package After&#x2026; (<code>:after</code>)<br>
+<div class="outline-text-5" id="text-use-package--counsel--after">
+<p>
+We start the <a href="https://github.com/jwiegley/use-package#loading-packages-in-sequence">:after</a> section of the <a href="#use-package--counsel">use-package</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-builtin">:after</span> evil-collection
+</pre>
+</div>
+</div>
+</li>
+<li><a id="use-package--counsel--config"></a>Configurations (<code>:config</code>)<br>
+<div class="outline-text-5" id="text-use-package--counsel--config">
+<blockquote>
+<p>
+NOTE: This code is executed AFTER the package is loaded.
+</p>
+</blockquote>
+
+<p>
+We start the <a href="https://github.com/jwiegley/use-package#getting-started">:config</a> section of the <a href="#use-package--counsel">use-package</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-builtin">:config</span>
+(evil-collection-init 'ivy)
+(<span class="org-keyword">setq</span> ivy-use-virtual-buffers t
+      ivy-count-format <span class="org-string">"(%d/%d) "</span>)
+(ivy-mode 1)
+(counsel-mode 1)
+</pre>
+</div>
+</div>
+</li>
+<li><a id="orgf7437d5"></a>Closing Paren<br>
+<div class="outline-text-5" id="text-3-10-2-3">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">)
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-use-package--ivy-rich" class="outline-4">
+<h4 id="use-package--ivy-rich"><span class="section-number-4">3.10.3</span> <code>ivy-rich</code></h4>
+<div class="outline-text-4" id="text-use-package--ivy-rich">
+<blockquote>
+<p>
+More friendly interface for ivy. &#x2013; <a href="https://github.com/Yevgnen/ivy-rich">ivy-rich</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package ivy-rich
+</pre>
+</div>
+</div>
+
+<ol class="org-ol">
+<li><a id="use-package--ivy-rich--after"></a>Load Package After&#x2026; (<code>:after</code>)<br>
+<div class="outline-text-5" id="text-use-package--ivy-rich--after">
+<p>
+We start the <a href="https://github.com/jwiegley/use-package#loading-packages-in-sequence">:after</a> section of the <a href="#use-package--ivy-rich">use-package</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-builtin">:after</span> ivy
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="use-package--ivy-rich--config"></a>Configurations (<code>:config</code>)<br>
+<div class="outline-text-5" id="text-use-package--ivy-rich--config">
+<blockquote>
+<p>
+NOTE: This code is executed AFTER the package is loaded.
+</p>
+</blockquote>
+
+<p>
+We start the <a href="https://github.com/jwiegley/use-package#getting-started">:config</a> section of the <a href="#use-package--ivy-rich">use-package</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-builtin">:config</span>
+(ivy-rich-mode 1)
+(setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+</pre>
+</div>
+</div>
+</li>
+<li><a id="org185c747"></a>Closing Paren<br>
+<div class="outline-text-5" id="text-3-10-3-3">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">)
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-org04826d3" class="outline-4">
+<h4 id="org04826d3"><span class="section-number-4">3.10.4</span> <code>ivy-posframe</code></h4>
+<div class="outline-text-4" id="text-3-10-4">
+<blockquote>
+<p>
+ivy-posframe is a ivy extension, which let ivy use posframe to show
+its candidate menu. &#x2013; <a href="https://github.com/tumashu/ivy-posframe">ivy-posframe</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package ivy-posframe
+  <span class="org-builtin">:after</span> ivy
+
+  <span class="org-builtin">:custom</span>
+  (ivy-posframe-display-functions-alist
+   '((t . ivy-posframe-display-at-frame-center)))
+
+  <span class="org-builtin">:config</span>
+  (ivy-posframe-mode 1))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org67de310" class="outline-3">
+<h3 id="org67de310"><span class="section-number-3">3.11</span> Modeline</h3>
+<div class="outline-text-3" id="text-3-11">
+</div>
+<div id="outline-container-org30fbcca" class="outline-4">
+<h4 id="org30fbcca"><span class="section-number-4">3.11.1</span> doom-modeline</h4>
+<div class="outline-text-4" id="text-3-11-1">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package doom-modeline
+  <span class="org-builtin">:hook</span>
+  (window-setup . doom-modeline-mode)
+
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">:custom-face</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">(mode-line ((t (:height 0.85))))</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">(mode-line-inactive ((t (:height 0.85))))</span>
+
+  <span class="org-builtin">:init</span>
+  (<span class="org-keyword">setq</span> doom-modeline-bar-width 6
+        doom-modeline-buffer-file-name-style 'auto
+        doom-modeline-buffer-state-icon t
+        doom-modeline-github nil
+        doom-modeline-height 15
+        doom-modeline-icon (display-graphic-p)
+        doom-modeline-irc nil
+        doom-modeline-lsp t
+        doom-modeline-major-mode-icon t
+        doom-modeline-major-mode-color-icon t
+        doom-modeline-minor-modes t
+        doom-modeline-mu4e nil
+        doom-modeline-persp-name nil
+        doom-modeline-project-detection 'projectile))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3f1cf4e" class="outline-4">
+<h4 id="org3f1cf4e"><span class="section-number-4">3.11.2</span> minions</h4>
+<div class="outline-text-4" id="text-3-11-2">
+<p>
+Configuration of the modeline.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package minions
+  <span class="org-builtin">:init</span>
+  (<span class="org-keyword">setq</span> minions-mode-line-lighter <span class="org-string">"&#61842; "</span>)
+
+  <span class="org-builtin">:config</span>
+  (minions-mode 1))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7f8a6b5" class="outline-3">
+<h3 id="org7f8a6b5"><span class="section-number-3">3.12</span> Notifications</h3>
+<div class="outline-text-3" id="text-3-12">
+<p>
+Don't warn for large files.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> large-file-warning-threshold nil)
+</pre>
+</div>
+
+<p>
+Don't warn for following symlinked files.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> vc-follow-symlinks t)
+</pre>
+</div>
+
+<p>
+Don't warn when advice is added for functions.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> ad-redefinition-action 'accept)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org042655c" class="outline-3">
+<h3 id="org042655c"><span class="section-number-3">3.13</span> Help Interface (<code>helpful</code>)</h3>
+<div class="outline-text-3" id="text-3-13">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package helpful
+  <span class="org-builtin">:after</span>
+  (counsel evil-collection)
+
+  <span class="org-builtin">:config</span>
+  (evil-collection-init 'helpful)
+  (<span class="org-keyword">setq</span> counsel-describe-function-function #'helpful-callable
+        counsel-describe-variable-function #'helpful-variable))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgedd414a" class="outline-2">
+<h2 id="orgedd414a"><span class="section-number-2">4</span> Applications</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org5c47ea1" class="outline-3">
+<h3 id="org5c47ea1"><span class="section-number-3">4.1</span> Org Mode</h3>
+<div class="outline-text-3" id="text-4-1">
+</div>
+<div id="outline-container-orgb4fe2a1" class="outline-4">
+<h4 id="orgb4fe2a1"><span class="section-number-4">4.1.1</span> <code>org</code></h4>
+<div class="outline-text-4" id="text-4-1-1">
+<blockquote>
+<p>
+Org mode is for keeping notes, maintaining TODO lists, planning projects, and
+authoring documents with a fast and effective plain-text system. &#x2013; <a href="https://orgmode.org/">org</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package org
+<span class="org-builtin">:hook</span>
+(org-mode . (<span class="org-keyword">lambda</span> ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (auto-fill-mode 0)
+  (visual-line-mode 1)
+  (<span class="org-keyword">setq</span> evil-auto-indent nil)))
+
+<span class="org-builtin">:init</span>
+(<span class="org-keyword">setq</span> org-agenda-files (list medivhok:agenda-directory)
+      org-catch-invisible-edits 'show
+      org-cycle-separator-lines 2
+      org-directory medivhok:app-directory
+      org-edit-src-content-indentation 0
+      org-ellipsis <span class="org-string">" &#9660;"</span>
+      org-hide-block-startup nil
+      org-hide-emphasis-markers t
+      org-log-done 'time
+      org-log-into-drawer t
+      org-outline-path-complete-in-steps nil
+      org-return-follows-link t
+      org-src-fontify-natively t
+      org-src-preserve-indentation nil
+      org-src-tab-acts-natively t
+      org-src-window-setup 'current-window
+      org-startup-folded t)
+
+<span class="org-builtin">:custom-face</span>
+(org-link ((t (<span class="org-builtin">:inherit</span> link <span class="org-builtin">:underline</span> nil))))
+
+<span class="org-builtin">:general</span>
+(medivhok:local-mode-menu 'normal
+  org-mode-map
+  nil '(<span class="org-builtin">:ignore</span> t <span class="org-builtin">:which-key</span> <span class="org-string">"org"</span>)
+  <span class="org-string">"e"</span> 'org-export-dispatch
+  <span class="org-string">"t"</span> '(<span class="org-builtin">:ignore</span> t <span class="org-builtin">:which-key</span> <span class="org-string">"toggle"</span>)
+  <span class="org-string">"tl"</span> 'org-toggle-link-display)
+
+<span class="org-builtin">:config</span>
+(<span class="org-keyword">setq</span> org-format-latex-options
+      (plist-put org-format-latex-options <span class="org-builtin">:scale</span> 4.0))
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (haskell . t)
+   (ledger . t)
+   (R . t)))
+
+(add-hook 'org-src-mode-hook
+          (<span class="org-keyword">lambda</span> ()
+            (<span class="org-keyword">when</span> (eq major-mode 'emacs-lisp-mode)
+              (<span class="org-keyword">setq</span> flycheck-disabled-checkers '(emacs-lisp-checkdoc)))))
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">Replace list hyphen with dot.</span>
+(<span class="org-keyword">require</span> '<span class="org-constant">org-indent</span>)
+(font-lock-add-keywords 'org-mode
+                        '((<span class="org-string">"^ *</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">(</span></span><span class="org-string">[-]</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">)</span></span><span class="org-string"> "</span>
+                           (0 (<span class="org-keyword">prog1</span> () (compose-region (match-beginning 1) (match-end 1) <span class="org-string">"&#8226;"</span>))))))
+(<span class="org-keyword">dolist</span> (face '((org-level-1 . 1.2)
+                (org-level-2 . 1.1)
+                (org-level-3 . 1.05)
+                (org-level-4 . 1.0)
+                (org-level-5 . 1.1)
+                (org-level-6 . 1.1)
+                (org-level-7 . 1.1)
+                (org-level-8 . 1.1)))
+(set-face-attribute (car face) nil <span class="org-builtin">:font</span> <span class="org-string">"Cantarell"</span> <span class="org-builtin">:weight</span> 'regular <span class="org-builtin">:height</span> (cdr face)))
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">Ensure that anything that should be fixed-pitch in Org files appears that way</span>
+(set-face-attribute 'org-block nil <span class="org-builtin">:foreground</span> nil <span class="org-builtin">:inherit</span> 'fixed-pitch)
+(set-face-attribute 'org-code nil   <span class="org-builtin">:inherit</span> '(shadow fixed-pitch))
+(set-face-attribute 'org-indent nil <span class="org-builtin">:inherit</span> '(org-hide fixed-pitch))
+(set-face-attribute 'org-verbatim nil <span class="org-builtin">:inherit</span> '(shadow fixed-pitch))
+(set-face-attribute 'org-special-keyword nil <span class="org-builtin">:inherit</span> '(font-lock-comment-face fixed-pitch))
+(set-face-attribute 'org-meta-line nil <span class="org-builtin">:inherit</span> '(font-lock-comment-face fixed-pitch))
+(set-face-attribute 'org-checkbox nil <span class="org-builtin">:inherit</span> 'fixed-pitch))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-applications--org-mode--ob-tangle" class="outline-4">
+<h4 id="applications--org-mode--ob-tangle"><span class="section-number-4">4.1.2</span> <code>ob-tangle</code></h4>
+<div class="outline-text-4" id="text-applications--org-mode--ob-tangle">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package ob-tangle
+  <span class="org-builtin">:defer</span> t
+
+  <span class="org-builtin">:straight</span> org
+
+  <span class="org-builtin">:preface</span>
+  (<span class="org-keyword">defun</span> <span class="org-function-name">medivhok/tangle-on-save</span> ()
+    <span class="org-doc">"Disable confirmation before tangling."</span>
+    (<span class="org-keyword">let</span> ((org-confirm-babel-evaluate nil))
+      (org-babel-tangle)))
+
+  <span class="org-builtin">:hook</span>
+  (org-mode . (<span class="org-keyword">lambda</span> ()
+        (add-hook 'after-save-hook
+                  #'medivhok/tangle-on-save
+                  'run-at-end
+                  'only-in-org-mode))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-use-package--org-bullets" class="outline-4">
+<h4 id="use-package--org-bullets"><span class="section-number-4">4.1.3</span> <code>org-bullets</code></h4>
+<div class="outline-text-4" id="text-use-package--org-bullets">
+<blockquote>
+<p>
+utf-8 bullets for org-mode. &#x2013; <a href="https://github.com/sabof/org-bullets/">org-bullets</a>
+</p>
+</blockquote>
+
+<p>
+Use bullet characters instead of asterisks, plus set the header font sizes to
+something more palatable.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package org-bullets
+  <span class="org-builtin">:hook</span>
+  (org-mode . org-bullets-mode)
+  <span class="org-builtin">:custom</span>
+  (org-bullets-bullet-list '(<span class="org-string">"&#9673;"</span> <span class="org-string">"&#9679;"</span> <span class="org-string">"&#9675;"</span> <span class="org-string">"&#9654;"</span> <span class="org-string">"&#9776;"</span> <span class="org-string">"&#9655;"</span> <span class="org-string">"&#9675;"</span>)))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7961359" class="outline-4">
+<h4 id="org7961359"><span class="section-number-4">4.1.4</span> <code>org-make-toc</code></h4>
+<div class="outline-text-4" id="text-4-1-4">
+<blockquote>
+<p>
+Automatic tables of contents for Org files. &#x2013; <a href="https://github.com/alphapapa/org-make-toc/">org-make-toc</a>
+</p>
+</blockquote>
+
+<p>
+It’s nice to have a table of contents section for long literate configuration
+files (like this one!) so I use <a href="https://github.com/alphapapa/org-make-toc">org-make-toc</a> to automatically update the ToC in
+any header with a property named TOC.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package org-make-toc
+  <span class="org-builtin">:hook</span>
+  (org-mode . org-make-toc-mode))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-use-package--ox-odt" class="outline-4">
+<h4 id="use-package--ox-odt"><span class="section-number-4">4.1.5</span> <code>ox-odt</code></h4>
+<div class="outline-text-4" id="text-use-package--ox-odt">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package ox-odt
+  <span class="org-builtin">:after</span> org
+
+  <span class="org-builtin">:straight</span>
+  (org <span class="org-builtin">:type</span> git <span class="org-builtin">:local-repo</span> <span class="org-string">"org"</span>)
+
+  <span class="org-builtin">:custom</span>
+  (org-odt-convert-process <span class="org-string">"unoconv"</span>)
+  (org-odt-convert-processes '((<span class="org-string">"unoconv"</span>
+                                <span class="org-string">"unoconv -f %f %i"</span>)))
+  (org-odt-preferred-output-format <span class="org-string">"docx"</span>)
+  (org-odt-prettify-xml t)
+
+  <span class="org-builtin">:config</span>
+  (org-odt-add-automatic-style <span class="org-string">"TNOrgTitle"</span>
+                               '((<span class="org-string">"style:family"</span> <span class="org-string">"paragraph"</span>)
+                                 (<span class="org-string">"style:parent-style-name"</span> <span class="org-string">"OrgTitle"</span>)
+                                 (<span class="org-string">"style:master-page-name"</span> <span class="org-string">"OrgTitlePage"</span>))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd06060a" class="outline-4">
+<h4 id="orgd06060a"><span class="section-number-4">4.1.6</span> <code>evil-org</code></h4>
+<div class="outline-text-4" id="text-4-1-6">
+<blockquote>
+<p>
+Supplemental evil-mode keybindings to emacs org-mode. &#x2013; <a href="https://github.com/Somelauw/evil-org-mode/">evil-org</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package evil-org
+  <span class="org-builtin">:hook</span>
+  ((org-mode . evil-org-mode)
+   (org-agenda-mode . evil-org-mode)
+   (evil-org-mode . (<span class="org-keyword">lambda</span> ()
+                            (evil-org-set-key-theme))))
+  <span class="org-builtin">:config</span>
+  (<span class="org-keyword">require</span> '<span class="org-constant">evil-org-agenda</span>)
+  (evil-org-agenda-set-keys))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org54070d3" class="outline-3">
+<h3 id="org54070d3"><span class="section-number-3">4.2</span> Getting Things Done  (Agenda)</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+The environment of the <i>GTD</i> workflow is done with <code>org-agenda</code>, which is part of
+the <a href="https://orgmode.org">Org Mode</a> ecosystem.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">defun</span> <span class="org-function-name">medivhok/open-agenda</span> ()
+  <span class="org-doc">"Opens my GTD agenda."</span>
+  (<span class="org-keyword">interactive</span>)
+  (org-agenda nil <span class="org-string">" "</span>))
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package org-agenda
+  <span class="org-builtin">:defer</span> t
+
+  <span class="org-builtin">:after</span> (org)
+
+  <span class="org-builtin">:straight</span> org
+
+  <span class="org-builtin">:init</span>
+  (<span class="org-keyword">defconst</span> <span class="org-variable-name">medivhok:gtd-file</span>
+    (expand-file-name <span class="org-string">"gtd.org"</span> medivhok:agenda-directory)
+    <span class="org-doc">"My 'getting things done' agenda file."</span>)
+
+  <span class="org-builtin">:custom</span>
+  (org-agenda-window-setup 'current-window)
+  (org-agenda-block-separator nil)
+  (org-agenda-dim-blocked-tasks 'invisible)
+  (org-agenda-skip-deadline-if-done t)
+  (org-agenda-skip-scheduled-if-done t)
+  (org-agenda-start-with-log-mode t)
+  (org-agenda-custom-commands
+   `((<span class="org-string">" "</span>
+      <span class="org-string">"GTD Agenda"</span>
+      ((agenda <span class="org-string">""</span>
+                     ((org-agenda-span 'week)
+                      (org-deadline-warning-days 14)))
+       (tags-todo <span class="org-string">"@inbox"</span>
+                              ((org-agenda-overriding-header <span class="org-string">"Inbox"</span>)))
+       (tags-todo <span class="org-string">"@t&#226;ches"</span>
+                              ((org-agenda-overriding-header <span class="org-string">"T&#226;ches"</span>)))
+       (tags-todo <span class="org-string">"@teluq"</span>
+                              ((org-agenda-overriding-header <span class="org-string">"Teluq"</span>)))
+       (tags-todo <span class="org-string">"@projets"</span>
+                              ((org-agenda-overriding-header <span class="org-string">"Projets"</span>))))))))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orga007836" class="outline-4">
+<h4 id="orga007836"><span class="section-number-4">4.2.1</span> <code>org-capture</code></h4>
+<div class="outline-text-4" id="text-4-2-1">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package org-capture
+  <span class="org-builtin">:straight</span> org
+
+  <span class="org-builtin">:commands</span> (org-capture)
+  <span class="org-builtin">:bind</span>
+  ((<span class="org-string">"&lt;f4&gt;"</span> . (<span class="org-keyword">lambda</span> () (<span class="org-keyword">interactive</span>) (org-capture nil <span class="org-string">"i"</span>))))
+
+  <span class="org-builtin">:config</span>
+  (<span class="org-keyword">setq</span> org-capture-templates
+        `((<span class="org-string">"i"</span> <span class="org-string">"inbox"</span> entry
+           (file+headline ,medivhok:gtd-file <span class="org-string">"Inbox"</span>)
+           <span class="org-string">"* TODO [#C] %?\n:PROPERTIES:\n:Effort: 1\n:END:\n"</span>)
+
+          (<span class="org-string">"e"</span> <span class="org-string">"email"</span> entry
+           (file+headline ,medivhok:gtd-file <span class="org-string">"Emails"</span>)
+           <span class="org-string">"* TODO [#A] Reply: %a"</span>
+           <span class="org-builtin">:immediate-finish</span> t))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd0be5c6" class="outline-4">
+<h4 id="orgd0be5c6"><span class="section-number-4">4.2.2</span> <code>org-refile</code></h4>
+<div class="outline-text-4" id="text-4-2-2">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package org-refile
+  <span class="org-builtin">:straight</span> org
+
+  <span class="org-builtin">:config</span>
+  (<span class="org-keyword">setq</span> org-refile-allow-creating-parent-nodes 'confirm
+              org-refile-use-outline-path 'file
+              org-refile-targets '((nil <span class="org-builtin">:tag</span> . <span class="org-string">"@t&#226;ches"</span>)
+                                   (nil <span class="org-builtin">:tag</span> . <span class="org-string">"@cours"</span>)
+                                   (nil <span class="org-builtin">:tag</span> . <span class="org-string">"@projet"</span>)
+                                   (nil <span class="org-builtin">:tag</span> . <span class="org-string">"@teluq"</span>))))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org45e16bf" class="outline-3">
+<h3 id="org45e16bf"><span class="section-number-3">4.3</span> Taking Smart Notes  (Slip Box)</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+To configure my slip box, I use the <a href="https://orgroam.com">org-roam</a> ecosystem.
+</p>
+</div>
+
+<div id="outline-container-org24b118c" class="outline-4">
+<h4 id="org24b118c"><span class="section-number-4">4.3.1</span> Variables</h4>
+<div class="outline-text-4" id="text-4-3-1">
+</div>
+<ol class="org-ol">
+<li><a id="variable--org-roam-directory"></a><code>org-roam-directory</code><br>
+<div class="outline-text-5" id="text-variable--org-roam-directory">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> org-roam-directory (file-name-as-directory
+                          (expand-file-name <span class="org-string">"roam"</span>
+                                            org-directory)))
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="org98d8cdc"></a><code>medivhok:roam-templates-directory</code><br>
+<div class="outline-text-5" id="text-4-3-1-2">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">defvar</span> <span class="org-variable-name">medivhok:roam-templates-directory</span>
+  (file-name-as-directory
+   (expand-file-name <span class="org-string">"templates"</span> org-roam-directory))
+  <span class="org-doc">"The slip box cards templates directory."</span>)
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-org8cfd8e5" class="outline-4">
+<h4 id="org8cfd8e5"><span class="section-number-4">4.3.2</span> Packages</h4>
+<div class="outline-text-4" id="text-4-3-2">
+</div>
+<ol class="org-ol">
+<li><a id="applications--taking-smart-notes--org-roam"></a><code>org-roam</code><br>
+<div class="outline-text-5" id="text-applications--taking-smart-notes--org-roam">
+<blockquote>
+<p>
+Rudimentary Roam replica with Org-mode. &#x2013; <a href="https://github.com/org-roam/org-roam">org-roam</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package org-roam
+  <span class="org-builtin">:after</span>
+  (org helm)
+
+  <span class="org-builtin">:straight</span>
+  (org-roam <span class="org-builtin">:host</span> github <span class="org-builtin">:repo</span> <span class="org-string">"org-roam/org-roam"</span>)
+
+  <span class="org-builtin">:hook</span>
+  (after-init . org-roam-mode)
+
+  <span class="org-builtin">:commands</span>
+  (org-roam-db-query)
+
+  <span class="org-builtin">:custom</span>
+  (org-roam-completion-system 'helm)
+  (org-roam-file-exclude-regexp <span class="org-string">"setupfiles</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">templates"</span>)
+  (org-roam-index-file <span class="org-string">"index_file.org"</span>)
+  (org-roam-tag-sources '(prop))
+  (org-roam-title-sources '(title alias))
+  (org-roam-capture-templates
+   `((<span class="org-string">"n"</span> <span class="org-string">"note card"</span> plain
+      (<span class="org-keyword">function</span> org-roam--capture-get-point)
+      <span class="org-string">"%?"</span>
+      <span class="org-builtin">:file-name</span> <span class="org-string">"%&lt;%Y%m%d%H%M%S&gt;-${slug}"</span>
+      <span class="org-builtin">:head</span> <span class="org-string">"#+TITLE: ${title}</span>
+<span class="org-string">#+CREATED: %T</span>
+<span class="org-string">#+LAST_MODIFIED: %T</span>
+
+<span class="org-string">- tags ::"</span>
+      <span class="org-builtin">:unnarrowed</span> t)))
+  (org-roam-ref-capture-templates
+   '((<span class="org-string">"r"</span> <span class="org-string">"ref"</span> plain (<span class="org-keyword">function</span> org-roam-capture--get-point)
+      <span class="org-string">"%?"</span>
+      <span class="org-builtin">:file-name</span> <span class="org-string">"%&lt;%Y%m%d%H%M%S&gt;-${slug}"</span>
+      <span class="org-builtin">:head</span> <span class="org-string">"#+TITLE: ${title}\n#+ROAM_KEY: ${ref}\n- source :: ${ref}"</span>
+      <span class="org-builtin">:unnarrowed</span> t)))
+
+  <span class="org-builtin">:general</span>
+  (medivhok:notes-menu
+    <span class="org-builtin">:states</span> 'normal
+    <span class="org-string">"b"</span> '(<span class="org-builtin">:ignore</span> t <span class="org-builtin">:which-key</span> <span class="org-string">"annotated bibliography"</span>)
+    <span class="org-string">"bf"</span> 'medivhok/find-annotated-bibliography-card
+    <span class="org-string">"f"</span> 'medivhok/find-note-card
+    <span class="org-string">"g"</span> '(<span class="org-builtin">:ignore</span> t <span class="org-builtin">:which-key</span> <span class="org-string">"glossaries"</span>)
+    <span class="org-string">"gf"</span> 'medivhok/find-glossary-card
+    <span class="org-string">"G"</span> 'org-roam-graph
+    <span class="org-string">"i"</span> 'org-roam-insert
+    <span class="org-string">"r"</span> 'org-roam-buffer-toggle-display)
+
+  <span class="org-builtin">:init</span>
+  &lt;&lt;use-package:org-roam:init&gt;&gt;
+
+  (<span class="org-keyword">setq</span> time-stamp-active t
+        time-stamp-pattern <span class="org-string">"-10/^#\\+LAST_MODIFIED: &lt;%Y-%02m-%02d %a %02H:%02M&gt;$"</span>
+        time-stamp-format <span class="org-string">"%Y-%02m-%02d %a %02H:%02M"</span>)
+
+  (<span class="org-keyword">defun</span> <span class="org-function-name">medivhok/sanitize-roam-tags</span> (item <span class="org-type">&amp;optional</span> item-list)
+    (<span class="org-keyword">let</span> ((current-list (<span class="org-keyword">or</span> item-list (list))))
+      (<span class="org-keyword">if</span> (stringp item)
+          (<span class="org-keyword">unless</span> (member item current-list)
+            (<span class="org-keyword">push</span> item current-list))
+        (<span class="org-keyword">dolist</span> (current-item item)
+          (<span class="org-keyword">setq</span> current-list (medivhok/sanitize-roam-tags current-item current-list))))
+      current-list))
+
+  (<span class="org-keyword">defun</span> <span class="org-function-name">medivhok/get-roam-tags</span> ()
+    <span class="org-doc">"Return a list of the tags in my roam files."</span>
+    (medivhok/sanitize-roam-tags (org-roam-db-query [<span class="org-builtin">:select</span> tags <span class="org-builtin">:from</span> tags])))
+
+  (<span class="org-keyword">defun</span> <span class="org-function-name">medivhok/get-roam-tag-alist</span> ()
+    (<span class="org-keyword">let</span> ((tag-list (medivhok/get-roam-tags))
+          (tag-alist))
+      (<span class="org-keyword">dolist</span> (tag tag-list tag-alist)
+        (<span class="org-keyword">push</span> (cons tag nil) tag-alist))))
+
+  (<span class="org-keyword">defun</span> <span class="org-function-name">medivhok/select-roam-tags</span> ()
+    <span class="org-doc">"Return a list of selected tags."</span>
+    (<span class="org-keyword">let</span> ((available-tag-list (medivhok/get-roam-tags))
+          (selected-tag-list)
+          (selected-tag)
+          (done-selection <span class="org-string">"[done]"</span>)
+          (finished nil))
+      (add-to-list 'available-tag-list done-selection)
+      (<span class="org-keyword">while</span> (not finished)
+        (<span class="org-keyword">let</span> ((selected-tag
+               (completing-read
+                (format <span class="org-string">"Tags %s: "</span> (<span class="org-keyword">or</span> selected-tag-list <span class="org-string">""</span>))
+                available-tag-list)))
+          (<span class="org-keyword">cond</span> ((<span class="org-keyword">or</span> (string= <span class="org-string">""</span> selected-tag)
+                     (string= done-selection selected-tag))
+                 (<span class="org-keyword">setq</span> finished t))
+                ((not selected-tag)
+                 (message <span class="org-string">"Return is nil"</span>))
+                (t
+                 (delete selected-tag available-tag-list)
+                 (add-to-list 'selected-tag-list selected-tag t)))))
+      selected-tag-list)))
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="orgb8d9de6"></a><code>org-ref</code><br>
+<div class="outline-text-5" id="text-4-3-2-2">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package org-ref
+  <span class="org-builtin">:after</span>
+  (org ivy-bibtex)
+
+  <span class="org-builtin">:custom</span>
+  (org-ref-completion-library 'org-ref-ivy-cite)
+  (org-ref-default-bibliography bibtex-completion-bibliography)
+  (org-ref-notes-directory medivhok:annotated-bibliography-directory))
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="org-roam-bibtex"></a><code>org-roam-bibtex</code><br>
+<div class="outline-text-5" id="text-org-roam-bibtex">
+<blockquote>
+<p>
+Connector between Org-roam, BibTeX-completion, and Org-ref. &#x2013; <a href="https://github.com/org-roam/org-roam-bibtex">org-roam-bibtex</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package org-roam-bibtex
+  <span class="org-builtin">:straight</span>
+  (org-roam-bibtex <span class="org-builtin">:host</span> github <span class="org-builtin">:repo</span> <span class="org-string">"org-roam/org-roam-bibtex"</span>)
+
+  <span class="org-builtin">:after</span>
+  (org-roam ivy-bibtex org-ref)
+
+  <span class="org-builtin">:hook</span>
+  (org-roam-mode . org-roam-bibtex-mode)
+
+  <span class="org-builtin">:custom</span>
+  (org-ref-notes-function 'orb-edit-notes)
+  (orb-preformat-keywords '((<span class="org-string">"citekey"</span> . <span class="org-string">"=key="</span>)
+                            <span class="org-string">"title"</span>
+                            <span class="org-string">"url"</span>
+                            <span class="org-string">"file"</span>
+                            <span class="org-string">"author-or-editor"</span>
+                            <span class="org-string">"keywords"</span>))
+  (orb-templates `((<span class="org-string">"r"</span> <span class="org-string">"ref"</span> plain (<span class="org-keyword">function</span> org-roam-capture--get-point)
+                    <span class="org-string">""</span>
+                    <span class="org-builtin">:file-name</span> <span class="org-string">"annotated-bibliography/${citekey}"</span>
+                    <span class="org-builtin">:head</span>
+                    ,(concat <span class="org-string">"#+TITLE: ${title}\n"</span>
+                             <span class="org-string">"#+ROAM_KEY: ${ref}\n"</span>
+                             <span class="org-string">"* Notes\n"</span>
+                             <span class="org-string">":PROPERTIES:\n"</span>
+                             <span class="org-string">":Custom_ID: ${citekey}\n"</span>
+                             <span class="org-string">":URL: ${url}\n"</span>
+                             <span class="org-string">":AUTHOR: ${author-or-editor}\n"</span>
+                             <span class="org-string">":NOTER_DOCUMENT: %(orb-process-file-field \"${citekey}\")\n"</span>
+                             <span class="org-string">":END:\n\n"</span>)
+                    <span class="org-builtin">:unnarrowed</span> t)
+
+                   (<span class="org-string">"w"</span> <span class="org-string">"webpage"</span> plain (<span class="org-keyword">function</span> org-roam-capture--get-point)
+                    <span class="org-string">""</span>
+                    <span class="org-builtin">:file-name</span> <span class="org-string">"annotated-bibliography/${citekey}"</span>
+                    <span class="org-builtin">:head</span>
+                    ,(concat <span class="org-string">"#+TITLE: ${title}\n"</span>
+                             <span class="org-string">"#+ROAM_KEY: ${url}\n\n"</span>
+                             <span class="org-string">"* Notes\n"</span>
+                             <span class="org-string">":PROPERTIES:\n"</span>
+                             <span class="org-string">":Custom_ID: ${citekey}\n"</span>
+                             <span class="org-string">":URL: ${url}\n"</span>
+                             <span class="org-string">":END:\n\n"</span>)
+                    <span class="org-builtin">:unnarrowed</span> t))))
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-orgf484bb2" class="outline-4">
+<h4 id="orgf484bb2"><span class="section-number-4">4.3.3</span> Variables &amp; Constants</h4>
+<div class="outline-text-4" id="text-4-3-3">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">defconst</span> <span class="org-variable-name">medivhok:slip-boxes-directory</span>
+  (file-name-as-directory
+   (expand-file-name <span class="org-string">"slip-boxes"</span> org-directory))
+  <span class="org-doc">"The directory containing my slip boxes."</span>)
+
+(<span class="org-keyword">defconst</span> <span class="org-variable-name">medivhok:notes-directory</span>
+  (file-name-as-directory
+   (expand-file-name <span class="org-string">"notes"</span> medivhok:slip-boxes-directory))
+  <span class="org-doc">"The slip box with my notes cards."</span>)
+
+(<span class="org-keyword">defconst</span> <span class="org-variable-name">medivhok:annotated-bibliography-directory</span>
+  (file-name-as-directory
+   (expand-file-name <span class="org-string">"annotated-bibliography"</span> medivhok:slip-boxes-directory))
+  <span class="org-doc">"The slip box with my annotated bibliography cards."</span>)
+
+(<span class="org-keyword">defconst</span> <span class="org-variable-name">medivhok:glossaries-directory</span>
+  (file-name-as-directory
+   (expand-file-name <span class="org-string">"glossaries"</span> medivhok:slip-boxes-directory))
+  <span class="org-doc">"The slip box with my glossaries cards."</span>)
+
+(<span class="org-keyword">defconst</span> <span class="org-variable-name">medivhok:card-templates-directory</span>
+  (file-name-as-directory
+   (expand-file-name <span class="org-string">"templates"</span> medivhok:slip-boxes-directory))
+  <span class="org-doc">"The directory containing the card templates for my slip boxes."</span>)
+
+(<span class="org-keyword">defconst</span> <span class="org-variable-name">medivhok:pdf-root-directory</span>
+  (file-name-as-directory
+   (expand-file-name <span class="org-string">"readings"</span> org-directory))
+  <span class="org-doc">"The root directory of my PDF files."</span>)
+
+(<span class="org-keyword">defconst</span> <span class="org-variable-name">medivhok:bibtex-file</span>
+  (expand-file-name <span class="org-string">"zotero.bib"</span> medivhok:pdf-root-directory)
+  <span class="org-doc">"My bibtex file, generated by 'zotero'."</span>)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org53209c2" class="outline-3">
+<h3 id="org53209c2"><span class="section-number-3">4.4</span> Application Functions</h3>
+<div class="outline-text-3" id="text-4-4">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">defun</span> <span class="org-function-name">medivhok/card-entry-&lt;</span> (entry-a entry-b)
+  <span class="org-doc">"Returns ENTRY-A &lt; ENTRY-B."</span>
+  (string&lt; (car entry-a) (car entry-b)))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">medivhok/note-card-entry-p</span> (card-entry)
+  <span class="org-doc">"Check if CARD-ENTRY is a note card."</span>
+  (string-match medivhok:notes-directory
+                (plist-get (cdr card-entry) <span class="org-builtin">:path</span>)))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">medivhok/find-note-card</span> ()
+  (<span class="org-keyword">interactive</span>)
+  (org-roam-find-file
+   <span class="org-string">""</span>
+   nil
+   (<span class="org-keyword">lambda</span> (cards-entries)
+     (<span class="org-keyword">interactive</span>)
+     (sort (seq-filter 'medivhok/note-card-entry-p
+                       cards-entries)
+           'medivhok/card-entry-&lt;))))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">medivhok/annotated-bibliography-card-entry-p</span> (card-entry)
+  <span class="org-doc">"Check if CARD-ENTRY is an annotated bibliography card."</span>
+  (string-match medivhok:annotated-bibliography-directory
+                (plist-get (cdr card-entry) <span class="org-builtin">:path</span>)))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">medivhok/find-annotated-bibliography-card</span> ()
+  (<span class="org-keyword">interactive</span>)
+  (org-roam-find-file
+   <span class="org-string">""</span>
+   nil
+   (<span class="org-keyword">lambda</span> (cards-entries)
+     (<span class="org-keyword">interactive</span>)
+     (sort (seq-filter 'medivhok/annotated-bibliography-card-entry-p
+                       cards-entries)
+           'medivhok/card-entry-&lt;))))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">medivhok/glossary-card-entry-p</span> (card-entry)
+  <span class="org-doc">"Check if CARD-ENTRY is a glossary card."</span>
+  (string-match medivhok:glossaries-directory
+                (plist-get (cdr card-entry) <span class="org-builtin">:path</span>)))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">medivhok/find-glossary-card</span> ()
+  (<span class="org-keyword">interactive</span>)
+  (org-roam-find-file
+   <span class="org-string">""</span>
+   nil
+   (<span class="org-keyword">lambda</span> (cards-entries)
+     (<span class="org-keyword">interactive</span>)
+     (sort (seq-filter 'medivhok/glossary-card-entry-p
+                       cards-entries)
+           'medivhok/card-entry-&lt;))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgedea1d6" class="outline-3">
+<h3 id="orgedea1d6"><span class="section-number-3">4.5</span> You Need A Budget</h3>
+<div class="outline-text-3" id="text-4-5">
+</div>
+<div id="outline-container-orga2ca2a0" class="outline-4">
+<h4 id="orga2ca2a0"><span class="section-number-4">4.5.1</span> <code>ledger-mode</code></h4>
+<div class="outline-text-4" id="text-4-5-1">
+<blockquote>
+<p>
+Emacs Lisp files for interacting with the C++Ledger accounting system. &#x2013; <a href="https://github.com/ledger/ledger-mode">ledger-mode</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package ledger-mode
+  <span class="org-builtin">:defer</span> t)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org125c3a2" class="outline-4">
+<h4 id="org125c3a2"><span class="section-number-4">4.5.2</span> <code>flycheck-ledger</code></h4>
+<div class="outline-text-4" id="text-4-5-2">
+<blockquote>
+<p>
+A flychecker for checking ledger files. &#x2013; <a href="https://github.com/purcell/flycheck-ledger">flycheck-ledger</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package flycheck-ledger
+  <span class="org-builtin">:after</span> flycheck)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org70ddcd2" class="outline-4">
+<h4 id="org70ddcd2"><span class="section-number-4">4.5.3</span> <code>evil-ledger</code></h4>
+<div class="outline-text-4" id="text-4-5-3">
+<blockquote>
+<p>
+More Evil in ledger-mode. &#x2013; <a href="https://github.com/atheriel/evil-ledger">evil-ledger</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package evil-ledger
+  <span class="org-builtin">:hook</span>
+  (ledger-mode . evil-ledger-mode)
+
+  <span class="org-builtin">:general</span>
+  (medivhok:local-mode-menu 'normal
+    <span class="org-string">"s"</span> 'evil-ledger-sort))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfb44d7b" class="outline-3">
+<h3 id="orgfb44d7b"><span class="section-number-3">4.6</span> Bibliography</h3>
+<div class="outline-text-3" id="text-4-6">
+</div>
+<div id="outline-container-org06fc4a0" class="outline-4">
+<h4 id="org06fc4a0"><span class="section-number-4">4.6.1</span> <code>bibtex-completion</code></h4>
+<div class="outline-text-4" id="text-4-6-1">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package bibtex-completion
+  <span class="org-builtin">:defer</span> t
+  <span class="org-builtin">:after</span> org
+  <span class="org-builtin">:custom</span>
+  (bibtex-completion-bibliography
+   (expand-file-name
+    <span class="org-string">"zotero.bib"</span>
+    (file-name-as-directory
+     (expand-file-name <span class="org-string">"readings"</span> org-directory))))
+  (bibtex-completion-pdf-field <span class="org-string">"File"</span>))
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgefe5db1" class="outline-2">
+<h2 id="orgefe5db1"><span class="section-number-2">5</span> Tools</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-org7d84d04" class="outline-3">
+<h3 id="org7d84d04"><span class="section-number-3">5.1</span> Completions</h3>
+<div class="outline-text-3" id="text-5-1">
+</div>
+<div id="outline-container-org65fe269" class="outline-4">
+<h4 id="org65fe269"><span class="section-number-4">5.1.1</span> Company &amp; Co</h4>
+<div class="outline-text-4" id="text-5-1-1">
+<blockquote>
+<p>
+Modular in-buffer completion framework for Emacs. &#x2013; <a href="https://github.com/company-mode/company-mode">company-mode</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package company
+  <span class="org-builtin">:hook</span>
+  (after-init . global-company-mode)
+
+  <span class="org-builtin">:config</span>
+  (<span class="org-keyword">setq</span> company-box-icons-all-the-icons
+        (<span class="org-keyword">let</span> ((all-the-icons-scale-factor 0.8))
+          `((Unknown       . ,(all-the-icons-material <span class="org-string">"find_in_page"</span>             <span class="org-builtin">:face</span> 'all-the-icons-purple))
+            (Text          . ,(all-the-icons-material <span class="org-string">"text_fields"</span>              <span class="org-builtin">:face</span> 'all-the-icons-green))
+            (Method        . ,(all-the-icons-material <span class="org-string">"functions"</span>                <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Function      . ,(all-the-icons-material <span class="org-string">"functions"</span>                <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Constructor   . ,(all-the-icons-material <span class="org-string">"functions"</span>                <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Field         . ,(all-the-icons-material <span class="org-string">"functions"</span>                <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Variable      . ,(all-the-icons-material <span class="org-string">"adjust"</span>                   <span class="org-builtin">:face</span> 'all-the-icons-blue))
+            (Class         . ,(all-the-icons-material <span class="org-string">"class"</span>                    <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Interface     . ,(all-the-icons-material <span class="org-string">"settings_input_component"</span> <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Module        . ,(all-the-icons-material <span class="org-string">"view_module"</span>              <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Property      . ,(all-the-icons-material <span class="org-string">"settings"</span>                 <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Unit          . ,(all-the-icons-material <span class="org-string">"straighten"</span>               <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Value         . ,(all-the-icons-material <span class="org-string">"filter_1"</span>                 <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Enum          . ,(all-the-icons-material <span class="org-string">"plus_one"</span>                 <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Keyword       . ,(all-the-icons-material <span class="org-string">"filter_center_focus"</span>      <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Snippet       . ,(all-the-icons-material <span class="org-string">"short_text"</span>               <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Color         . ,(all-the-icons-material <span class="org-string">"color_lens"</span>               <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (File          . ,(all-the-icons-material <span class="org-string">"insert_drive_file"</span>        <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Reference     . ,(all-the-icons-material <span class="org-string">"collections_bookmark"</span>     <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Folder        . ,(all-the-icons-material <span class="org-string">"folder"</span>                   <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (EnumMember    . ,(all-the-icons-material <span class="org-string">"people"</span>                   <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Constant      . ,(all-the-icons-material <span class="org-string">"pause_circle_filled"</span>      <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Struct        . ,(all-the-icons-material <span class="org-string">"streetview"</span>               <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Event         . ,(all-the-icons-material <span class="org-string">"event"</span>                    <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Operator      . ,(all-the-icons-material <span class="org-string">"control_point"</span>            <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (TypeParameter . ,(all-the-icons-material <span class="org-string">"class"</span>                    <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (Template      . ,(all-the-icons-material <span class="org-string">"short_text"</span>               <span class="org-builtin">:face</span> 'all-the-icons-green))
+            (ElispFunction . ,(all-the-icons-material <span class="org-string">"functions"</span>                <span class="org-builtin">:face</span> 'all-the-icons-red))
+            (ElispVariable . ,(all-the-icons-material <span class="org-string">"check_circle"</span>             <span class="org-builtin">:face</span> 'all-the-icons-blue))
+            (ElispFeature  . ,(all-the-icons-material <span class="org-string">"stars"</span>                    <span class="org-builtin">:face</span> 'all-the-icons-orange))
+            (ElispFace     . ,(all-the-icons-material <span class="org-string">"format_paint"</span>             <span class="org-builtin">:face</span> 'all-the-icons-pink)))))
+
+  (<span class="org-keyword">defun</span> <span class="org-function-name">medivhok/company-backend-with-yas</span> (backends)
+    <span class="org-doc">"Add :with company-yasnippet to company BACKENDS.</span>
+<span class="org-doc">Taken from https://github.com/syl20bnr/spacemacs/pull/179."</span>
+    (<span class="org-keyword">if</span> (<span class="org-keyword">and</span> (listp backends) (memq 'company-yasnippet backends))
+              backends
+            (append (<span class="org-keyword">if</span> (consp backends)
+                              backends
+                            (list backends))
+                          '(<span class="org-builtin">:with</span> company-yasnippet))))
+
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">add yasnippet to all backends</span>
+  (<span class="org-keyword">setq</span> company-backends
+        (mapcar #'medivhok/company-backend-with-yas company-backends)))
+</pre>
+</div>
+</div>
+
+<ol class="org-ol">
+<li><a id="org3c0090f"></a><code>company-dict</code><br>
+<div class="outline-text-5" id="text-5-1-1-1">
+<blockquote>
+<p>
+A port of ac-source-dictionary to company-mode, plus annotation and documentation support. &#x2013; <a href="https://github.com/hlissner/emacs-company-dict">company-dict</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package company-dict
+  <span class="org-builtin">:after</span> company)
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="org5b6decd"></a><code>company-box</code><br>
+<div class="outline-text-5" id="text-5-1-1-2">
+<blockquote>
+<p>
+A company front-end with icons. &#x2013; <a href="https://github.com/sebastiencs/company-box">company-box</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package company-box
+  <span class="org-builtin">:after</span> company
+
+  <span class="org-builtin">:hook</span>
+  (company-mode . company-box-mode))
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-orgd9073de" class="outline-4">
+<h4 id="orgd9073de"><span class="section-number-4">5.1.2</span> Helm &amp; Co</h4>
+<div class="outline-text-4" id="text-5-1-2">
+<blockquote>
+<p>
+Emacs incremental completion and selection narrowing framework. &#x2013; <a href="https://github.com/emacs-helm/helm">helm</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package helm
+  <span class="org-builtin">:config</span>
+  (<span class="org-keyword">require</span> '<span class="org-constant">helm-config</span>))
+</pre>
+</div>
+</div>
+
+<ol class="org-ol">
+<li><a id="org6f865b7"></a>helm-lsp<br>
+<div class="outline-text-5" id="text-5-1-2-1">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package helm-lsp
+  <span class="org-builtin">:after</span>
+  (helm lsp-mode))
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org4e759d8" class="outline-3">
+<h3 id="org4e759d8"><span class="section-number-3">5.2</span> LSP Mode</h3>
+<div class="outline-text-3" id="text-5-2">
+<blockquote>
+<p>
+Emacs client/library for the Language Server Protocol. &#x2013; <a href="https://github.com/emacs-lsp/lsp-mode/">lsp-mode</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package lsp-mode
+  <span class="org-builtin">:defer</span> t
+  <span class="org-builtin">:after</span> which-key
+  <span class="org-builtin">:hook</span>
+  (lsp-mode . lsp-enable-which-key-integration))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1b650a4" class="outline-3">
+<h3 id="org1b650a4"><span class="section-number-3">5.3</span> PDF Reader</h3>
+<div class="outline-text-3" id="text-5-3">
+<blockquote>
+<p>
+Emacs support library for PDF files. &#x2013; <a href="https://github.com/politza/pdf-tools/">pdf-tools</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package pdf-tools
+  <span class="org-builtin">:defer</span> t
+  <span class="org-builtin">:mode</span> (<span class="org-string">"\\.[pP][dD][fF]\\'"</span> . pdf-view-mode)
+  <span class="org-builtin">:magic</span> (<span class="org-string">"%PDF"</span> . pdf-view-mode)
+  <span class="org-builtin">:config</span>
+  (pdf-loader-install)
+  (evil-collection-init 'pdf)
+  (evil-collection-pdf-setup))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4d78a89" class="outline-3">
+<h3 id="org4d78a89"><span class="section-number-3">5.4</span> Generic Editing Configurations</h3>
+<div class="outline-text-3" id="text-5-4">
+<p>
+Default to an indentation size of 2 spaces.
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq-default</span> tab-width 2)
+(<span class="org-keyword">setq-default</span> evil-shift-with tab-width)
+(global-auto-revert-mode t)
+</pre>
+</div>
+
+<p>
+Use spaces instead of tabs for indentation.
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq-default</span> indent-tabs-mode nil)
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org6125387" class="outline-4">
+<h4 id="org6125387"><span class="section-number-4">5.4.1</span> Folding (<code>hideshow</code>)</h4>
+<div class="outline-text-4" id="text-5-4-1">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package hideshow)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6690da5" class="outline-4">
+<h4 id="org6690da5"><span class="section-number-4">5.4.2</span> Parens &amp; Co. (<code>smartparens</code>)</h4>
+<div class="outline-text-4" id="text-5-4-2">
+<blockquote>
+<p>
+Minor mode for Emacs that deals with parens pairs and tries to be smart about it.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package smartparens
+  <span class="org-builtin">:hook</span>
+  (prog-mode . smartparens-mode)
+  (prog-mode . smartparens-strict-mode)
+
+  <span class="org-builtin">:config</span>
+  (<span class="org-keyword">require</span> '<span class="org-constant">smartparens-config</span>))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5cdb3dc" class="outline-4">
+<h4 id="org5cdb3dc"><span class="section-number-4">5.4.3</span> evil-nerd-commenter</h4>
+<div class="outline-text-4" id="text-5-4-3">
+<p>
+Commenting lines.
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package evil-nerd-commenter
+  <span class="org-builtin">:bind</span>
+  (<span class="org-string">"M-/"</span> . evilnc-comment-or-uncomment-lines))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org73a5973" class="outline-4">
+<h4 id="org73a5973"><span class="section-number-4">5.4.4</span> ws-butler</h4>
+<div class="outline-text-4" id="text-5-4-4">
+<p>
+Automatically clean whitespace.
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package ws-butler
+  <span class="org-builtin">:hook</span>
+  ((text-mode . ws-butler-mode)
+   (prog-mode . ws-butler-mode)))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org691abcf" class="outline-4">
+<h4 id="org691abcf"><span class="section-number-4">5.4.5</span> parinfer</h4>
+<div class="outline-text-4" id="text-5-4-5">
+<p>
+Use Parinfer for Lispy languages.
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package parinfer
+  <span class="org-builtin">:hook</span> ((clojure-mode . parinfer-mode)
+         (emacs-lisp-mode . parinfer-mode)
+         (common-lisp-mode . parinfer-mode)
+         (scheme-mode . parinfer-mode)
+         (lisp-mode . parinfer-mode))
+  <span class="org-builtin">:config</span>
+  (<span class="org-keyword">setq</span> parinfer-extensions
+      '(defaults       <span class="org-comment-delimiter">; </span><span class="org-comment">should be included.</span>
+        pretty-parens  <span class="org-comment-delimiter">; </span><span class="org-comment">different paren styles for different modes.</span>
+        evil           <span class="org-comment-delimiter">; </span><span class="org-comment">If you use Evil.</span>
+        smart-tab      <span class="org-comment-delimiter">; </span><span class="org-comment">C-b &amp; C-f jump positions and smart shift with tab &amp; S-tab.</span>
+        smart-yank)))  <span class="org-comment-delimiter">; </span><span class="org-comment">Yank behavior depend on mode.</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga55efea" class="outline-4">
+<h4 id="orga55efea"><span class="section-number-4">5.4.6</span> rainbow-delimiters</h4>
+<div class="outline-text-4" id="text-5-4-6">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package rainbow-delimiters
+  <span class="org-builtin">:hook</span>
+  (prog-mode . rainbow-delimiters-mode))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfece52d" class="outline-3">
+<h3 id="orgfece52d"><span class="section-number-3">5.5</span> Snippets</h3>
+<div class="outline-text-3" id="text-5-5">
+</div>
+<div id="outline-container-use-package--yasnippet" class="outline-4">
+<h4 id="use-package--yasnippet"><span class="section-number-4">5.5.1</span> <code>yasnippet</code></h4>
+<div class="outline-text-4" id="text-use-package--yasnippet">
+<blockquote>
+<p>
+A template system for Emacs. &#x2013; <a href="https://github.com/joaotavora/yasnippet">yasnippet</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package yasnippet
+  &lt;&lt;use-package:yasnippet&gt;&gt;
+  )
+</pre>
+</div>
+</div>
+
+<ol class="org-ol">
+<li><a id="use-package--yasnippet--custom"></a>Custom Variables (<code>:custom</code>)<br>
+<div class="outline-text-5" id="text-use-package--yasnippet--custom">
+<p>
+We start the <a href="https://github.com/jwiegley/use-package#customizing-variables">:custom</a> section of our <a href="#use-package--yasnippet">use-package</a> definition.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-builtin">:custom</span>
+(yas-snippet-dirs
+   (list
+    (file-name-as-directory
+     (expand-file-name <span class="org-string">"snippets"</span>
+                       (file-name-directory user-init-file)))))
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="use-package--yasnippet--general"></a>Keybindings (<code>:general</code>)<br>
+<div class="outline-text-5" id="text-use-package--yasnippet--general">
+<p>
+We start the <a href="https://github.com/noctuid/general.el#general-keyword">:general</a> section of our <a href="#use-package--yasnippet">use-package</a> definition.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-builtin">:general</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="use-package--yasnippet--config"></a>Configurations (<code>:config</code>)<br>
+<div class="outline-text-5" id="text-use-package--yasnippet--config">
+<blockquote>
+<p>
+NOTE: This code is executed AFTER the package is loaded.
+</p>
+</blockquote>
+
+<p>
+We start the <a href="https://github.com/jwiegley/use-package#getting-started">:config</a> section of the <a href="#use-package--yasnippet">use-package</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-builtin">:config</span>
+(yas-global-mode 1)
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org26d7301" class="outline-3">
+<h3 id="org26d7301"><span class="section-number-3">5.6</span> Git (<code>magit</code>)</h3>
+<div class="outline-text-3" id="text-5-6">
+</div>
+<div id="outline-container-orgc186638" class="outline-4">
+<h4 id="orgc186638"><span class="section-number-4">5.6.1</span> magit</h4>
+<div class="outline-text-4" id="text-5-6-1">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package magit
+  <span class="org-builtin">:commands</span>
+  (magit-status magit-get-current-branch)
+
+  <span class="org-builtin">:custom</span>
+  (magit-display-buffer-function #'magit-display-buffer-same-window-execpt-diff-v1))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org36a2fec" class="outline-4">
+<h4 id="org36a2fec"><span class="section-number-4">5.6.2</span> evil-magit</h4>
+<div class="outline-text-4" id="text-5-6-2">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package evil-magit
+  <span class="org-builtin">:after</span> magit)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgca33c5e" class="outline-4">
+<h4 id="orgca33c5e"><span class="section-number-4">5.6.3</span> git-gutter</h4>
+<div class="outline-text-4" id="text-5-6-3">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package git-gutter
+  <span class="org-builtin">:hook</span>
+  ((text-mode . git-gutter-mode)
+   (prog-mode . git-gutter-mode))
+
+  <span class="org-builtin">:config</span>
+  (<span class="org-keyword">setq</span> git-gutter:update-interval 2))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7b97455" class="outline-4">
+<h4 id="org7b97455"><span class="section-number-4">5.6.4</span> git-link</h4>
+<div class="outline-text-4" id="text-5-6-4">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package git-link
+  <span class="org-builtin">:commands</span> git-link
+
+  <span class="org-builtin">:config</span>
+  (<span class="org-keyword">setq</span> git-link-open-in-browser t))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9df4ef9" class="outline-4">
+<h4 id="org9df4ef9"><span class="section-number-4">5.6.5</span> magit-todos</h4>
+<div class="outline-text-4" id="text-5-6-5">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package magit-todos
+  <span class="org-builtin">:after</span> magit)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf08af5f" class="outline-3">
+<h3 id="orgf08af5f"><span class="section-number-3">5.7</span> Project Management (<code>projectile</code>)</h3>
+<div class="outline-text-3" id="text-5-7">
+</div>
+<div id="outline-container-orge633508" class="outline-4">
+<h4 id="orge633508"><span class="section-number-4">5.7.1</span> projectile</h4>
+<div class="outline-text-4" id="text-5-7-1">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package projectile
+  <span class="org-builtin">:config</span>
+  (projectile-mode))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2642f6d" class="outline-4">
+<h4 id="org2642f6d"><span class="section-number-4">5.7.2</span> counsel-projectile</h4>
+<div class="outline-text-4" id="text-5-7-2">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package counsel-projectile
+  <span class="org-builtin">:after</span> projectile)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge699196" class="outline-3">
+<h3 id="orge699196"><span class="section-number-3">5.8</span> Syntax Checking (<code>flycheck</code>)</h3>
+<div class="outline-text-3" id="text-5-8">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package flycheck
+  <span class="org-builtin">:config</span> (global-flycheck-mode))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfd3574f" class="outline-2">
+<h2 id="orgfd3574f"><span class="section-number-2">6</span> Languages</h2>
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-orgcb89e71" class="outline-3">
+<h3 id="orgcb89e71"><span class="section-number-3">6.1</span> CSS</h3>
+<div class="outline-text-3" id="text-6-1">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package css-mode
+  <span class="org-builtin">:defer</span> t
+
+  <span class="org-builtin">:after</span>
+  (flycheck)
+
+  <span class="org-builtin">:init</span>
+  (<span class="org-keyword">setq</span> flycheck-css-csslint-executable <span class="org-string">"~/.yarn/bin/csslint"</span>))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7f1b84a" class="outline-3">
+<h3 id="org7f1b84a"><span class="section-number-3">6.2</span> Elisp</h3>
+<div class="outline-text-3" id="text-6-2">
+</div>
+<div id="outline-container-org8598181" class="outline-4">
+<h4 id="org8598181"><span class="section-number-4">6.2.1</span> <code>cask</code></h4>
+<div class="outline-text-4" id="text-6-2-1">
+<blockquote>
+<p>
+Project management tool for Emacs. &#x2013; <a href="https://github.com/cask/cask">cask</a>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package cask)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7ddd846" class="outline-4">
+<h4 id="org7ddd846"><span class="section-number-4">6.2.2</span> <code>cask-mode</code></h4>
+<div class="outline-text-4" id="text-6-2-2">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package cask-mode
+  <span class="org-builtin">:defer</span> t)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge5960d9" class="outline-4">
+<h4 id="orge5960d9"><span class="section-number-4">6.2.3</span> <code>buttercup</code></h4>
+<div class="outline-text-4" id="text-6-2-3">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package buttercup
+  <span class="org-builtin">:defer</span> t)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7978dd7" class="outline-3">
+<h3 id="org7978dd7"><span class="section-number-3">6.3</span> Haskell</h3>
+<div class="outline-text-3" id="text-6-3">
+</div>
+<div id="outline-container-use-package--haskell-mode" class="outline-4">
+<h4 id="use-package--haskell-mode"><span class="section-number-4">6.3.1</span> <code>haskell-mode</code></h4>
+<div class="outline-text-4" id="text-use-package--haskell-mode">
+<blockquote>
+nil</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package haskell-mode
+</pre>
+</div>
+</div>
+
+<ol class="org-ol">
+<li><a id="use-package--haskell-mode--general"></a>Keybindings (<code>:general</code>)<br>
+<div class="outline-text-5" id="text-use-package--haskell-mode--general">
+<p>
+We start the <a href="https://github.com/noctuid/general.el#general-keyword">:general</a> section of our <a href="#use-package--haskell-mode">use-package</a> definition.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-builtin">:general</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="use-package--haskell-mode--init"></a>Initializations (<code>:init</code>)<br>
+<div class="outline-text-5" id="text-use-package--haskell-mode--init">
+<blockquote>
+<p>
+NOTE: This code is executed BEFORE the package is loaded.
+</p>
+</blockquote>
+
+<p>
+We start the <a href="https://github.com/jwiegley/use-package#getting-started">:init</a> section of our <a href="#use-package--haskell-mode">use-package</a> definition.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-builtin">:init</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="use-package--haskell-mode--config"></a>Configurations (<code>:config</code>)<br>
+<div class="outline-text-5" id="text-use-package--haskell-mode--config">
+<blockquote>
+<p>
+NOTE: This code is executed AFTER the package is loaded.
+</p>
+</blockquote>
+
+<p>
+We start the <a href="https://github.com/jwiegley/use-package#getting-started">:config</a> section of the <a href="#use-package--haskell-mode">use-package</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-builtin">:config</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="org3e3083c"></a>Closing Paren<br>
+<div class="outline-text-5" id="text-6-3-1-4">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">)
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-use-package--dante" class="outline-4">
+<h4 id="use-package--dante"><span class="section-number-4">6.3.2</span> <code>dante</code></h4>
+<div class="outline-text-4" id="text-use-package--dante">
+<blockquote>
+nil</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package dante
+</pre>
+</div>
+</div>
+
+<ol class="org-ol">
+<li><a id="use-package--dante--general"></a>Keybindings (<code>:general</code>)<br>
+<div class="outline-text-5" id="text-use-package--dante--general">
+<p>
+We start the <a href="https://github.com/noctuid/general.el#general-keyword">:general</a> section of our <a href="#use-package--dante">use-package</a> definition.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-builtin">:general</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="use-package--dante--init"></a>Initializations (<code>:init</code>)<br>
+<div class="outline-text-5" id="text-use-package--dante--init">
+<blockquote>
+<p>
+NOTE: This code is executed BEFORE the package is loaded.
+</p>
+</blockquote>
+
+<p>
+We start the <a href="https://github.com/jwiegley/use-package#getting-started">:init</a> section of our <a href="#use-package--dante">use-package</a> definition.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-builtin">:init</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="use-package--dante--config"></a>Configurations (<code>:config</code>)<br>
+<div class="outline-text-5" id="text-use-package--dante--config">
+<blockquote>
+<p>
+NOTE: This code is executed AFTER the package is loaded.
+</p>
+</blockquote>
+
+<p>
+We start the <a href="https://github.com/jwiegley/use-package#getting-started">:config</a> section of the <a href="#use-package--dante">use-package</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-builtin">:config</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="orga6ad294"></a>Closing Paren<br>
+<div class="outline-text-5" id="text-6-3-2-4">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">)
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-use-package--attrap" class="outline-4">
+<h4 id="use-package--attrap"><span class="section-number-4">6.3.3</span> <code>attrap</code></h4>
+<div class="outline-text-4" id="text-use-package--attrap">
+<blockquote>
+nil</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package attrap
+</pre>
+</div>
+</div>
+
+<ol class="org-ol">
+<li><a id="use-package--attrap--general"></a>Keybindings (<code>:general</code>)<br>
+<div class="outline-text-5" id="text-use-package--attrap--general">
+<p>
+We start the <a href="https://github.com/noctuid/general.el#general-keyword">:general</a> section of our <a href="#use-package--attrap">use-package</a> definition.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-builtin">:general</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="use-package--attrap--init"></a>Initializations (<code>:init</code>)<br>
+<div class="outline-text-5" id="text-use-package--attrap--init">
+<blockquote>
+<p>
+NOTE: This code is executed BEFORE the package is loaded.
+</p>
+</blockquote>
+
+<p>
+We start the <a href="https://github.com/jwiegley/use-package#getting-started">:init</a> section of our <a href="#use-package--attrap">use-package</a> definition.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-builtin">:init</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="use-package--attrap--config"></a>Configurations (<code>:config</code>)<br>
+<div class="outline-text-5" id="text-use-package--attrap--config">
+<blockquote>
+<p>
+NOTE: This code is executed AFTER the package is loaded.
+</p>
+</blockquote>
+
+<p>
+We start the <a href="https://github.com/jwiegley/use-package#getting-started">:config</a> section of the <a href="#use-package--attrap">use-package</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-builtin">:config</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="org195e0a9"></a>Closing Paren<br>
+<div class="outline-text-5" id="text-6-3-3-4">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">)
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgdc4b3d0" class="outline-3">
+<h3 id="orgdc4b3d0"><span class="section-number-3">6.4</span> Json (<code>json-mode</code>)</h3>
+<div class="outline-text-3" id="text-6-4">
+<blockquote>
+<p>
+Major mode for editing JSON files with emacs.
+</p>
+</blockquote>
+
+<p>
+<a href="https://github.com/joshwnj/json-mode">json-mode</a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package json-mode
+  <span class="org-builtin">:custom</span>
+  (json-reformat:indent-width 2)
+
+  <span class="org-builtin">:general</span>
+  (medivhok/local-leader-def 'normal
+    json-mode-map
+    nil '(<span class="org-builtin">:ignore</span> t <span class="org-builtin">:which-key</span> <span class="org-string">"json"</span>)
+    <span class="org-string">"d"</span> 'json-decrement-number-at-point
+    <span class="org-string">"f"</span> 'json-mode-beautify
+    <span class="org-string">"i"</span> 'json-increment-number-at-point
+    <span class="org-string">"k"</span> 'json-nullify-sexp
+    <span class="org-string">"p"</span> 'json-mode-show-path
+    <span class="org-string">"P"</span> 'json-mode-kill-path
+    <span class="org-string">"t"</span> 'json-toggle-boolean))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orged64f07" class="outline-3">
+<h3 id="orged64f07"><span class="section-number-3">6.5</span> LaTeX</h3>
+<div class="outline-text-3" id="text-6-5">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package auctex
+  <span class="org-builtin">:defer</span> t)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package company-auctex
+  <span class="org-builtin">:defer</span> t
+  <span class="org-builtin">:after</span> company)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package company-reftex
+  <span class="org-builtin">:defer</span> t
+  <span class="org-builtin">:after</span> company)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package company-math
+  <span class="org-builtin">:defer</span> t
+  <span class="org-builtin">:after</span> company)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgaa20067" class="outline-3">
+<h3 id="orgaa20067"><span class="section-number-3">6.6</span> YAML</h3>
+<div class="outline-text-3" id="text-6-6">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package yaml-mode
+  <span class="org-builtin">:mode</span> <span class="org-string">"\\.ya?ml\\'"</span>)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org91e2b77" class="outline-3">
+<h3 id="org91e2b77"><span class="section-number-3">6.7</span> XML (<code>nxml</code>)</h3>
+<div class="outline-text-3" id="text-6-7">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package nxml-mode
+  <span class="org-builtin">:straight</span> nxml
+
+  <span class="org-builtin">:hook</span>
+  (nxml-mode . hs-minor-mode)
+
+  <span class="org-builtin">:general</span>
+  (normal nxml-mode-map <span class="org-string">"TAB"</span> 'hs-toggle-hiding)
+  (medivhok/local-leader-def 'normal
+    nxml-mode-map
+    nil '(<span class="org-builtin">:ignore</span> t <span class="org-builtin">:which-key</span> <span class="org-string">"xml"</span>)
+    <span class="org-string">"t"</span> 'hs-toggle-hiding)
+
+  <span class="org-builtin">:config</span>
+  (add-to-list 'hs-special-modes-alist
+               '(nxml-mode
+                <span class="org-string">"&lt;!--</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">&lt;[</span><span class="org-string"><span class="org-negation-char">^</span></span><span class="org-string">/&gt;]*[</span><span class="org-string"><span class="org-negation-char">^</span></span><span class="org-string">/]&gt;"</span>
+                <span class="org-string">"--&gt;</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">|</span></span><span class="org-string">&lt;/[</span><span class="org-string"><span class="org-negation-char">^</span></span><span class="org-string">/&gt;]*[</span><span class="org-string"><span class="org-negation-char">^</span></span><span class="org-string">/]&gt;"</span>
+                <span class="org-string">"&lt;!--"</span>
+                nxml-forward-element
+                nil)))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga02192c" class="outline-2">
+<h2 id="orga02192c"><span class="section-number-2">7</span> Appendix</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+<div id="outline-container-orged2cd9a" class="outline-3">
+<h3 id="orged2cd9a"><span class="section-number-3">7.1</span> Export Scripts</h3>
+<div class="outline-text-3" id="text-7-1">
+</div>
+<div id="outline-container-org9d2be6d" class="outline-4">
+<h4 id="org9d2be6d"><span class="section-number-4">7.1.1</span> Org Export Setup (<code>html-export.setup</code>)</h4>
+<div class="outline-text-4" id="text-7-1-1">
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">:root</span> {
+    <span class="org-variable-name">--main-bg-color</span>:   <span class="custom-16">#282c34</span>;
+    <span class="org-variable-name">--alt-bg-color</span>:    <span class="custom-15">#21242b</span>;
+    <span class="org-variable-name">--main-fg-color</span>:   <span class="custom-14">#bbc2cf</span>;
+    <span class="org-variable-name">--alt-fg-color</span>:    <span class="custom-13">#5b6268</span>;
+    <span class="org-variable-name">--grey-color</span>:      <span class="custom-12">#3f444a</span>;
+    <span class="org-variable-name">--red-color</span>:       <span class="custom-11">#ff6c6b</span>;
+    <span class="org-variable-name">--orange-color</span>:    <span class="custom-10">#da8548</span>;
+    <span class="org-variable-name">--green-color</span>:     <span class="custom-9">#98be65</span>;
+    <span class="org-variable-name">--teal-color</span>:      <span class="custom-8">#4db5bd</span>;
+    <span class="org-variable-name">--yellow-color</span>:    <span class="custom-7">#ecbe7b</span>;
+    <span class="org-variable-name">--blue-color</span>:      <span class="custom-6">#51afef</span>;
+    <span class="org-variable-name">--dark-blue-color</span>: <span class="custom-5">#2257a0</span>;
+    <span class="org-variable-name">--magenta-color</span>:   <span class="custom-4">#c678dd</span>;
+    <span class="org-variable-name">--violet-color</span>:    <span class="custom-3">#a9a1e1</span>;
+    <span class="org-variable-name">--cyan-color</span>:      <span class="custom-2">#46d9ff</span>;
+    <span class="org-variable-name">--dark-cyan-color</span>: <span class="custom-1">#5699af</span>;
+}
+
+<span class="org-css-selector">pre.src </span>{
+    <span class="org-css-property">background</span>: var(<span class="org-variable-name">--main-bg-color</span>);
+    <span class="org-css-property">color</span>:<span class="custom-14">#bbc2cf</span>;
+}
+
+<span class="org-css-selector">pre span.org-builtin </span>{
+    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--magenta-color</span>);
+    <span class="org-css-property">font-weight</span>: bold;
+}
+
+<span class="org-css-selector">pre span.org-string </span>{
+    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--teal-color</span>);
+}
+
+<span class="org-css-selector">pre span.org-keyword </span>{
+    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--blue-color</span>);
+}
+
+<span class="org-css-selector">pre span.org-variable-name </span>{<span class="org-css-property">color</span>:var(<span class="org-variable-name">--magenta-color</span>);}
+<span class="org-css-selector">pre span.org-function-name </span>{<span class="org-css-property">color</span>:var(<span class="org-variable-name">--magenta-color</span>);}
+<span class="org-css-selector">pre span.org-type </span>{<span class="org-css-property">color</span>:var(<span class="org-variable-name">--yellow-color</span>);}
+<span class="org-css-selector">pre span.org-preprocessor </span>{<span class="org-css-property">color</span>:<span class="custom">#808080</span>;<span class="org-css-property">font-weight</span>:bold;}
+<span class="org-css-selector">pre span.org-constant </span>{<span class="org-css-property">color</span>:var(<span class="org-variable-name">--violet-color</span>);}
+<span class="org-css-selector">pre span.org-comment-delimiter </span>{<span class="org-css-property">color</span>:var(<span class="org-variable-name">--dark-cyan-color</span>);}
+<span class="org-css-selector">pre span.org-comment </span>{<span class="org-css-property">color</span>:var(<span class="org-variable-name">--dark-cyan-color</span>);<span class="org-css-property">font-style</span>:italic}
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-org"><span class="org-comment"># -*- mode:org -*-</span>
+<span class="org-org-meta-line">#+SETUPFILE: <a href="https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup">https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup</a></span>
+
+<span class="org-org-meta-line">#+html_head: &lt;style&gt;</span>
+<span class="org-org-meta-line">#+html_head:   &lt;&lt;html-export:css&gt;&gt;</span>
+<span class="org-org-meta-line">#+html_head: &lt;/style&gt;</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7f2138a" class="outline-4">
+<h4 id="org7f2138a"><span class="section-number-4">7.1.2</span> The Build Script (<code>builddocs.sh</code>)</h4>
+<div class="outline-text-4" id="text-7-1-2">
+<div class="org-src-container">
+<pre class="src src-sh"><span class="org-comment-delimiter">#</span><span class="org-comment">!/bin/</span><span class="org-keyword">sh</span>
+emacs --batch --no-init-file --load publish.el --funcall toggle-debug-on-error --funcall medivhok-publish
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org0609e91" class="outline-4">
+<h4 id="org0609e91"><span class="section-number-4">7.1.3</span> The Publish Script (<code>publish.el</code>)</h4>
+<div class="outline-text-4" id="text-7-1-3">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">require</span> '<span class="org-constant">package</span>)
+(package-initialize)
+(<span class="org-keyword">unless</span> package-archive-contents
+  (add-to-list 'package-archives '(<span class="org-string">"org"</span> . <span class="org-string">"https://orgmode.org/elpa/"</span>) t)
+  (add-to-list 'package-archives '(<span class="org-string">"gnu"</span> . <span class="org-string">"https://elpa.gnu.org/packages/"</span>) t)
+  (add-to-list 'package-archives '(<span class="org-string">"melpa"</span> . <span class="org-string">"https://melpa.org/packages/"</span>) t)
+  (package-refresh-contents))
+(<span class="org-keyword">dolist</span> (pkg '(dash projectile org-plus-contrib htmlize))
+  (<span class="org-keyword">unless</span> (package-installed-p pkg)
+    (package-install pkg)))
+
+(<span class="org-keyword">require</span> '<span class="org-constant">org</span>)
+(<span class="org-keyword">require</span> '<span class="org-constant">ox-publish</span>)
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">medivhok-publish</span> ()
+  <span class="org-doc">"Publish the blog to HTML."</span>
+  (<span class="org-keyword">interactive</span>)
+  (<span class="org-keyword">let</span> ((make-backup-files nil)
+        (org-publish-project-alist
+         '((<span class="org-string">"site"</span>
+            <span class="org-builtin">:base-directory</span> <span class="org-string">"."</span>
+            <span class="org-builtin">:base-extension</span> <span class="org-string">"org"</span>
+            <span class="org-builtin">:recursive</span> nil
+            <span class="org-builtin">:publishing-directory</span> <span class="org-string">"public/"</span>
+            <span class="org-builtin">:publishing-function</span> org-html-publish-to-html)))
+        (user-full-name <span class="org-string">"Jean Gregory Verret"</span>)
+        (user-mail-address <span class="org-string">"gregory.verret@gmail.com"</span>)
+        (org-export-creator-string
+         <span class="org-string">"&lt;a href=\"https://www.gnu.org/software/emacs/\"&gt;Emacs&lt;/a&gt; (&lt;a href=\"https://orgmode.org\"&gt;Org&lt;/a&gt;)"</span>)
+        (org-html-html5-fancy t)
+        (org-html-doctype <span class="org-string">"html5"</span>)
+        (org-html-htmlize-output-type 'css))
+    (org-publish-all)))
+
+(<span class="org-keyword">provide</span> '<span class="org-constant">publish</span>)
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">publish.el ends here</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orged8e7a5" class="outline-3">
+<h3 id="orged8e7a5"><span class="section-number-3">7.2</span> Source Files</h3>
+<div class="outline-text-3" id="text-7-2">
+</div>
+<div id="outline-container-org9022ad7" class="outline-4">
+<h4 id="org9022ad7"><span class="section-number-4">7.2.1</span> <code>init.el</code></h4>
+<div class="outline-text-4" id="text-7-2-1">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span class="org-comment-delimiter">;;; </span><span class="org-comment">init.el --- My Emacs Config -*- lexical-binding: t; -*-</span>
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">Author: Jean Gregory Verret <a href="mailto:gregory.verret%40gmail.com">&lt;gregory.verret@gmail.com&gt;</a></span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">This program is free software; you can redistribute it and/or modify</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">it under the terms of the GNU General Public License as published by</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">the Free Software Foundation, either version 3 of the License, or</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">(at your option) any later version.</span>
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">This program is distributed in the hope that it will be useful,</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">GNU General Public License for more details.</span>
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">You should have received a copy of the GNU General Public License</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">along with this program. If not, see <a href="http://www.gnu.org/licenses/">&lt;http://www.gnu.org/licenses/&gt;</a>.</span>
+
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">Commentary:</span>
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">This is my Emacs configuration.</span>
+
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">Code:</span>
+&lt;&lt;init:bootstrapping&gt;&gt;
+
+&lt;&lt;init:personalization&gt;&gt;
+
+&lt;&lt;keybindings&gt;&gt;
+
+&lt;&lt;init:user-interface&gt;&gt;
+
+&lt;&lt;init:applications&gt;&gt;
+
+&lt;&lt;init:tools&gt;&gt;
+
+&lt;&lt;init:languages&gt;&gt;
+
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">init.el ends here</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd007250" class="outline-3">
+<h3 id="orgd007250"><span class="section-number-3">7.3</span> Tests Configurations</h3>
+<div class="outline-text-3" id="text-7-3">
+</div>
+<div id="outline-container-orga7aa734" class="outline-4">
+<h4 id="orga7aa734"><span class="section-number-4">7.3.1</span> The Cask File</h4>
+<div class="outline-text-4" id="text-7-3-1">
+<p>
+The <code>Cask</code> file will fetch the dependencies for our tests like <a href="https://github.com/jorgenschaefer/emacs-buttercup">buttercup</a>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp" id="org32c2812">(source gnu)
+(source melpa-stable)
+
+(development
+ &lt;&lt;tests:dependencies&gt;&gt;
+ (depends-on <span class="org-string">"buttercup"</span>))
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Jean Gregory Verret</p>
+<p class="date">Created: 2020-11-11 Wed 18:01</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
