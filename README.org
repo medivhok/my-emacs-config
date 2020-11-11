@@ -2184,19 +2184,7 @@ Major mode for editing JSON files with emacs.
 
 * Appendix
 ** Export Scripts
-*** The Makefile
-
-#+begin_src makefile :tangle Makefile
-all: site
-
-site:
-		emacs --batch --no-init-file --load publish.el --funcal medivhok-publish
-
-clean:
-		rm -rf public/*
-#+end_src
-
-*** Org Export Setup
+*** Org Export Setup (~html-export.setup~)
 
 #+begin_src css :noweb-ref html-export:css
 :root {
@@ -2254,7 +2242,14 @@ pre span.org-comment {color:var(--dark-cyan-color);font-style:italic}
 ,#+html_head: </style>
 #+end_src
 
-*** Publish Script
+*** The Build Script (~builddocs.sh~)
+
+#+begin_src sh :tangle builddocs.sh
+#!/bin/sh
+emacs --batch --no-init-file --load publish.el --funcall toggle-debug-on-error --funcall medivhok-publish
+#+end_src
+
+*** The Publish Script (~publish.el~)
 :PROPERTIES:
 :header-args:emacs-lisp: :tangle publish.el
 :END:
