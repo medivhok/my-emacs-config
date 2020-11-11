@@ -15,7 +15,7 @@ jobs:
         uses: docker://iquiw/alpine-emacs
         if: github.event.deleted == false
         with:
-          args: make
+          args: /usr/bin/make
       - name: deploy
         uses: peaceiris/actions-gh-pages@v3.7.3
         if: success()
