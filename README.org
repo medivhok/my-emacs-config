@@ -1,9 +1,9 @@
 #+TITLE: My Emacs Configuration
-#+setupfile: html-export.setup
+#+SETUPFILE: html-export.setup
 #+STARTUP: overview
-#+PROPERTY: header-args:emacs-lisp :noweb no-export
-#+options: H:3 toc:nil
-#+export_file_name: index
+#+PROPERTY: header-args:emacs-lisp :tangle init.el :comments org
+#+OPTIONS: H:3 toc:nil
+#+EXPORT_FILE_NAME: index
 
 This is my [[https://gnu.org/software/emacs/][Emacs]] configuration and documentation.
 
@@ -14,15 +14,16 @@ This is my [[https://gnu.org/software/emacs/][Emacs]] configuration and document
 :TOC:      :include all :depth 2 :ignore (this)
 :END:
 :CONTENTS:
-- [[#bootstrapping-the-big-bang][Bootstrapping (The Big Bang)]]
+- [[#the-big-bang][The Big Bang]]
+  - [[#the-file-header][The File Header]]
   - [[#profiling][Profiling]]
   - [[#cache-directory][Cache Directory]]
   - [[#packages-management][Packages Management]]
-- [[#personalization][Personalization]]
-  - [[#personnal-infos][Personnal Infos]]
-  - [[#directory-structure][Directory Structure]]
+  - [[#personalization][Personalization]]
+- [[#x-window-management][X Window Management]]
 - [[#user-interface][User Interface]]
   - [[#theme][Theme]]
+  - [[#fonts][Fonts]]
   - [[#frames][Frames]]
   - [[#scrolling][Scrolling]]
   - [[#visuals][Visuals]]
@@ -35,45 +36,44 @@ This is my [[https://gnu.org/software/emacs/][Emacs]] configuration and document
   - [[#modeline][Modeline]]
   - [[#notifications][Notifications]]
   - [[#help-interface-helpful][Help Interface (helpful)]]
-- [[#applications][Applications]]
-  - [[#org-mode][Org Mode]]
-  - [[#getting-things-done--agenda][Getting Things Done  (Agenda)]]
-  - [[#taking-smart-notes--slip-box][Taking Smart Notes  (Slip Box)]]
-  - [[#application-functions][Application Functions]]
+- [[#org-mode][Org Mode]]
+  - [[#the-one-to-rule-them-all][The One to Rule Them All]]
+  - [[#babel][Babel]]
+  - [[#org-enhancements][Org Enhancements]]
+  - [[#getting-things-done][Getting Things Done]]
+  - [[#taking-smart-notes][Taking Smart Notes]]
   - [[#you-need-a-budget][You Need A Budget]]
-  - [[#bibliography][Bibliography]]
-- [[#tools][Tools]]
-  - [[#completions][Completions]]
-  - [[#lsp-mode][LSP Mode]]
-  - [[#pdf-reader][PDF Reader]]
+- [[#statistics-with-r][Statistics With R]]
+- [[#development][Development]]
+  - [[#tools][Tools]]
   - [[#generic-editing-configurations][Generic Editing Configurations]]
   - [[#snippets][Snippets]]
   - [[#git-magit][Git (magit)]]
   - [[#project-management-projectile][Project Management (projectile)]]
   - [[#syntax-checking-flycheck][Syntax Checking (flycheck)]]
-- [[#languages][Languages]]
-  - [[#css][CSS]]
-  - [[#elisp][Elisp]]
-  - [[#haskell][Haskell]]
-  - [[#json-json-mode][Json (json-mode)]]
-  - [[#latex][LaTeX]]
-  - [[#yaml][YAML]]
-  - [[#xml-nxml][XML (nxml)]]
+  - [[#languages][Languages]]
 - [[#appendix][Appendix]]
   - [[#export-scripts][Export Scripts]]
-  - [[#source-files][Source Files]]
   - [[#tests-configurations][Tests Configurations]]
 :END:
 
-* Bootstrapping (The Big Bang)
-:PROPERTIES:
-:header-args:emacs-lisp: :noweb-ref init:bootstrapping :noweb-sep "\n\n"
-:END:
+* The Big Bang
 
 We begin here our [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html][init file]], the first file that will be loaded to
 initialize Emacs.
 
-#+begin_src emacs-lisp
+** The File Header
+
+#+begin_src emacs-lisp :comments no
+;;; init.el --- My Emacs Config -*- lexical-binding: t; -*-
+#+end_src
+
+Author: Jean Gregory Verret
+
+Url: https://github.com/medivhok/my-emacs-config
+
+Code:
+#+begin_src emacs-lisp :comments org
 (add-to-list 'load-path "~/.config/emacs/")
 #+end_src
 
@@ -168,41 +168,28 @@ Using straight, we can now download, install and load /use-package/.
 (setq use-package-verbose t)
 #+end_src
 
-* Personalization
-:PROPERTIES:
-:header-args:emacs-lisp: :noweb-ref init:personalization
-:END:
-
-** Personnal Infos
-*** ~user-full-name~
-:PROPERTIES:
-:variable-name: user-full-name
-:variable-url: https://www.gnu.org/software/emacs/manual/html_node/elisp/User-Identification.html
-:END:
+** Personalization
+*** Personnal Infos
+**** ~user-full-name~
 
 #+begin_src emacs-lisp
 (setq user-full-name "Jean Gregory Verret")
 #+end_src
 
-*** ~user-mail-address~
-:PROPERTIES:
-:variable-name: user-mail-address
-:variable-url: https://www.gnu.org/software/emacs/manual/html_node/elisp/User-Identification.html
-:END:
+**** ~user-mail-address~
 
 #+begin_src emacs-lisp
 (setq user-mail-address "gregory.verret@gmail.com")
-(setq org-directory "~/org/")
 #+end_src
 
-** Directory Structure
-*** ~medivhok:app-directory~
+*** Directory Structure
+**** ~medivhok:app-directory~
 
 #+begin_src emacs-lisp
 (setq medivhok:app-directory (file-name-as-directory "~/org"))
 #+end_src
 
-*** ~medivhok:agenda-directory~
+**** ~medivhok:agenda-directory~
 
 #+begin_src emacs-lisp
 (setq medivhok:agenda-directory
@@ -211,7 +198,7 @@ Using straight, we can now download, install and load /use-package/.
                          medivhok:app-directory)))
 #+end_src
 
-*** ~medivhok:budget-directory~
+**** ~medivhok:budget-directory~
 
 #+begin_src emacs-lisp
 (setq medivhok:budget-directory
@@ -220,7 +207,7 @@ Using straight, we can now download, install and load /use-package/.
                          medivhok:app-directory)))
 #+end_src
 
-*** ~medivhok:slip-box-directory~
+**** ~medivhok:slip-box-directory~
 
 #+begin_src emacs-lisp
 (setq medivhok:slip-box-directory
@@ -229,10 +216,63 @@ Using straight, we can now download, install and load /use-package/.
                          medivhok:app-directory)))
 #+end_src
 
+* X Window Management
+
+[fn:: Source]
+
+#+BEGIN_SRC emacs-lisp
+(defconst medivhok:exwm-enabled
+  (and (eq window-system 'x)
+       (seq-contains command-line-args "--use-exwm")))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package exwm
+  :init
+  (setq exwm-layout-show-all-buffers t
+        exwm-workspace-number 5
+        exwm-workspace-show-all-buffers t
+        exwm-workspace-warp-cursor t
+        focus-follows-mouse t
+        mouse-autoselect-window nil)
+
+  :config
+  (add-hook 'exwm-update-class-hook
+            (lambda ()
+              (exwm-workspace-rename-buffer exwm-class-name)))
+
+  (require 'exwm-randr)
+  (setq exwm-randr-workspace-output-plist '(0 "HDMI-0" 1 "DP-1"))
+  (exwm-randr-enable)
+
+  (require 'exwm-systemtray)
+  (exwm-systemtray-enable)
+
+  (setq exwm-input-global-keys
+        `(([?\s-r] . exwm-reset)
+          ([?\s-w] . exwm-worspace-switch)
+          ([?\s-p] . counsel-linux-app)
+          ,@(mapcar (lambda (i)
+                      `(,(kbd (format "s-%d" i)) .
+                        (lambda ()
+                          (interactive)
+                          (exwm-workspace-switch-create ,i))))
+                    (number-sequence 0 9))))
+
+  (exwm-enable))
+#+END_SRC
+
+#+BEGIN_SRC sh :tangle EXWM.desktop
+[Desktop Entry]
+Name=EXWM
+Comment=Emacs Window Manager
+Exec=emacs -mm --debug-init
+Type=Application
+x-LightDM-DesktopName=exwm
+DesktopNames=exwm
+#+END_SRC
+
 * User Interface
-:PROPERTIES:
-:header-args:emacs-lisp: :noweb-ref init:user-interface
-:END:
 ** Theme
 
 We configure the theme.
@@ -250,21 +290,15 @@ We configure the theme.
   (doom-themes-org-config))
 #+end_src
 
-*** Fonts
+** Fonts
 
 The fonts.
 
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil
-                    :font "Hack Nerd Font"
-                    :height 130)
-(set-face-attribute 'fixed-pitch nil
-                    :font "DroidSansMono Nerd Font"
-                    :height 120)
-(set-face-attribute 'variable-pitch nil
-                    :font "Hack Nerd Font"
-                    :height 130
-                    :weight 'regular)
+(custom-theme-set-faces
+ 'user
+ `(default ((t (:family "Roboto" :height 140 :weight light))))
+ `(fixed-pitch ((t (:family "FiraCode" :height 130 :weight light)))))
 #+end_src
 
 *** Icons
@@ -308,8 +342,8 @@ Show some nice symbols (ex.: ~lambda~ becomes $\lambda$)
 Set the frame transparency.
 
 #+begin_src emacs-lisp
-(set-frame-parameter (selected-frame) 'alpha '(90 . 90))
-(add-to-list 'default-frame-alist '(alpha . (90 . 90)))
+(set-frame-parameter (selected-frame) 'alpha '(95 . 95))
+(add-to-list 'default-frame-alist '(alpha . (95 . 95)))
 #+end_src
 
 ** Scrolling
@@ -337,7 +371,7 @@ Line and column numbers.
 #+begin_src emacs-lisp
 (setq display-line-numbers-type 'relative
       display-line-numbers-width-start t)
-(global-display-line-numbers-mode t)
+;; (global-display-line-numbers-mode t)
 (column-number-mode)
 #+end_src
 
@@ -604,6 +638,7 @@ is used instead."
   :states 'normal
   "a" 'apropos-command
   "b" 'describe-bindings
+  "c" 'describe-face
   "f" 'describe-function
   "i" 'info
   "k" 'general-describe-keybindings
@@ -876,111 +911,110 @@ Don't warn when advice is added for functions.
           counsel-describe-variable-function #'helpful-variable))
 #+end_src
 
-* Applications
-:PROPERTIES:
-:header-args:emacs-lisp: :noweb-ref init:applications
-:END:
-** Org Mode
-*** ~org~
-:PROPERTIES:
-:package_name: org
-:package_url: https://orgmode.org
-:END:
+* Org Mode
 
 #+begin_quote
 Org mode is for keeping notes, maintaining TODO lists, planning projects, and
 authoring documents with a fast and effective plain-text system. -- [[https://orgmode.org/][org]]
 #+end_quote
 
+[[https://orgmode.org][Org]] is a big and powerful ecosystem of [[https://https://www.gnu.org/software/emacs/][Emacs]] packages. I will configure
+only the common functionalities and suggar for the eyes here. So let's
+start with the ~use-package~ definition.
+
+** The One to Rule Them All
+
 #+begin_src emacs-lisp
 (use-package org
-:hook
-(org-mode . (lambda ()
-  (org-indent-mode)
-  (variable-pitch-mode 1)
-  (auto-fill-mode 0)
-  (visual-line-mode 1)
-  (setq evil-auto-indent nil)))
+  :init
+  (setq org-directory (file-name-as-directory "~/org"))
 
-:init
-(setq org-agenda-files (list medivhok:agenda-directory)
-      org-catch-invisible-edits 'show
-      org-cycle-separator-lines 2
-      org-directory medivhok:app-directory
-      org-edit-src-content-indentation 0
-      org-ellipsis " ▼"
-      org-hide-block-startup nil
-      org-hide-emphasis-markers t
-      org-log-done 'time
-      org-log-into-drawer t
-      org-outline-path-complete-in-steps nil
-      org-return-follows-link t
-      org-src-fontify-natively t
-      org-src-preserve-indentation nil
-      org-src-tab-acts-natively t
-      org-src-window-setup 'current-window
-      org-startup-folded t)
+  :hook
+  (org-mode . org-indent-mode)
+  (org-mode . variable-pitch-mode)
+  (org-mode . visual-line-mode)
 
-:custom-face
-(org-link ((t (:inherit link :underline nil))))
+  :custom-face
+  (org-block ((t (:inherit fixed-pitch))))
+  (org-document-title ((t (:height 1.5 :weight light))))
+  (org-level-1 ((t (:inherit outline-1 :height 1.3 :weight light))))
+  (org-level-2 ((t (:inherit outline-2 :height 1.2 :weight light))))
+  (org-level-3 ((t (:inherit outline-3 :height 1.1 :weight light))))
+  (org-link ((t (:inherit link :underline nil :weight regular))))
+  (org-meta-line ((t (:inherit fixed-pitch))))
+  (org-table ((t (:inherit org-default :family "Roboto Mono"))))
+  (org-table-header ((t (:inherit org-table :family "Roboto Mono"))))
 
-:general
-(medivhok:local-mode-menu 'normal
-  org-mode-map
-  nil '(:ignore t :which-key "org")
-  "e" 'org-export-dispatch
-  "t" '(:ignore t :which-key "toggle")
-  "tl" 'org-toggle-link-display)
+  :general
+  (medivhok:local-mode-menu 'normal
+    org-mode-map
+    nil '(:ignore t :which-key "org")
+    "e" 'org-export-dispatch
+    "t" '(:ignore t :which-key "toggle")
+    "tl" 'org-toggle-link-display)
 
-:config
-(setq org-format-latex-options
-      (plist-put org-format-latex-options :scale 4.0))
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((emacs-lisp . t)
-   (haskell . t)
-   (ledger . t)
-   (R . t)))
+  :custom
+  (org-fontify-quote-and-verse-blocks t)
 
-(add-hook 'org-src-mode-hook
-          (lambda ()
-            (when (eq major-mode 'emacs-lisp-mode)
-              (setq flycheck-disabled-checkers '(emacs-lisp-checkdoc)))))
+  :config
+  (setq org-agenda-files (list medivhok:agenda-directory)
+        org-catch-invisible-edits 'show
+        org-cycle-separator-lines 2
+        org-directory medivhok:app-directory
+        org-edit-src-content-indentation 0
+        org-ellipsis " ▼"
+        org-hide-block-startup nil
+        org-hide-emphasis-markers t
+        org-log-done 'time
+        org-log-into-drawer t
+        org-outline-path-complete-in-steps nil
+        org-return-follows-link t
+        org-src-fontify-natively t
+        org-src-preserve-indentation nil
+        org-src-tab-acts-natively t
+        org-src-window-setup 'current-window
+        org-startup-folded t)
 
-;; Replace list hyphen with dot.
-(require 'org-indent)
-(font-lock-add-keywords 'org-mode
-                        '(("^ *\\([-]\\) "
-                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-(dolist (face '((org-level-1 . 1.2)
-                (org-level-2 . 1.1)
-                (org-level-3 . 1.05)
-                (org-level-4 . 1.0)
-                (org-level-5 . 1.1)
-                (org-level-6 . 1.1)
-                (org-level-7 . 1.1)
-                (org-level-8 . 1.1)))
-(set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+  (setq org-format-latex-options
+        (plist-put org-format-latex-options :scale 4.0))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (haskell . t)
+     (ledger . t)
+     (R . t)))
 
-;; Ensure that anything that should be fixed-pitch in Org files appears that way
-(set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
-(set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
-(set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
-(set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-(set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-(set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-(set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
+  (add-hook 'org-src-mode-hook
+            (lambda ()
+              (when (eq major-mode 'emacs-lisp-mode)
+                (setq flycheck-disabled-checkers '(emacs-lisp-checkdoc)))))
+
+  ;; Replace list hyphen with dot.
+  (require 'org-indent)
+  (font-lock-add-keywords 'org-mode
+                          '(("^ *\\([-]\\) "
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•")))))))
 #+end_src
 
-*** ~ob-tangle~
-:PROPERTIES:
-:custom_id: applications--org-mode--ob-tangle
-:END:
+** Babel
+
+#+BEGIN_SRC emacs-lisp
+(use-package ob-core
+  :defer t
+  :straight org
+  :custom
+  (org-confirm-babel-evaluate nil))
+#+END_SRC
+
+** Org Enhancements
+*** Let's Tangle On Save
 
 #+begin_comment
 This /automatically tangle on save/ is a handy tip from [[https://leanpub.com/lit-config/read#leanpub-auto-configuring-emacs-and--org-mode-for-literate-programming][this book]] on literate
 programming.
 #+end_comment
+
+**** Package Loading
 
 #+begin_src emacs-lisp
 (use-package ob-tangle
@@ -993,36 +1027,41 @@ programming.
     "Disable confirmation before tangling."
     (let ((org-confirm-babel-evaluate nil))
       (org-babel-tangle)))
-
-  :hook
-  (org-mode . (lambda ()
-  	(add-hook 'after-save-hook
-        	  #'medivhok/tangle-on-save
-            	  'run-at-end
-                  'only-in-org-mode))))
 #+end_src
 
-*** ~org-bullets~
-:PROPERTIES:
-:Custom_ID: use-package--org-bullets
-:END:
+**** Hooks
+
+#+begin_src emacs-lisp
+:hook
+(org-mode . (lambda ()
+  (add-hook 'after-save-hook
+        	  #'medivhok/tangle-on-save
+            'run-at-end
+            'only-in-org-mode))))
+#+end_src
+
+*** Better Bullets
 
 #+begin_quote
-utf-8 bullets for org-mode. -- [[https://github.com/sabof/org-bullets/][org-bullets]]
+Make org-mode stars a little more super -- [[https://github.com/integral-dw/org-superstar-mode][org-superstar-mode]]
 #+end_quote
 
 Use bullet characters instead of asterisks, plus set the header font sizes to
 something more palatable.
 
 #+begin_src emacs-lisp
-(use-package org-bullets
+(use-package org-superstar
+  :after org
+
   :hook
-  (org-mode . org-bullets-mode)
+  (org-mode . org-superstar-mode)
+
   :custom
-  (org-bullets-bullet-list '("◉" "●" "○" "▶" "☰" "▷" "○")))
+  (org-superstar-remove-leading-stars t)
+  (org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●")))
 #+end_src
 
-*** ~org-make-toc~
+*** TOC Auto Generation
 
 #+begin_quote
 Automatic tables of contents for Org files. -- [[https://github.com/alphapapa/org-make-toc/][org-make-toc]]
@@ -1038,17 +1077,13 @@ any header with a property named TOC.
   (org-mode . org-make-toc-mode))
 #+end_src
 
-*** ~ox-odt~
-:PROPERTIES:
-:Custom_ID: use-package--ox-odt
-:END:
+*** ODT Exporter
 
 #+begin_src emacs-lisp
 (use-package ox-odt
   :after org
 
-  :straight
-  (org :type git :local-repo "org")
+  :straight org
 
   :custom
   (org-odt-convert-process "unoconv")
@@ -1056,15 +1091,23 @@ any header with a property named TOC.
                                 "unoconv -f %f %i")))
   (org-odt-preferred-output-format "docx")
   (org-odt-prettify-xml t)
+  (org-odt-content-template-file (expand-file-name
+                                  "OrgOdtContentTemplate.xml"
+                                  (concat straight-base-dir
+                                          "straight/repos/org/etc/styles/")))
+  (org-odt-styles-file (expand-file-name
+                        "OrgOdtStyles.xml"
+                        (concat straight-base-dir
+                                "straight/repos/org/etc/styles/"))))
 
-  :config
-  (org-odt-add-automatic-style "TNOrgTitle"
-                               '(("style:family" "paragraph")
-                                 ("style:parent-style-name" "OrgTitle")
-                                 ("style:master-page-name" "OrgTitlePage"))))
+  ;; :config
+  ;; (org-odt-add-automatic-style "TNOrgTitle"
+  ;;                             '(("style:family" "paragraph")
+  ;;                               ("style:parent-style-name" "OrgTitle")
+  ;;                               ("style:master-page-name" "OrgTitlePage"))))
 #+end_src
 
-*** ~evil-org~
+*** Evil Keybindings
 
 #+begin_quote
 Supplemental evil-mode keybindings to emacs org-mode. -- [[https://github.com/Somelauw/evil-org-mode/][evil-org]]
@@ -1082,7 +1125,7 @@ Supplemental evil-mode keybindings to emacs org-mode. -- [[https://github.com/So
   (evil-org-agenda-set-keys))
 #+end_src
 
-** Getting Things Done  (Agenda)
+** Getting Things Done
 
 The environment of the /GTD/ workflow is done with ~org-agenda~, which is part of
 the [[https://orgmode.org][Org Mode]] ecosystem.
@@ -1093,6 +1136,8 @@ the [[https://orgmode.org][Org Mode]] ecosystem.
   (interactive)
   (org-agenda nil " "))
 #+end_src
+
+*** The Agenda
 
 #+begin_src emacs-lisp
 (use-package org-agenda
@@ -1130,7 +1175,7 @@ the [[https://orgmode.org][Org Mode]] ecosystem.
 		              ((org-agenda-overriding-header "Projets"))))))))
 #+end_src
 
-*** ~org-capture~
+*** Agenda Entries
 
 #+begin_src emacs-lisp
 (use-package org-capture
@@ -1152,7 +1197,7 @@ the [[https://orgmode.org][Org Mode]] ecosystem.
 	   :immediate-finish t))))
 #+end_src
 
-*** ~org-refile~
+*** Entries Refiling
 
 #+begin_src emacs-lisp
 (use-package org-refile
@@ -1167,47 +1212,19 @@ the [[https://orgmode.org][Org Mode]] ecosystem.
 				   (nil :tag . "@teluq"))))
 #+end_src
 
-** Taking Smart Notes  (Slip Box)
-To configure my slip box, I use the [[https://orgroam.com][org-roam]] ecosystem.
+** Taking Smart Notes
 
-*** Variables
-**** ~org-roam-directory~
+I use the [[https://en.wikipedia.org/wiki/Zettelkasten][zettelkasten]] (slip box) method for my note-taking workflow. The
+book [[https://www.goodreads.com/book/show/34507927-how-to-take-smart-notes][How to Take Smart Notes]] is the referrence on the subject and I use
+[[https://www.orgroam.com][org-roam]] to emulate my slip box.
+
+*** The Slip Box
 :PROPERTIES:
-:custom_id: variable--org-roam-directory
-:variable-name: org-roam-directory
+:package-name: org-roam
+:package-url: https://www.orgroam.com
 :END:
 
-#+begin_src emacs-lisp :noweb-ref use-package:org-roam:init
-(setq org-roam-directory (file-name-as-directory
-                          (expand-file-name "roam"
-                                            org-directory)))
-#+end_src
-
-**** ~medivhok:roam-templates-directory~
-:PROPERTIES:
-:variable-name: medivhok:roam-templates-directory
-:END:
-
-#+begin_src emacs-lisp :noweb-ref use-package:org-roam:init
-(defvar medivhok:roam-templates-directory
-  (file-name-as-directory
-   (expand-file-name "templates" org-roam-directory))
-  "The slip box cards templates directory.")
-#+end_src
-
-*** Packages
-**** ~org-roam~
-:PROPERTIES:
-:custom_id: applications--taking-smart-notes--org-roam
-:package_name: org-roam
-:package_url: https://orgroam.com
-:END:
-
-#+begin_quote
-Rudimentary Roam replica with Org-mode. -- [[https://github.com/org-roam/org-roam][org-roam]]
-#+end_quote
-
-#+begin_src emacs-lisp :noweb-ref taking-smart-notes
+#+begin_src emacs-lisp :noweb no-export
 (use-package org-roam
   :after
   (org helm)
@@ -1307,6 +1324,32 @@ Rudimentary Roam replica with Org-mode. -- [[https://github.com/org-roam/org-roa
       selected-tag-list)))
 #+end_src
 
+*** Variables
+**** ~org-roam-directory~
+:PROPERTIES:
+:custom_id: variable--org-roam-directory
+:variable-name: org-roam-directory
+:END:
+
+#+begin_src emacs-lisp :noweb-ref use-package:org-roam:init
+(setq org-roam-directory (file-name-as-directory
+                          (expand-file-name "roam"
+                                            org-directory)))
+#+end_src
+
+**** ~medivhok:roam-templates-directory~
+:PROPERTIES:
+:variable-name: medivhok:roam-templates-directory
+:END:
+
+#+begin_src emacs-lisp :noweb-ref use-package:org-roam:init
+(defvar medivhok:roam-templates-directory
+  (file-name-as-directory
+   (expand-file-name "templates" org-roam-directory))
+  "The slip box cards templates directory.")
+#+end_src
+
+*** Packages
 **** ~org-ref~
 
 #+begin_src emacs-lisp :noweb-ref taking-smart-notes
@@ -1415,7 +1458,7 @@ Connector between Org-roam, BibTeX-completion, and Org-ref. -- [[https://github.
   "My bibtex file, generated by 'zotero'.")
 #+end_src
 
-** Application Functions
+*** Application Functions
 
 #+begin_src emacs-lisp
 (defun medivhok/card-entry-< (entry-a entry-b)
@@ -1471,6 +1514,22 @@ Connector between Org-roam, BibTeX-completion, and Org-ref. -- [[https://github.
            'medivhok/card-entry-<))))
 #+end_src
 
+*** Bibliography
+**** ~bibtex-completion~
+
+#+begin_src emacs-lisp
+(use-package bibtex-completion
+  :defer t
+  :after org
+  :custom
+  (bibtex-completion-bibliography
+   (expand-file-name
+    "zotero.bib"
+    (file-name-as-directory
+     (expand-file-name "readings" org-directory))))
+  (bibtex-completion-pdf-field "File"))
+#+end_src
+
 ** You Need A Budget
 *** ~ledger-mode~
 
@@ -1510,28 +1569,26 @@ More Evil in ledger-mode. -- [[https://github.com/atheriel/evil-ledger][evil-led
     "s" 'evil-ledger-sort))
 #+end_src
 
-** Bibliography
-*** ~bibtex-completion~
+* Statistics With R
 
 #+begin_src emacs-lisp
-(use-package bibtex-completion
-  :defer t
-  :after org
-  :custom
-  (bibtex-completion-bibliography
-   (expand-file-name
-    "zotero.bib"
-    (file-name-as-directory
-     (expand-file-name "readings" org-directory))))
-  (bibtex-completion-pdf-field "File"))
+(use-package ess
+  :defer t)
+
+(use-package ess-R-data-view
+  :defer t)
+
+(use-package polymode
+  :defer t)
+
+(use-package poly-R
+  :defer t)
 #+end_src
 
-* Tools
-:PROPERTIES:
-:header-args:emacs-lisp: :noweb-ref init:tools
-:END:
-** Completions
-*** Company & Co
+* Development
+** Tools
+*** Completions
+**** Company & Co
 
 #+begin_quote
 Modular in-buffer completion framework for Emacs. -- [[https://github.com/company-mode/company-mode][company-mode]]
@@ -1592,7 +1649,7 @@ Taken from https://github.com/syl20bnr/spacemacs/pull/179."
         (mapcar #'medivhok/company-backend-with-yas company-backends)))
 #+end_src
 
-**** ~company-dict~
+***** ~company-dict~
 
 #+begin_quote
 A port of ac-source-dictionary to company-mode, plus annotation and documentation support. -- [[https://github.com/hlissner/emacs-company-dict][company-dict]]
@@ -1603,7 +1660,7 @@ A port of ac-source-dictionary to company-mode, plus annotation and documentatio
   :after company)
 #+end_src
 
-**** ~company-box~
+***** ~company-box~
 
 #+begin_quote
 A company front-end with icons. -- [[https://github.com/sebastiencs/company-box][company-box]]
@@ -1617,7 +1674,7 @@ A company front-end with icons. -- [[https://github.com/sebastiencs/company-box]
   (company-mode . company-box-mode))
 #+end_src
 
-*** Helm & Co
+**** Helm & Co
 #+begin_quote
 Emacs incremental completion and selection narrowing framework. -- [[https://github.com/emacs-helm/helm][helm]]
 #+end_quote
@@ -1628,7 +1685,7 @@ Emacs incremental completion and selection narrowing framework. -- [[https://git
   (require 'helm-config))
 #+end_src
 
-**** helm-lsp
+***** helm-lsp
 
 #+begin_src emacs-lisp
 (use-package helm-lsp
@@ -1636,7 +1693,7 @@ Emacs incremental completion and selection narrowing framework. -- [[https://git
   (helm lsp-mode))
 #+end_src
 
-** LSP Mode
+*** LSP Mode
 
 #+begin_quote
 Emacs client/library for the Language Server Protocol. -- [[https://github.com/emacs-lsp/lsp-mode/][lsp-mode]]
@@ -1650,7 +1707,7 @@ Emacs client/library for the Language Server Protocol. -- [[https://github.com/e
   (lsp-mode . lsp-enable-which-key-integration))
 #+end_src
 
-** PDF Reader
+*** PDF Reader
 :PROPERTIES:
 :package_name: pdf-tools
 :package_url: https://github.com/politza/pdf-tools/
@@ -1881,11 +1938,8 @@ We start the [[https://github.com/jwiegley/use-package#getting-started][:config]
   :config (global-flycheck-mode))
 #+end_src
 
-* Languages
-:PROPERTIES:
-:header-args:emacs-lisp: :noweb-ref init:languages
-:END:
-** CSS
+** Languages
+*** CSS
 
 #+begin_src emacs-lisp
 (use-package css-mode
@@ -1898,8 +1952,8 @@ We start the [[https://github.com/jwiegley/use-package#getting-started][:config]
   (setq flycheck-css-csslint-executable "~/.yarn/bin/csslint"))
 #+end_src
 
-** Elisp
-*** ~cask~
+*** Elisp
+**** ~cask~
 
 #+begin_quote
 Project management tool for Emacs. -- [[https://github.com/cask/cask][cask]]
@@ -1909,22 +1963,22 @@ Project management tool for Emacs. -- [[https://github.com/cask/cask][cask]]
 (use-package cask)
 #+end_src
 
-*** ~cask-mode~
+**** ~cask-mode~
 
 #+begin_src emacs-lisp
 (use-package cask-mode
   :defer t)
 #+end_src
 
-*** ~buttercup~
+**** ~buttercup~
 
 #+begin_src emacs-lisp
 (use-package buttercup
   :defer t)
 #+end_src
 
-** Haskell
-*** ~haskell-mode~
+*** Haskell
+**** ~haskell-mode~
 :PROPERTIES:
 :Custom_ID: use-package--haskell-mode
 :END:
@@ -1936,7 +1990,7 @@ Project management tool for Emacs. -- [[https://github.com/cask/cask][cask]]
 (use-package haskell-mode
 #+end_src
 
-**** Keybindings (~:general~)
+***** Keybindings (~:general~)
 :PROPERTIES:
 :Custom_ID: use-package--haskell-mode--general
 :END:
@@ -1947,7 +2001,7 @@ We start the [[https://github.com/noctuid/general.el#general-keyword][:general]]
 :general
 #+end_src
 
-**** Initializations (~:init~)
+***** Initializations (~:init~)
 :PROPERTIES:
 :Custom_ID: use-package--haskell-mode--init
 :END:
@@ -1962,7 +2016,7 @@ We start the [[https://github.com/jwiegley/use-package#getting-started][:init]] 
 :init
 #+end_src
 
-**** Configurations (~:config~)
+***** Configurations (~:config~)
 :PROPERTIES:
 :Custom_ID: use-package--haskell-mode--config
 :END:
@@ -1977,12 +2031,12 @@ We start the [[https://github.com/jwiegley/use-package#getting-started][:config]
 :config
 #+end_src
 
-**** Closing Paren
+***** Closing Paren
 
 #+begin_src emacs-lisp
 )
 #+end_src
-*** ~dante~
+**** ~dante~
 :PROPERTIES:
 :Custom_ID: use-package--dante
 :END:
@@ -1994,7 +2048,7 @@ We start the [[https://github.com/jwiegley/use-package#getting-started][:config]
 (use-package dante
 #+end_src
 
-**** Keybindings (~:general~)
+***** Keybindings (~:general~)
 :PROPERTIES:
 :Custom_ID: use-package--dante--general
 :END:
@@ -2005,7 +2059,7 @@ We start the [[https://github.com/noctuid/general.el#general-keyword][:general]]
 :general
 #+end_src
 
-**** Initializations (~:init~)
+***** Initializations (~:init~)
 :PROPERTIES:
 :Custom_ID: use-package--dante--init
 :END:
@@ -2020,7 +2074,7 @@ We start the [[https://github.com/jwiegley/use-package#getting-started][:init]] 
 :init
 #+end_src
 
-**** Configurations (~:config~)
+***** Configurations (~:config~)
 :PROPERTIES:
 :Custom_ID: use-package--dante--config
 :END:
@@ -2035,13 +2089,13 @@ We start the [[https://github.com/jwiegley/use-package#getting-started][:config]
 :config
 #+end_src
 
-**** Closing Paren
+***** Closing Paren
 
 #+begin_src emacs-lisp
 )
 #+end_src
 
-*** ~attrap~
+**** ~attrap~
 :PROPERTIES:
 :Custom_ID: use-package--attrap
 :END:
@@ -2053,7 +2107,7 @@ We start the [[https://github.com/jwiegley/use-package#getting-started][:config]
 (use-package attrap
 #+end_src
 
-**** Keybindings (~:general~)
+***** Keybindings (~:general~)
 :PROPERTIES:
 :Custom_ID: use-package--attrap--general
 :END:
@@ -2064,7 +2118,7 @@ We start the [[https://github.com/noctuid/general.el#general-keyword][:general]]
 :general
 #+end_src
 
-**** Initializations (~:init~)
+***** Initializations (~:init~)
 :PROPERTIES:
 :Custom_ID: use-package--attrap--init
 :END:
@@ -2079,7 +2133,7 @@ We start the [[https://github.com/jwiegley/use-package#getting-started][:init]] 
 :init
 #+end_src
 
-**** Configurations (~:config~)
+***** Configurations (~:config~)
 :PROPERTIES:
 :Custom_ID: use-package--attrap--config
 :END:
@@ -2094,12 +2148,12 @@ We start the [[https://github.com/jwiegley/use-package#getting-started][:config]
 :config
 #+end_src
 
-**** Closing Paren
+***** Closing Paren
 
 #+begin_src emacs-lisp
 )
 #+end_src
-** Json (~json-mode~)
+*** Json (~json-mode~)
 
 #+begin_quote
 Major mode for editing JSON files with emacs.
@@ -2125,11 +2179,13 @@ Major mode for editing JSON files with emacs.
     "t" 'json-toggle-boolean))
 #+end_src
 
-** LaTeX
+*** LaTeX
 
 #+begin_src emacs-lisp
 (use-package auctex
-  :defer t)
+  :defer t
+  :custom
+  (TeX-engine 'luatex))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -2150,14 +2206,43 @@ Major mode for editing JSON files with emacs.
   :after company)
 #+end_src
 
-** YAML
+#+BEGIN_SRC emacs-lisp
+(use-package ox-latex
+  :defer t
+  :after org
+  :straight org
+  :custom
+  (org-latex-compiler "lualatex")
+  (org-latex-listings 'minted)
+  (org-latex-minted-options
+   '(("frame" "lines")
+     ("framesep" "2mm")
+     ("baselinestretch" "1.2")
+     ("style" "pastie")))
+  (org-latex-packages-alist
+   '(("" "fontspec" t ("lualatex"))
+     ("AUTO" "babel" t ("pdflatex" "lualatex"))
+     ("" "booktabs" t)
+     ("" "fancyhdr" t)
+     ("" "minted")
+     ("" "xcolor")))
+  (org-latex-pdf-process
+   '("%latex -shell-escape -interaction nonstopmode -output-directory %o %f"
+     "%latex -shell-escape -interaction nonstopmode -output-directory %o %f"
+     "%latex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
+  :config
+  (add-to-list 'org-latex-minted-langs '(R "r")))
+#+END_SRC
+
+*** YAML
 
 #+begin_src emacs-lisp
 (use-package yaml-mode
   :mode "\\.ya?ml\\'")
 #+end_src
 
-** XML (~nxml~)
+*** XML (~nxml~)
 #+begin_src emacs-lisp
 (use-package nxml-mode
   :straight nxml
@@ -2183,6 +2268,10 @@ Major mode for editing JSON files with emacs.
 #+end_src
 
 * Appendix
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
+
 ** Export Scripts
 *** Org Export Setup (~html-export.setup~)
 
@@ -2244,8 +2333,7 @@ pre span.org-comment {color:var(--dark-cyan-color);font-style:italic}
 
 *** The Build Script (~builddocs.sh~)
 
-#+begin_src sh :tangle builddocs.sh
-#!/bin/sh
+#+begin_src sh :tangle builddocs.sh :shebang #!/bin/sh
 emacs --batch --no-init-file --load publish.el --funcall toggle-debug-on-error --funcall medivhok-publish
 #+end_src
 
@@ -2293,47 +2381,6 @@ emacs --batch --no-init-file --load publish.el --funcall toggle-debug-on-error -
 ;;; publish.el ends here
 #+end_src
 
-** Source Files
-*** ~init.el~
-
-#+begin_src emacs-lisp :tangle init.el
-;;; init.el --- My Emacs Config -*- lexical-binding: t; -*-
-
-;; Author: Jean Gregory Verret <gregory.verret@gmail.com>
-;; This program is free software; you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-;; GNU General Public License for more details.
-
-;; You should have received a copy of the GNU General Public License
-;; along with this program. If not, see <http://www.gnu.org/licenses/>.
-
-;;; Commentary:
-
-;; This is my Emacs configuration.
-
-;;; Code:
-<<init:bootstrapping>>
-
-<<init:personalization>>
-
-<<keybindings>>
-
-<<init:user-interface>>
-
-<<init:applications>>
-
-<<init:tools>>
-
-<<init:languages>>
-
-;;; init.el ends here
-#+end_src
 ** Tests Configurations
 *** The Cask File
 
