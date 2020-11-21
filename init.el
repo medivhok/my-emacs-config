@@ -196,7 +196,7 @@
 
 (custom-theme-set-faces
  'user
- `(default ((t (:family "Roboto" :height 140 :weight light))))
+ `(default ((t (:family "Roboto Mono" :height 140 :weight light))))
  `(fixed-pitch ((t (:family "FiraCode" :height 130 :weight light)))))
 
 ;; ~all-the-icons~
