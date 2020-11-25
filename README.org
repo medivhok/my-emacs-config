@@ -36,10 +36,11 @@ This is my [[https://gnu.org/software/emacs/][Emacs]] configuration and document
   - [[#modeline][Modeline]]
   - [[#notifications][Notifications]]
   - [[#help-interface-helpful][Help Interface (helpful)]]
-- [[#org-mode][Org Mode]]
+- [[#org-ecosystem][Org Ecosystem]]
   - [[#the-one-to-rule-them-all][The One to Rule Them All]]
-  - [[#babel][Babel]]
+  - [[#org-babel][Org Babel]]
   - [[#org-enhancements][Org Enhancements]]
+  - [[#bibliography][Bibliography]]
   - [[#getting-things-done][Getting Things Done]]
   - [[#taking-smart-notes][Taking Smart Notes]]
   - [[#you-need-a-budget][You Need A Budget]]
@@ -817,25 +818,6 @@ We start the [[https://github.com/jwiegley/use-package#getting-started][:config]
 #+begin_src emacs-lisp
 )
 #+end_src
-*** ~ivy-posframe~
-
-#+begin_quote
-ivy-posframe is a ivy extension, which let ivy use posframe to show
-its candidate menu. -- [[https://github.com/tumashu/ivy-posframe][ivy-posframe]]
-#+end_quote
-
-#+begin_src emacs-lisp
-(use-package ivy-posframe
-  :after ivy
-
-  :custom
-  (ivy-posframe-display-functions-alist
-   '((t . ivy-posframe-display-at-frame-center)))
-
-  :config
-  (ivy-posframe-mode 1))
-#+end_src
-
 ** Modeline
 *** doom-modeline
 
@@ -911,12 +893,33 @@ Don't warn when advice is added for functions.
           counsel-describe-variable-function #'helpful-variable))
 #+end_src
 
-* Org Mode
+* Org Ecosystem
 
-#+begin_quote
-Org mode is for keeping notes, maintaining TODO lists, planning projects, and
-authoring documents with a fast and effective plain-text system. -- [[https://orgmode.org/][org]]
-#+end_quote
+#+NAME: medivhok:org-directory
+#+BEGIN_SRC emacs-lisp
+(defconst medivhok:org-directory
+  (file-name-as-directory "~/org")
+  "The root directory of the org ecosystem.")
+
+(defconst medivhok:agenda-directory
+  (file-name-as-directory
+   (expand-file-name "agenda" medivhok:org-directory))
+  "The directory of my agenda files.")
+
+(defconst medivhok:pdf-directory
+  (file-name-as-directory
+   (expand-file-name "readings" medivhok:org-directory))
+  "The directory of my pdf files.")
+
+(defconst medivhok:roam-directory
+  (file-name-as-directory
+   (expand-file-name "roam" medivhok:org-directory))
+  "The directory of my roam files.")
+
+(defconst medivhok:bibtex-file
+  (expand-file-name "zotero.bib" medivhok:pdf-directory)
+  "My default bibliography file.")
+#+END_SRC
 
 [[https://orgmode.org][Org]] is a big and powerful ecosystem of [[https://https://www.gnu.org/software/emacs/][Emacs]] packages. I will configure
 only the common functionalities and suggar for the eyes here. So let's
@@ -924,10 +927,16 @@ start with the ~use-package~ definition.
 
 ** The One to Rule Them All
 
+#+begin_quote
+Org mode is for keeping notes, maintaining TODO lists, planning projects, and
+authoring documents with a fast and effective plain-text system. -- [[https://orgmode.org/][org]]
+#+end_quote
+
+#+NAME: package:org
 #+begin_src emacs-lisp
 (use-package org
   :init
-  (setq org-directory (file-name-as-directory "~/org"))
+  (setq org-directory medivhok:org-directory)
 
   :hook
   (org-mode . org-indent-mode)
@@ -996,7 +1005,7 @@ start with the ~use-package~ definition.
                              (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•")))))))
 #+end_src
 
-** Babel
+** Org Babel
 
 #+BEGIN_SRC emacs-lisp
 (use-package ob-core
@@ -1125,6 +1134,32 @@ Supplemental evil-mode keybindings to emacs org-mode. -- [[https://github.com/So
   (evil-org-agenda-set-keys))
 #+end_src
 
+** Bibliography
+*** ~helm-bibtex~
+
+#+NAME: package:helm-bibtex
+#+BEGIN_SRC emacs-lisp
+(use-package helm-bibtex
+  :after (helm org)
+  :init
+  (setq bibtex-completion-bibliography medivhok:bibtex-file
+        bibtex-completion-notes-path medivhok:roam-directory
+        bibtex-completion-pdf-field "File"))
+#+END_SRC
+
+*** ~org-ref~
+
+#+NAME: package:org-ref
+#+begin_src emacs-lisp
+(use-package org-ref
+  :after
+  (org helm-bibtex)
+
+  :init
+  (setq org-ref-completion-library 'org-ref-helm-cite
+        org-ref-default-bibliography (list medivhok:bibtex-file)))
+#+end_src
+
 ** Getting Things Done
 
 The environment of the /GTD/ workflow is done with ~org-agenda~, which is part of
@@ -1238,44 +1273,44 @@ book [[https://www.goodreads.com/book/show/34507927-how-to-take-smart-notes][How
   :commands
   (org-roam-db-query)
 
-  :custom
-  (org-roam-completion-system 'helm)
-  (org-roam-file-exclude-regexp "setupfiles\\|templates")
-  (org-roam-index-file "index_file.org")
-  (org-roam-tag-sources '(prop))
-  (org-roam-title-sources '(title alias))
-  (org-roam-capture-templates
-   `(("n" "note card" plain
-      (function org-roam--capture-get-point)
-      "%?"
-      :file-name "%<%Y%m%d%H%M%S>-${slug}"
-      :head "#+TITLE: ${title}
-,#+CREATED: %T
-,#+LAST_MODIFIED: %T
-
-- tags ::"
-      :unnarrowed t)))
-  (org-roam-ref-capture-templates
-   '(("r" "ref" plain (function org-roam-capture--get-point)
-      "%?"
-      :file-name "%<%Y%m%d%H%M%S>-${slug}"
-      :head "#+TITLE: ${title}\n#+ROAM_KEY: ${ref}\n- source :: ${ref}"
-      :unnarrowed t)))
-
   :general
   (medivhok:notes-menu
     :states 'normal
-    "b" '(:ignore t :which-key "annotated bibliography")
-    "bf" 'medivhok/find-annotated-bibliography-card
-    "f" 'medivhok/find-note-card
-    "g" '(:ignore t :which-key "glossaries")
-    "gf" 'medivhok/find-glossary-card
+    "f" 'org-roam-find-file
     "G" 'org-roam-graph
     "i" 'org-roam-insert
     "r" 'org-roam-buffer-toggle-display)
 
   :init
-  <<use-package:org-roam:init>>
+  (defconst medivhok:roam-templates-directory
+    (file-name-as-directory
+     (expand-file-name "templates" medivhok:roam-directory))
+    "The slip box cards templates directory.")
+
+  (setq org-roam-completion-system 'helm
+        org-roam-directory medivhok:roam-directory
+        org-roam-file-exclude-regexp "setupfiles\\|templates"
+        org-roam-index-file "index_file.org"
+        org-roam-tag-sources '(prop)
+        org-roam-title-sources '(title alias)
+        org-roam-capture-templates
+        `(("n" "note card" plain
+           (function org-roam--capture-get-point)
+           "%?"
+           :file-name "%<%Y%m%d%H%M%S>-${slug}"
+           :head "#+TITLE: ${title}
+,#+CREATED: %T
+,#+LAST_MODIFIED: %T
+
+- tags ::"
+           :unnarrowed t))
+
+        org-roam-ref-capture-templates
+        '(("r" "ref" plain (function org-roam-capture--get-point)
+           "%?"
+           :file-name "%<%Y%m%d%H%M%S>-${slug}"
+           :head "#+TITLE: ${title}\n#+ROAM_KEY: ${ref}\n- source :: ${ref}"
+           :unnarrowed t)))
 
   (setq time-stamp-active t
         time-stamp-pattern "-10/^#\\+LAST_MODIFIED: <%Y-%02m-%02d %a %02H:%02M>$"
@@ -1324,143 +1359,63 @@ book [[https://www.goodreads.com/book/show/34507927-how-to-take-smart-notes][How
       selected-tag-list)))
 #+end_src
 
-*** Variables
-**** ~org-roam-directory~
-:PROPERTIES:
-:custom_id: variable--org-roam-directory
-:variable-name: org-roam-directory
-:END:
-
-#+begin_src emacs-lisp :noweb-ref use-package:org-roam:init
-(setq org-roam-directory (file-name-as-directory
-                          (expand-file-name "roam"
-                                            org-directory)))
-#+end_src
-
-**** ~medivhok:roam-templates-directory~
-:PROPERTIES:
-:variable-name: medivhok:roam-templates-directory
-:END:
-
-#+begin_src emacs-lisp :noweb-ref use-package:org-roam:init
-(defvar medivhok:roam-templates-directory
-  (file-name-as-directory
-   (expand-file-name "templates" org-roam-directory))
-  "The slip box cards templates directory.")
-#+end_src
-
-*** Packages
-**** ~org-ref~
-
-#+begin_src emacs-lisp :noweb-ref taking-smart-notes
-(use-package org-ref
-  :after
-  (org ivy-bibtex)
-
-  :custom
-  (org-ref-completion-library 'org-ref-ivy-cite)
-  (org-ref-default-bibliography bibtex-completion-bibliography)
-  (org-ref-notes-directory medivhok:annotated-bibliography-directory))
-#+end_src
-
-**** ~org-roam-bibtex~
-:PROPERTIES:
-:Custom_ID: org-roam-bibtex
-:END:
+*** ~org-roam-bibtex~
 
 #+begin_quote
 Connector between Org-roam, BibTeX-completion, and Org-ref. -- [[https://github.com/org-roam/org-roam-bibtex][org-roam-bibtex]]
 #+end_quote
 
-#+begin_src emacs-lisp :noweb-ref taking-smart-notes
+#+begin_src emacs-lisp
 (use-package org-roam-bibtex
   :straight
   (org-roam-bibtex :host github :repo "org-roam/org-roam-bibtex")
 
   :after
-  (org-roam ivy-bibtex org-ref)
+  (org-roam helm-bibtex org-ref)
 
   :hook
   (org-roam-mode . org-roam-bibtex-mode)
 
-  :custom
-  (org-ref-notes-function 'orb-edit-notes)
-  (orb-preformat-keywords '(("citekey" . "=key=")
-                            "title"
-                            "url"
-                            "file"
-                            "author-or-editor"
-                            "keywords"))
-  (orb-templates `(("r" "ref" plain (function org-roam-capture--get-point)
-                    ""
-                    :file-name "annotated-bibliography/${citekey}"
-                    :head
-                    ,(concat "#+TITLE: ${title}\n"
-                             "#+ROAM_KEY: ${ref}\n"
-                             "* Notes\n"
-                             ":PROPERTIES:\n"
-                             ":Custom_ID: ${citekey}\n"
-                             ":URL: ${url}\n"
-                             ":AUTHOR: ${author-or-editor}\n"
-                             ":NOTER_DOCUMENT: %(orb-process-file-field \"${citekey}\")\n"
-                             ":END:\n\n")
-                    :unnarrowed t)
+  :init
+  (setq org-ref-notes-function 'orb-edit-notes
+        orb-preformat-keywords '(("citekey" . "=key=")
+                                 "title"
+                                 "url"
+                                 "file"
+                                 "author-or-editor"
+                                 "keywords")
+        orb-templates `(("r" "ref" plain (function org-roam-capture--get-point)
+                         ""
+                         :file-name "%<%Y%m%d%H%M%S>-${citekey}"
+                         :head
+                         ,(concat "#+TITLE: ${title}\n"
+                                  "#+ROAM_KEY: ${ref}\n"
+                                  "* Notes\n"
+                                  ":PROPERTIES:\n"
+                                  ":Custom_ID: ${citekey}\n"
+                                  ":URL: ${url}\n"
+                                  ":AUTHOR: ${author-or-editor}\n"
+                                  ":NOTER_DOCUMENT: %(orb-process-file-field \"${citekey}\")\n"
+                                  ":END:\n\n")
+                         :unnarrowed t)
 
-                   ("w" "webpage" plain (function org-roam-capture--get-point)
-                    ""
-                    :file-name "annotated-bibliography/${citekey}"
-                    :head
-                    ,(concat "#+TITLE: ${title}\n"
-                             "#+ROAM_KEY: ${url}\n\n"
-                             "* Notes\n"
-                             ":PROPERTIES:\n"
-                             ":Custom_ID: ${citekey}\n"
-                             ":URL: ${url}\n"
-                             ":END:\n\n")
-                    :unnarrowed t))))
-#+end_src
-
-*** Variables & Constants
-
-#+begin_src emacs-lisp
-(defconst medivhok:slip-boxes-directory
-  (file-name-as-directory
-   (expand-file-name "slip-boxes" org-directory))
-  "The directory containing my slip boxes.")
-
-(defconst medivhok:notes-directory
-  (file-name-as-directory
-   (expand-file-name "notes" medivhok:slip-boxes-directory))
-  "The slip box with my notes cards.")
-
-(defconst medivhok:annotated-bibliography-directory
-  (file-name-as-directory
-   (expand-file-name "annotated-bibliography" medivhok:slip-boxes-directory))
-  "The slip box with my annotated bibliography cards.")
-
-(defconst medivhok:glossaries-directory
-  (file-name-as-directory
-   (expand-file-name "glossaries" medivhok:slip-boxes-directory))
-  "The slip box with my glossaries cards.")
-
-(defconst medivhok:card-templates-directory
-  (file-name-as-directory
-   (expand-file-name "templates" medivhok:slip-boxes-directory))
-  "The directory containing the card templates for my slip boxes.")
-
-(defconst medivhok:pdf-root-directory
-  (file-name-as-directory
-   (expand-file-name "readings" org-directory))
-  "The root directory of my PDF files.")
-
-(defconst medivhok:bibtex-file
-  (expand-file-name "zotero.bib" medivhok:pdf-root-directory)
-  "My bibtex file, generated by 'zotero'.")
+                        ("w" "webpage" plain (function org-roam-capture--get-point)
+                         ""
+                         :file-name "%<%Y%m%d%H%M%S>-${slug}"
+                         :head
+                         ,(concat "#+TITLE: ${title}\n"
+                                  "#+ROAM_KEY: ${url}\n\n"
+                                  "* Notes\n"
+                                  ":PROPERTIES:\n"
+                                  ":Custom_ID: ${citekey}\n"
+                                  ":URL: ${url}\n"
+                                  ":END:\n\n")
+                         :unnarrowed t))))
 #+end_src
 
 *** Application Functions
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (defun medivhok/card-entry-< (entry-a entry-b)
   "Returns ENTRY-A < ENTRY-B."
   (string< (car entry-a) (car entry-b)))
@@ -1512,22 +1467,6 @@ Connector between Org-roam, BibTeX-completion, and Org-ref. -- [[https://github.
      (sort (seq-filter 'medivhok/glossary-card-entry-p
                        cards-entries)
            'medivhok/card-entry-<))))
-#+end_src
-
-*** Bibliography
-**** ~bibtex-completion~
-
-#+begin_src emacs-lisp
-(use-package bibtex-completion
-  :defer t
-  :after org
-  :custom
-  (bibtex-completion-bibliography
-   (expand-file-name
-    "zotero.bib"
-    (file-name-as-directory
-     (expand-file-name "readings" org-directory))))
-  (bibtex-completion-pdf-field "File"))
 #+end_src
 
 ** You Need A Budget
@@ -2211,27 +2150,26 @@ Major mode for editing JSON files with emacs.
   :defer t
   :after org
   :straight org
-  :custom
-  (org-latex-compiler "lualatex")
-  (org-latex-listings 'minted)
-  (org-latex-minted-options
-   '(("frame" "lines")
-     ("framesep" "2mm")
-     ("baselinestretch" "1.2")
-     ("style" "pastie")))
-  (org-latex-packages-alist
-   '(("" "fontspec" t ("lualatex"))
-     ("AUTO" "babel" t ("pdflatex" "lualatex"))
-     ("" "booktabs" t)
-     ("" "fancyhdr" t)
-     ("" "minted")
-     ("" "xcolor")))
-  (org-latex-pdf-process
-   '("%latex -shell-escape -interaction nonstopmode -output-directory %o %f"
-     "%latex -shell-escape -interaction nonstopmode -output-directory %o %f"
-     "%latex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-
   :config
+  (setq org-latex-caption-above nil
+        org-latex-compiler "lualatex"
+        org-latex-listings 'minted
+        org-latex-minted-options
+        '(("frame" "lines")
+          ("framesep" "2mm")
+          ("baselinestretch" "1.2")
+          ("style" "pastie"))
+        org-latex-packages-alist
+        '(("" "fontspec" t ("lualatex"))
+          ("AUTO" "babel" t ("pdflatex" "lualatex"))
+          ("" "booktabs" t)
+          ("" "fancyhdr" t)
+          ("" "minted")
+          ("" "xcolor"))
+        org-latex-pdf-process
+        '("%latex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "%latex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "%latex -shell-escape -interaction nonstopmode -output-directory %o %f"))
   (add-to-list 'org-latex-minted-langs '(R "r")))
 #+END_SRC
 

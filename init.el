@@ -703,24 +703,6 @@ is used instead."
 
 )
 
-;; ~ivy-posframe~
-
-;; #+begin_quote
-;; ivy-posframe is a ivy extension, which let ivy use posframe to show
-;; its candidate menu. -- [[https://github.com/tumashu/ivy-posframe][ivy-posframe]]
-;; #+end_quote
-
-
-(use-package ivy-posframe
-  :after ivy
-
-  :custom
-  (ivy-posframe-display-functions-alist
-   '((t . ivy-posframe-display-at-frame-center)))
-
-  :config
-  (ivy-posframe-mode 1))
-
 ;; doom-modeline
 
 
@@ -793,12 +775,45 @@ is used instead."
   (setq counsel-describe-function-function #'helpful-callable
         counsel-describe-variable-function #'helpful-variable))
 
+;; Org Ecosystem
+
+;; #+NAME: medivhok:org-directory
+
+(defconst medivhok:org-directory
+  (file-name-as-directory "~/org")
+  "The root directory of the org ecosystem.")
+
+(defconst medivhok:agenda-directory
+  (file-name-as-directory
+   (expand-file-name "agenda" medivhok:org-directory))
+  "The directory of my agenda files.")
+
+(defconst medivhok:pdf-directory
+  (file-name-as-directory
+   (expand-file-name "readings" medivhok:org-directory))
+  "The directory of my pdf files.")
+
+(defconst medivhok:roam-directory
+  (file-name-as-directory
+   (expand-file-name "roam" medivhok:org-directory))
+  "The directory of my roam files.")
+
+(defconst medivhok:bibtex-file
+  (expand-file-name "zotero.bib" medivhok:pdf-directory)
+  "My default bibliography file.")
+
 ;; The One to Rule Them All
 
+;; #+begin_quote
+;; Org mode is for keeping notes, maintaining TODO lists, planning projects, and
+;; authoring documents with a fast and effective plain-text system. -- [[https://orgmode.org/][org]]
+;; #+end_quote
+
+;; #+NAME: package:org
 
 (use-package org
   :init
-  (setq org-directory (file-name-as-directory "~/org"))
+  (setq org-directory medivhok:org-directory)
 
   :hook
   (org-mode . org-indent-mode)
@@ -866,7 +881,7 @@ is used instead."
                           '(("^ *\\([-]\\) "
                              (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•")))))))
 
-;; Babel
+;; Org Babel
 
 
 (use-package ob-core
@@ -980,6 +995,29 @@ is used instead."
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 
+;; ~helm-bibtex~
+
+;; #+NAME: package:helm-bibtex
+
+(use-package helm-bibtex
+  :after (helm org)
+  :init
+  (setq bibtex-completion-bibliography medivhok:bibtex-file
+        bibtex-completion-notes-path medivhok:roam-directory
+        bibtex-completion-pdf-field "File"))
+
+;; ~org-ref~
+
+;; #+NAME: package:org-ref
+
+(use-package org-ref
+  :after
+  (org helm-bibtex)
+
+  :init
+  (setq org-ref-completion-library 'org-ref-helm-cite
+        org-ref-default-bibliography (list medivhok:bibtex-file)))
+
 ;; Getting Things Done
 
 ;; The environment of the /GTD/ workflow is done with ~org-agenda~, which is part of
@@ -1083,50 +1121,44 @@ is used instead."
   :commands
   (org-roam-db-query)
 
-  :custom
-  (org-roam-completion-system 'helm)
-  (org-roam-file-exclude-regexp "setupfiles\\|templates")
-  (org-roam-index-file "index_file.org")
-  (org-roam-tag-sources '(prop))
-  (org-roam-title-sources '(title alias))
-  (org-roam-capture-templates
-   `(("n" "note card" plain
-      (function org-roam--capture-get-point)
-      "%?"
-      :file-name "%<%Y%m%d%H%M%S>-${slug}"
-      :head "#+TITLE: ${title}
-#+CREATED: %T
-#+LAST_MODIFIED: %T
-
-- tags ::"
-      :unnarrowed t)))
-  (org-roam-ref-capture-templates
-   '(("r" "ref" plain (function org-roam-capture--get-point)
-      "%?"
-      :file-name "%<%Y%m%d%H%M%S>-${slug}"
-      :head "#+TITLE: ${title}\n#+ROAM_KEY: ${ref}\n- source :: ${ref}"
-      :unnarrowed t)))
-
   :general
   (medivhok:notes-menu
     :states 'normal
-    "b" '(:ignore t :which-key "annotated bibliography")
-    "bf" 'medivhok/find-annotated-bibliography-card
-    "f" 'medivhok/find-note-card
-    "g" '(:ignore t :which-key "glossaries")
-    "gf" 'medivhok/find-glossary-card
+    "f" 'org-roam-find-file
     "G" 'org-roam-graph
     "i" 'org-roam-insert
     "r" 'org-roam-buffer-toggle-display)
 
   :init
-  (setq org-roam-directory (file-name-as-directory
-                            (expand-file-name "roam"
-                                              org-directory)))
-  (defvar medivhok:roam-templates-directory
+  (defconst medivhok:roam-templates-directory
     (file-name-as-directory
-     (expand-file-name "templates" org-roam-directory))
+     (expand-file-name "templates" medivhok:roam-directory))
     "The slip box cards templates directory.")
+
+  (setq org-roam-completion-system 'helm
+        org-roam-directory medivhok:roam-directory
+        org-roam-file-exclude-regexp "setupfiles\\|templates"
+        org-roam-index-file "index_file.org"
+        org-roam-tag-sources '(prop)
+        org-roam-title-sources '(title alias)
+        org-roam-capture-templates
+        `(("n" "note card" plain
+           (function org-roam--capture-get-point)
+           "%?"
+           :file-name "%<%Y%m%d%H%M%S>-${slug}"
+           :head "#+TITLE: ${title}
+#+CREATED: %T
+#+LAST_MODIFIED: %T
+
+- tags ::"
+           :unnarrowed t))
+
+        org-roam-ref-capture-templates
+        '(("r" "ref" plain (function org-roam-capture--get-point)
+           "%?"
+           :file-name "%<%Y%m%d%H%M%S>-${slug}"
+           :head "#+TITLE: ${title}\n#+ROAM_KEY: ${ref}\n- source :: ${ref}"
+           :unnarrowed t)))
 
   (setq time-stamp-active t
         time-stamp-pattern "-10/^#\\+LAST_MODIFIED: <%Y-%02m-%02d %a %02H:%02M>$"
@@ -1174,44 +1206,7 @@ is used instead."
                  (add-to-list 'selected-tag-list selected-tag t)))))
       selected-tag-list)))
 
-;; ~org-roam-directory~
-;; :PROPERTIES:
-;; :custom_id: variable--org-roam-directory
-;; :variable-name: org-roam-directory
-;; :END:
-
-
-(setq org-roam-directory (file-name-as-directory
-                          (expand-file-name "roam"
-                                            org-directory)))
-
-;; ~medivhok:roam-templates-directory~
-;; :PROPERTIES:
-;; :variable-name: medivhok:roam-templates-directory
-;; :END:
-
-
-(defvar medivhok:roam-templates-directory
-  (file-name-as-directory
-   (expand-file-name "templates" org-roam-directory))
-  "The slip box cards templates directory.")
-
-;; ~org-ref~
-
-
-(use-package org-ref
-  :after
-  (org ivy-bibtex)
-
-  :custom
-  (org-ref-completion-library 'org-ref-ivy-cite)
-  (org-ref-default-bibliography bibtex-completion-bibliography)
-  (org-ref-notes-directory medivhok:annotated-bibliography-directory))
-
 ;; ~org-roam-bibtex~
-;; :PROPERTIES:
-;; :Custom_ID: org-roam-bibtex
-;; :END:
 
 ;; #+begin_quote
 ;; Connector between Org-roam, BibTeX-completion, and Org-ref. -- [[https://github.com/org-roam/org-roam-bibtex][org-roam-bibtex]]
@@ -1223,152 +1218,46 @@ is used instead."
   (org-roam-bibtex :host github :repo "org-roam/org-roam-bibtex")
 
   :after
-  (org-roam ivy-bibtex org-ref)
+  (org-roam helm-bibtex org-ref)
 
   :hook
   (org-roam-mode . org-roam-bibtex-mode)
 
-  :custom
-  (org-ref-notes-function 'orb-edit-notes)
-  (orb-preformat-keywords '(("citekey" . "=key=")
-                            "title"
-                            "url"
-                            "file"
-                            "author-or-editor"
-                            "keywords"))
-  (orb-templates `(("r" "ref" plain (function org-roam-capture--get-point)
-                    ""
-                    :file-name "annotated-bibliography/${citekey}"
-                    :head
-                    ,(concat "#+TITLE: ${title}\n"
-                             "#+ROAM_KEY: ${ref}\n"
-                             "* Notes\n"
-                             ":PROPERTIES:\n"
-                             ":Custom_ID: ${citekey}\n"
-                             ":URL: ${url}\n"
-                             ":AUTHOR: ${author-or-editor}\n"
-                             ":NOTER_DOCUMENT: %(orb-process-file-field \"${citekey}\")\n"
-                             ":END:\n\n")
-                    :unnarrowed t)
+  :init
+  (setq org-ref-notes-function 'orb-edit-notes
+        orb-preformat-keywords '(("citekey" . "=key=")
+                                 "title"
+                                 "url"
+                                 "file"
+                                 "author-or-editor"
+                                 "keywords")
+        orb-templates `(("r" "ref" plain (function org-roam-capture--get-point)
+                         ""
+                         :file-name "%<%Y%m%d%H%M%S>-${citekey}"
+                         :head
+                         ,(concat "#+TITLE: ${title}\n"
+                                  "#+ROAM_KEY: ${ref}\n"
+                                  "* Notes\n"
+                                  ":PROPERTIES:\n"
+                                  ":Custom_ID: ${citekey}\n"
+                                  ":URL: ${url}\n"
+                                  ":AUTHOR: ${author-or-editor}\n"
+                                  ":NOTER_DOCUMENT: %(orb-process-file-field \"${citekey}\")\n"
+                                  ":END:\n\n")
+                         :unnarrowed t)
 
-                   ("w" "webpage" plain (function org-roam-capture--get-point)
-                    ""
-                    :file-name "annotated-bibliography/${citekey}"
-                    :head
-                    ,(concat "#+TITLE: ${title}\n"
-                             "#+ROAM_KEY: ${url}\n\n"
-                             "* Notes\n"
-                             ":PROPERTIES:\n"
-                             ":Custom_ID: ${citekey}\n"
-                             ":URL: ${url}\n"
-                             ":END:\n\n")
-                    :unnarrowed t))))
-
-;; Variables & Constants
-
-
-(defconst medivhok:slip-boxes-directory
-  (file-name-as-directory
-   (expand-file-name "slip-boxes" org-directory))
-  "The directory containing my slip boxes.")
-
-(defconst medivhok:notes-directory
-  (file-name-as-directory
-   (expand-file-name "notes" medivhok:slip-boxes-directory))
-  "The slip box with my notes cards.")
-
-(defconst medivhok:annotated-bibliography-directory
-  (file-name-as-directory
-   (expand-file-name "annotated-bibliography" medivhok:slip-boxes-directory))
-  "The slip box with my annotated bibliography cards.")
-
-(defconst medivhok:glossaries-directory
-  (file-name-as-directory
-   (expand-file-name "glossaries" medivhok:slip-boxes-directory))
-  "The slip box with my glossaries cards.")
-
-(defconst medivhok:card-templates-directory
-  (file-name-as-directory
-   (expand-file-name "templates" medivhok:slip-boxes-directory))
-  "The directory containing the card templates for my slip boxes.")
-
-(defconst medivhok:pdf-root-directory
-  (file-name-as-directory
-   (expand-file-name "readings" org-directory))
-  "The root directory of my PDF files.")
-
-(defconst medivhok:bibtex-file
-  (expand-file-name "zotero.bib" medivhok:pdf-root-directory)
-  "My bibtex file, generated by 'zotero'.")
-
-;; Application Functions
-
-
-(defun medivhok/card-entry-< (entry-a entry-b)
-  "Returns ENTRY-A < ENTRY-B."
-  (string< (car entry-a) (car entry-b)))
-
-(defun medivhok/note-card-entry-p (card-entry)
-  "Check if CARD-ENTRY is a note card."
-  (string-match medivhok:notes-directory
-                (plist-get (cdr card-entry) :path)))
-
-(defun medivhok/find-note-card ()
-  (interactive)
-  (org-roam-find-file
-   ""
-   nil
-   (lambda (cards-entries)
-     (interactive)
-     (sort (seq-filter 'medivhok/note-card-entry-p
-                       cards-entries)
-           'medivhok/card-entry-<))))
-
-(defun medivhok/annotated-bibliography-card-entry-p (card-entry)
-  "Check if CARD-ENTRY is an annotated bibliography card."
-  (string-match medivhok:annotated-bibliography-directory
-                (plist-get (cdr card-entry) :path)))
-
-(defun medivhok/find-annotated-bibliography-card ()
-  (interactive)
-  (org-roam-find-file
-   ""
-   nil
-   (lambda (cards-entries)
-     (interactive)
-     (sort (seq-filter 'medivhok/annotated-bibliography-card-entry-p
-                       cards-entries)
-           'medivhok/card-entry-<))))
-
-(defun medivhok/glossary-card-entry-p (card-entry)
-  "Check if CARD-ENTRY is a glossary card."
-  (string-match medivhok:glossaries-directory
-                (plist-get (cdr card-entry) :path)))
-
-(defun medivhok/find-glossary-card ()
-  (interactive)
-  (org-roam-find-file
-   ""
-   nil
-   (lambda (cards-entries)
-     (interactive)
-     (sort (seq-filter 'medivhok/glossary-card-entry-p
-                       cards-entries)
-           'medivhok/card-entry-<))))
-
-;; ~bibtex-completion~
-
-
-(use-package bibtex-completion
-  :defer t
-  :after org
-  :custom
-  (bibtex-completion-bibliography
-   (expand-file-name
-    "zotero.bib"
-    (file-name-as-directory
-     (expand-file-name "readings" org-directory))))
-  (bibtex-completion-pdf-field "File"))
+                        ("w" "webpage" plain (function org-roam-capture--get-point)
+                         ""
+                         :file-name "%<%Y%m%d%H%M%S>-${slug}"
+                         :head
+                         ,(concat "#+TITLE: ${title}\n"
+                                  "#+ROAM_KEY: ${url}\n\n"
+                                  "* Notes\n"
+                                  ":PROPERTIES:\n"
+                                  ":Custom_ID: ${citekey}\n"
+                                  ":URL: ${url}\n"
+                                  ":END:\n\n")
+                         :unnarrowed t))))
 
 ;; ~ledger-mode~
 
@@ -1954,27 +1843,26 @@ Taken from https://github.com/syl20bnr/spacemacs/pull/179."
   :defer t
   :after org
   :straight org
-  :custom
-  (org-latex-compiler "lualatex")
-  (org-latex-listings 'minted)
-  (org-latex-minted-options
-   '(("frame" "lines")
-     ("framesep" "2mm")
-     ("baselinestretch" "1.2")
-     ("style" "pastie")))
-  (org-latex-packages-alist
-   '(("" "fontspec" t ("lualatex"))
-     ("AUTO" "babel" t ("pdflatex" "lualatex"))
-     ("" "booktabs" t)
-     ("" "fancyhdr" t)
-     ("" "minted")
-     ("" "xcolor")))
-  (org-latex-pdf-process
-   '("%latex -shell-escape -interaction nonstopmode -output-directory %o %f"
-     "%latex -shell-escape -interaction nonstopmode -output-directory %o %f"
-     "%latex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-
   :config
+  (setq org-latex-caption-above nil
+        org-latex-compiler "lualatex"
+        org-latex-listings 'minted
+        org-latex-minted-options
+        '(("frame" "lines")
+          ("framesep" "2mm")
+          ("baselinestretch" "1.2")
+          ("style" "pastie"))
+        org-latex-packages-alist
+        '(("" "fontspec" t ("lualatex"))
+          ("AUTO" "babel" t ("pdflatex" "lualatex"))
+          ("" "booktabs" t)
+          ("" "fancyhdr" t)
+          ("" "minted")
+          ("" "xcolor"))
+        org-latex-pdf-process
+        '("%latex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "%latex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "%latex -shell-escape -interaction nonstopmode -output-directory %o %f"))
   (add-to-list 'org-latex-minted-langs '(R "r")))
 
 ;; YAML
