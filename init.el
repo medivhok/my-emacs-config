@@ -703,24 +703,6 @@ is used instead."
 
 )
 
-;; ~ivy-posframe~
-
-;; #+begin_quote
-;; ivy-posframe is a ivy extension, which let ivy use posframe to show
-;; its candidate menu. -- [[https://github.com/tumashu/ivy-posframe][ivy-posframe]]
-;; #+end_quote
-
-
-(use-package ivy-posframe
-  :after ivy
-
-  :custom
-  (ivy-posframe-display-functions-alist
-   '((t . ivy-posframe-display-at-frame-center)))
-
-  :config
-  (ivy-posframe-mode 1))
-
 ;; doom-modeline
 
 
@@ -1142,11 +1124,7 @@ is used instead."
   :general
   (medivhok:notes-menu
     :states 'normal
-    "b" '(:ignore t :which-key "annotated bibliography")
-    "bf" 'medivhok/find-annotated-bibliography-card
-    "f" 'medivhok/find-note-card
-    "g" '(:ignore t :which-key "glossaries")
-    "gf" 'medivhok/find-glossary-card
+    "f" 'org-roam-find-file
     "G" 'org-roam-graph
     "i" 'org-roam-insert
     "r" 'org-roam-buffer-toggle-display)
