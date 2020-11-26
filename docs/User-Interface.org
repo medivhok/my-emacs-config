@@ -1,0 +1,656 @@
+#+TITLE: User Interface
+#+STARTUP: overview
+#+PROPERTY: header-args:emacs-lisp :tangle ../user-interface/init.el :mkdirp yes
+#+OPTIONS: H:2 toc:nil
+
+#+TOC: headlines:2
+
+* Table of Contents  :noexport:
+:PROPERTIES:
+:TOC:      :include all :depth 2 :ignore (this)
+:END:
+:CONTENTS:
+- [[#theme][Theme]]
+- [[#fonts][Fonts]]
+  - [[#icons][Icons]]
+- [[#frames][Frames]]
+- [[#scrolling][Scrolling]]
+- [[#visuals][Visuals]]
+- [[#widgets][Widgets]]
+- [[#windows][Windows]]
+- [[#keybindings--co][Keybindings & Co]]
+  - [[#evil][evil]]
+  - [[#evil-collection][evil-collection]]
+  - [[#hydra][hydra]]
+  - [[#which-key][which-key]]
+  - [[#general][general]]
+  - [[#keybindings][Keybindings]]
+- [[#dashboard][Dashboard]]
+- [[#minibuffer][Minibuffer]]
+  - [[#amx][amx]]
+  - [[#counsel][counsel]]
+  - [[#ivy-rich][ivy-rich]]
+- [[#modeline][Modeline]]
+  - [[#doom-modeline][doom-modeline]]
+  - [[#minions][minions]]
+- [[#notifications][Notifications]]
+- [[#help-interface-helpful][Help Interface (helpful)]]
+:END:
+
+* Theme
+
+We configure the theme.
+#+begin_src emacs-lisp
+(use-package doom-themes
+  :config
+  (setq doom-themes-enable-bold t
+	      doom-themes-enable-italic t)
+  (load-theme 'doom-one t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
+#+end_src
+
+* Fonts
+
+The fonts.
+
+#+begin_src emacs-lisp
+(custom-theme-set-faces
+ 'user
+ `(default ((t (:family "Roboto Mono" :height 140 :weight light))))
+ `(fixed-pitch ((t (:family "FiraCode" :height 130 :weight light)))))
+#+end_src
+
+** Icons
+*** ~all-the-icons~
+:PROPERTIES:
+:Custom_ID: use-package--all-the-icons
+:END:
+
+#+begin_quote
+A utility package to collect various Icon Fonts and propertize them within Emacs. -- [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
+#+end_quote
+
+#+begin_src emacs-lisp
+(use-package all-the-icons
+#+end_src
+
+*** Preface (~:preface~)
+:PROPERTIES:
+:Custom_ID: use-package--all-the-icons--preface
+:END:
+
+#+begin_quote
+NOTE: This code is executed right away.
+#+end_quote
+
+We start the [[https://github.com/jwiegley/use-package#add-preface-occurring-before-everything-except-disabled][:preface]] section of the [[#use-package--all-the-icons][use-package]].
+
+Show some nice symbols (ex.: ~lambda~ becomes $\lambda$)
+
+#+begin_src emacs-lisp
+:preface
+(global-prettify-symbols-mode 1)
+#+end_src
+**** Closing Paren
+
+#+begin_src emacs-lisp
+)
+#+end_src
+* Frames
+
+Set the frame transparency.
+
+#+begin_src emacs-lisp
+(set-frame-parameter (selected-frame) 'alpha '(95 . 95))
+(add-to-list 'default-frame-alist '(alpha . (95 . 95)))
+#+end_src
+
+* Scrolling
+
+Improve scrolling.
+
+#+begin_src emacs-lisp
+;; One line at a time.
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+
+;; Don't accelerate scrolling.
+(setq mouse-wheel-progressive-speed nil)
+
+;; Scroll window under mouse.
+(setq mouse-wheel-follow-mouse 't)
+
+;; Keyboard scroll one line at a time.
+(setq scroll-step 1)
+#+end_src
+
+* Visuals
+
+Line and column numbers.
+
+#+begin_src emacs-lisp
+(setq display-line-numbers-type 'relative
+      display-line-numbers-width-start t)
+;; (global-display-line-numbers-mode t)
+(column-number-mode)
+#+end_src
+
+Set up the visible bell.
+
+#+begin_src emacs-lisp
+(setq visible-bell t)
+#+end_src
+
+Highlight current line.
+
+#+begin_src emacs-lisp
+(global-hl-line-mode t)
+#+end_src
+
+Time format.
+
+#+begin_src emacs-lisp
+(setq display-time-format "%l:%M %p %b %y"
+      display-time-default-load-average nil)
+#+end_src
+
+#+begin_src emacs-lisp
+(setq-default fill-column 80)
+#+end_src
+
+* Widgets
+
+Disable the scroll bar and tooltips.
+
+#+begin_src emacs-lisp
+(scroll-bar-mode -1)
+(tooltip-mode -1)
+
+;; We disable the tool and menu bar.
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+#+end_src
+
+Give some breathing room.
+
+#+begin_src emacs-lisp
+(set-fringe-mode 10)
+#+end_src
+
+* Windows
+
+Maximize windows by default.
+
+#+begin_src emacs-lisp
+(set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+#+end_src
+
+* Keybindings & Co
+
+Keybindings is quite a powerful aspect of Emacs and we will install
+some helper utilities to help us with it.
+
+** ~evil~
+:PROPERTIES:
+:Custom_ID: user-interface--keybindings--evil
+:END:
+
+#+begin_quote
+Now you see that evil will always triumph, because good is dumb. -- Dark Helmet
+#+end_quote
+
+#+begin_src emacs-lisp
+(use-package evil
+  :custom
+  (evil-want-integration t)
+  (evil-want-keybinding nil)
+  (evil-want-C-u-scroll t)
+  (evil-want-C-i-jump nil)
+  (evil-respect-visual-line-mode t)
+
+  :config
+  (evil-mode 1))
+#+end_src
+
+** ~evil-collection~
+:PROPERTIES:
+:Custom_ID: user-interface--keybindings--evil-collection
+:END:
+
+#+begin_src emacs-lisp
+(use-package evil-collection
+  :defer t
+  :after evil
+
+  :custom
+  (evil-collection-outline-bind-tab-p nil))
+#+end_src
+
+** ~hydra~
+:PROPERTIES:
+:Custom_ID: user-interface--keybindings--hydra
+:END:
+
+#+begin_quote
+make Emacs bindings that stick around. -- [[https://github.com/abo-abo/hydra][hydra]]
+#+end_quote
+
+#+begin_src emacs-lisp
+(use-package hydra
+  :defer t)
+#+end_src
+
+** ~which-key~
+:PROPERTIES:
+:Custom_ID: use-package--which-key
+:END:
+
+#+begin_quote
+Emacs package that displays available keybindings in popup. -- [[https://github.com/justbur/emacs-which-key][which-key]]
+#+end_quote
+
+#+begin_src emacs-lisp
+(use-package which-key
+  :custom
+  (which-key-idle-delay 0.3)
+
+  :config
+  (which-key-mode))
+#+end_src
+
+** ~general~
+:PROPERTIES:
+:Custom_ID: use-package--general
+:END:
+
+#+begin_quote
+More convenient key definitions in emacs. -- [[https://github.com/noctuid/general.el][general.el]]
+#+end_quote
+
+#+begin_src emacs-lisp
+(use-package general
+  :config
+  (general-evil-setup t))
+#+end_src
+
+** Keybindings
+:PROPERTIES:
+:Custom_ID: user-interface--keybindings
+:END:
+
+#+begin_src emacs-lisp
+(defvar medivhok:leader-key "SPC"
+  "The leader key.")
+
+(defconst medivhok:non-normal-leader-key "M-SPC"
+  "The 'non normal state' leader key.")
+
+(defun medivhok/expand-menu-key (menu-key &optional non-normal-menu-key)
+  "Returns a string of the MENU-KEY prefixed by `medivhok:leader-key' and
+a space. If NON-NORMAL-MENU-KEY is non nil, `medivhok:non-local-leader-key'
+is used instead."
+  (if (null non-normal-menu-key)
+      (concat medivhok:leader-key " " menu-key)
+    (concat medivhok:non-normal-leader-key " " menu-key)))
+#+end_src
+
+~medivhok:leader-menu~
+#+begin_src emacs-lisp
+(defhydra hydra-zoom ()
+  "zoom"
+  ("-" text-scale-decrease "out")
+  ("=" text-scale-increase "in"))
+
+(general-create-definer medivhok:main-menu
+  :prefix medivhok:leader-key
+  :non-normal-prefix medivhok:non-normal-leader-key
+  :keymaps 'override)
+
+(medivhok:main-menu
+  :states 'normal
+  ":" 'execute-extended-command
+  "-" '(hydra-zoom/text-scale-decrease
+        :which-key "text-scale-decrease")
+  "=" '(hydra-zoom/text-scale-increase
+        :which-key "text-scale-increase"))
+#+end_src
+
+~medivhok:local-mode-menu~
+#+begin_src emacs-lisp
+(general-create-definer medivhok:local-mode-menu
+  :prefix (medivhok/expand-menu-key "m")
+  :non-normal-prefix (medivhok/expand-menu-key "m" t)
+  :keymaps 'override)
+#+end_src
+
+~medivhok:applications-menu~
+#+begin_src emacs-lisp
+(general-create-definer medivhok:applications-menu
+  :prefix (medivhok/expand-menu-key "a")
+  :non-normal-prefix (medivhok/expand-menu-key "a" t)
+  :keymaps 'override
+  nil '(:ignore t :which-key "applications"))
+#+end_src
+
+~medivhok:buffer-menu~
+#+begin_src emacs-lisp
+(general-create-definer medivhok:buffer-menu
+  :prefix (medivhok/expand-menu-key "b")
+  :non-normal-prefix (medivhok/expand-menu-key "b" t)
+  :keymaps 'override
+  nil '(:ignore t :which-key "buffer"))
+
+(medivhok:buffer-menu
+  :states 'normal
+  "b" 'switch-to-buffer
+  "k" 'kill-buffer
+  "d" 'kill-current-buffer)
+#+end_src
+
+~medivhok:emacs-menu~
+#+begin_src emacs-lisp
+(general-create-definer medivhok:emacs-menu
+  :prefix (medivhok/expand-menu-key "e")
+  :non-normal-prefix (medivhok/expand-menu-key "e" t)
+  :keymaps 'override
+  nil '(:ignore t :which-key "emacs"))
+
+(medivhok:emacs-menu
+  :states 'normal
+  "e" '((lambda ()
+          (interactive)
+          (find-file
+           (expand-file-name "README.org"
+                             (file-name-directory user-init-file))))
+        :which-key "edit literate config")
+  "E" '((lambda ()
+          (interactive)
+          (find-file
+           (expand-file-name "init.el"
+                             (file-name-directory user-init-file))))
+        :which-key "edit config"))
+#+end_src
+
+~medivhok:file-menu~
+#+begin_src emacs-lisp
+(general-create-definer medivhok:file-menu
+  :prefix (medivhok/expand-menu-key "f")
+  :non-normal-prefix (medivhok/expand-menu-key "f" t)
+  :keymaps 'override
+  nil '(:ignore t :which-key "file"))
+
+(medivhok:file-menu
+  :states 'normal
+  "f" 'find-file
+  "r" 'counsel-recentf)
+#+end_src
+
+~medivhok:help-menu~
+#+begin_src emacs-lisp
+(general-create-definer medivhok:help-menu
+  :prefix (medivhok/expand-menu-key "h")
+  :non-normal-prefix (medivhok/expand-menu-key "h" t)
+  :keymaps 'override
+  nil '(:ignore t :which-key "help"))
+
+(medivhok:help-menu
+  :states 'normal
+  "a" 'apropos-command
+  "b" 'describe-bindings
+  "c" 'describe-face
+  "f" 'describe-function
+  "i" 'info
+  "k" 'general-describe-keybindings
+  "s" 'counsel-describe-symbol
+  "v" 'describe-variable)
+#+end_src
+
+~medivhok:notes-menu~
+#+begin_src emacs-lisp
+(general-create-definer medivhok:notes-menu
+  :prefix (medivhok/expand-menu-key "n")
+  :non-normal-prefix (medivhok/expand-menu-key "n" t)
+  :keymaps 'override
+  nil '(:ignore t :which-key "notes"))
+#+end_src
+
+~medivhok:window-menu~
+#+begin_src emacs-lisp
+(general-create-definer medivhok:window-menu
+  :prefix (medivhok/expand-menu-key "w")
+  :non-normal-prefix (medivhok/expand-menu-key "w" t)
+  :keymaps 'override
+  nil '(:ignore t :which-key "window"))
+
+(medivhok:window-menu
+  :states 'normal
+  "q" 'delete-window
+  "s" 'split-window-below
+  "\\" 'split-window-right)
+#+end_src
+
+~medivhok:quit-menu~
+#+begin_src emacs-lisp
+(general-create-definer medivhok:quit-menu
+  :prefix (medivhok/expand-menu-key "q")
+  :non-normal-prefix (medivhok/expand-menu-key "q" t)
+  :keymaps 'override
+  nil '(:ignore t :which-key "quit"))
+
+(medivhok:quit-menu
+  :states 'normal
+  "q" 'save-buffers-kill-terminal)
+#+end_src
+
+* Dashboard
+
+#+begin_src emacs-lisp
+(use-package dashboard
+  :preface
+  (setq inhibit-startup-message t)
+
+  :config
+  (dashboard-setup-startup-hook)
+  (setq dashboard-startup-banner 'logo
+        dashboard-items '((recents . 5)
+                          (agenda . 5)))
+  (evil-collection-init 'dashboard))
+#+end_src
+
+* Minibuffer
+** ~amx~
+:PROPERTIES:
+:Custom_ID: use-package--amx
+:END:
+
+#+begin_quote
+An alternative M-x interface for Emacs. -- [[https://github.com/DarwinAwardWinner/amx][amx]]
+#+end_quote
+
+#+begin_src emacs-lisp
+(use-package amx
+  :after ivy
+
+  :custom
+  (amx-backend 'ivy)
+
+  :config
+  (amx-mode))
+#+end_src
+
+** ~counsel~
+:PROPERTIES:
+:Custom_ID: use-package--counsel
+:END:
+
+#+begin_quote
+Ivy - a generic completion frontend for Emacs, Swiper - isearch with an
+overview, and more. Oh, man! -- [[https://github.com/abo-abo/swiper][swiper]]
+#+end_quote
+
+#+begin_center
+NOTE: By installing ~counsel~, ~ivy~ and ~swiper~ will automatically be installed as
+dependencies.
+#+end_center
+
+#+begin_src emacs-lisp
+(use-package counsel
+#+end_src
+*** Load Package After... (~:after~)
+:PROPERTIES:
+:Custom_ID: use-package--counsel--after
+:END:
+
+We start the [[https://github.com/jwiegley/use-package#loading-packages-in-sequence][:after]] section of the [[#use-package--counsel][use-package]].
+
+#+begin_src emacs-lisp
+:after evil-collection
+#+end_src
+*** Configurations (~:config~)
+:PROPERTIES:
+:Custom_ID: use-package--counsel--config
+:END:
+
+#+begin_quote
+NOTE: This code is executed AFTER the package is loaded.
+#+end_quote
+
+We start the [[https://github.com/jwiegley/use-package#getting-started][:config]] section of the [[#use-package--counsel][use-package]].
+
+#+begin_src emacs-lisp
+:config
+(evil-collection-init 'ivy)
+(setq ivy-use-virtual-buffers t
+      ivy-count-format "(%d/%d) ")
+(ivy-mode 1)
+(counsel-mode 1)
+#+end_src
+*** Closing Paren
+
+#+begin_src emacs-lisp
+)
+#+end_src
+** ~ivy-rich~
+:PROPERTIES:
+:Custom_ID: use-package--ivy-rich
+:END:
+
+#+begin_quote
+More friendly interface for ivy. -- [[https://github.com/Yevgnen/ivy-rich][ivy-rich]]
+#+end_quote
+
+#+begin_src emacs-lisp
+(use-package ivy-rich
+#+end_src
+
+*** Load Package After... (~:after~)
+:PROPERTIES:
+:Custom_ID: use-package--ivy-rich--after
+:END:
+
+We start the [[https://github.com/jwiegley/use-package#loading-packages-in-sequence][:after]] section of the [[#use-package--ivy-rich][use-package]].
+
+#+begin_src emacs-lisp
+:after ivy
+#+end_src
+
+*** Configurations (~:config~)
+:PROPERTIES:
+:Custom_ID: use-package--ivy-rich--config
+:END:
+
+#+begin_quote
+NOTE: This code is executed AFTER the package is loaded.
+#+end_quote
+
+We start the [[https://github.com/jwiegley/use-package#getting-started][:config]] section of the [[#use-package--ivy-rich][use-package]].
+
+#+begin_src emacs-lisp
+:config
+(ivy-rich-mode 1)
+(setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+#+end_src
+*** Closing Paren
+
+#+begin_src emacs-lisp
+)
+#+end_src
+* Modeline
+** doom-modeline
+
+#+begin_src emacs-lisp
+(use-package doom-modeline
+  :hook
+  (window-setup . doom-modeline-mode)
+
+  ;; :custom-face
+  ;; (mode-line ((t (:height 0.85))))
+  ;; (mode-line-inactive ((t (:height 0.85))))
+
+  :init
+  (setq doom-modeline-bar-width 6
+        doom-modeline-buffer-file-name-style 'auto
+        doom-modeline-buffer-state-icon t
+        doom-modeline-github nil
+        doom-modeline-height 15
+        doom-modeline-icon (display-graphic-p)
+        doom-modeline-irc nil
+        doom-modeline-lsp t
+        doom-modeline-major-mode-icon t
+        doom-modeline-major-mode-color-icon t
+        doom-modeline-minor-modes t
+        doom-modeline-mu4e nil
+        doom-modeline-persp-name nil
+        doom-modeline-project-detection 'projectile))
+#+end_src
+
+** minions
+
+Configuration of the modeline.
+
+#+begin_src emacs-lisp
+(use-package minions
+  :init
+  (setq minions-mode-line-lighter " ")
+
+  :config
+  (minions-mode 1))
+#+end_src
+
+* Notifications
+
+Don't warn for large files.
+
+#+begin_src emacs-lisp
+(setq large-file-warning-threshold nil)
+#+end_src
+
+Don't warn for following symlinked files.
+
+#+begin_src emacs-lisp
+(setq vc-follow-symlinks t)
+#+end_src
+
+Don't warn when advice is added for functions.
+
+#+begin_src emacs-lisp
+(setq ad-redefinition-action 'accept)
+#+end_src
+
+* Help Interface (~helpful~)
+
+#+begin_src emacs-lisp
+  (use-package helpful
+    :after
+    (counsel evil-collection)
+
+    :config
+    (evil-collection-init 'helpful)
+    (setq counsel-describe-function-function #'helpful-callable
+          counsel-describe-variable-function #'helpful-variable))
+#+end_src
