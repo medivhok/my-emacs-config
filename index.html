@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2020-11-26 Thu 19:42 -->
+<!-- 2020-11-26 Thu 19:43 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My Emacs Configuration</title>
@@ -287,23 +287,23 @@ I begin with the file header and
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org63f36a9">1. Bootstrapping</a></li>
-<li><a href="#org0445d13">2. EXWM</a></li>
-<li><a href="#org2aee5dc">3. User Interface</a></li>
-<li><a href="#orgf358245">4. Applications</a></li>
-<li><a href="#org2bbac4e">5. IDEs</a></li>
-<li><a href="#org3135dce">6. Appendix</a>
+<li><a href="#org5cde749">1. Bootstrapping</a></li>
+<li><a href="#orgec27b80">2. EXWM</a></li>
+<li><a href="#orgf30eeae">3. User Interface</a></li>
+<li><a href="#orgfd63286">4. Applications</a></li>
+<li><a href="#org7faf2d4">5. IDEs</a></li>
+<li><a href="#orgfbad46f">6. Appendix</a>
 <ul>
-<li><a href="#orgf229296">6.1. Export Scripts</a>
+<li><a href="#orgf03340d">6.1. Export Scripts</a>
 <ul>
-<li><a href="#org60cf90a">6.1.1. Org Export Setup (<code>html-export.setup</code>)</a></li>
-<li><a href="#org40996be">6.1.2. The Build Script (<code>builddocs.sh</code>)</a></li>
-<li><a href="#orgba6c126">6.1.3. The Publish Script (<code>publish.el</code>)</a></li>
+<li><a href="#org88a6f88">6.1.1. Org Export Setup (<code>html-export.setup</code>)</a></li>
+<li><a href="#orge1ed1d4">6.1.2. The Build Script (<code>builddocs.sh</code>)</a></li>
+<li><a href="#org71fdcca">6.1.3. The Publish Script (<code>publish.el</code>)</a></li>
 </ul>
 </li>
-<li><a href="#org44b17b3">6.2. Tests Configurations</a>
+<li><a href="#orgfe71af6">6.2. Tests Configurations</a>
 <ul>
-<li><a href="#org532218d">6.2.1. The Cask File</a></li>
+<li><a href="#org30e55ac">6.2.1. The Cask File</a></li>
 </ul>
 </li>
 </ul>
@@ -312,8 +312,8 @@ I begin with the file header and
 </div>
 </nav>
 
-<div id="outline-container-org63f36a9" class="outline-2">
-<h2 id="org63f36a9"><span class="section-number-2">1</span> Bootstrapping</h2>
+<div id="outline-container-org5cde749" class="outline-2">
+<h2 id="org5cde749"><span class="section-number-2">1</span> Bootstrapping</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span class="org-keyword">defconst</span> <span class="org-variable-name">medivhok:bootstrapping-directory</span>
@@ -328,8 +328,8 @@ I begin with the file header and
 </div>
 </div>
 
-<div id="outline-container-org0445d13" class="outline-2">
-<h2 id="org0445d13"><span class="section-number-2">2</span> EXWM</h2>
+<div id="outline-container-orgec27b80" class="outline-2">
+<h2 id="orgec27b80"><span class="section-number-2">2</span> EXWM</h2>
 <div class="outline-text-2" id="text-2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span class="org-keyword">defconst</span> <span class="org-variable-name">medivhok:exwm-directory</span>
@@ -344,8 +344,8 @@ I begin with the file header and
 </div>
 </div>
 
-<div id="outline-container-org2aee5dc" class="outline-2">
-<h2 id="org2aee5dc"><span class="section-number-2">3</span> User Interface</h2>
+<div id="outline-container-orgf30eeae" class="outline-2">
+<h2 id="orgf30eeae"><span class="section-number-2">3</span> User Interface</h2>
 <div class="outline-text-2" id="text-3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span class="org-keyword">defconst</span> <span class="org-variable-name">medivhok:user-interface-directory</span>
@@ -360,8 +360,8 @@ I begin with the file header and
 </div>
 </div>
 
-<div id="outline-container-orgf358245" class="outline-2">
-<h2 id="orgf358245"><span class="section-number-2">4</span> Applications</h2>
+<div id="outline-container-orgfd63286" class="outline-2">
+<h2 id="orgfd63286"><span class="section-number-2">4</span> Applications</h2>
 <div class="outline-text-2" id="text-4">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span class="org-keyword">defconst</span> <span class="org-variable-name">medivhok:applications-directory</span>
@@ -376,8 +376,8 @@ I begin with the file header and
 </div>
 </div>
 
-<div id="outline-container-org2bbac4e" class="outline-2">
-<h2 id="org2bbac4e"><span class="section-number-2">5</span> IDEs</h2>
+<div id="outline-container-org7faf2d4" class="outline-2">
+<h2 id="org7faf2d4"><span class="section-number-2">5</span> IDEs</h2>
 <div class="outline-text-2" id="text-5">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span class="org-keyword">defconst</span> <span class="org-variable-name">medivhok:ides-directory</span>
@@ -392,17 +392,17 @@ I begin with the file header and
 </div>
 </div>
 
-<div id="outline-container-org3135dce" class="outline-2">
-<h2 id="org3135dce"><span class="section-number-2">6</span> Appendix</h2>
+<div id="outline-container-orgfbad46f" class="outline-2">
+<h2 id="orgfbad46f"><span class="section-number-2">6</span> Appendix</h2>
 <div class="outline-text-2" id="text-6">
 </div>
 
-<div id="outline-container-orgf229296" class="outline-3">
-<h3 id="orgf229296"><span class="section-number-3">6.1</span> Export Scripts</h3>
+<div id="outline-container-orgf03340d" class="outline-3">
+<h3 id="orgf03340d"><span class="section-number-3">6.1</span> Export Scripts</h3>
 <div class="outline-text-3" id="text-6-1">
 </div>
-<div id="outline-container-org60cf90a" class="outline-4">
-<h4 id="org60cf90a"><span class="section-number-4">6.1.1</span> Org Export Setup (<code>html-export.setup</code>)</h4>
+<div id="outline-container-org88a6f88" class="outline-4">
+<h4 id="org88a6f88"><span class="section-number-4">6.1.1</span> Org Export Setup (<code>html-export.setup</code>)</h4>
 <div class="outline-text-4" id="text-6-1-1">
 <div class="org-src-container">
 <pre class="src src-css"><span class="org-css-selector">:root</span> {
@@ -464,8 +464,8 @@ I begin with the file header and
 </div>
 </div>
 
-<div id="outline-container-org40996be" class="outline-4">
-<h4 id="org40996be"><span class="section-number-4">6.1.2</span> The Build Script (<code>builddocs.sh</code>)</h4>
+<div id="outline-container-orge1ed1d4" class="outline-4">
+<h4 id="orge1ed1d4"><span class="section-number-4">6.1.2</span> The Build Script (<code>builddocs.sh</code>)</h4>
 <div class="outline-text-4" id="text-6-1-2">
 <div class="org-src-container">
 <pre class="src src-sh">emacs --batch --no-init-file --load publish.el --funcall toggle-debug-on-error --funcall medivhok-publish
@@ -474,8 +474,8 @@ I begin with the file header and
 </div>
 </div>
 
-<div id="outline-container-orgba6c126" class="outline-4">
-<h4 id="orgba6c126"><span class="section-number-4">6.1.3</span> The Publish Script (<code>publish.el</code>)</h4>
+<div id="outline-container-org71fdcca" class="outline-4">
+<h4 id="org71fdcca"><span class="section-number-4">6.1.3</span> The Publish Script (<code>publish.el</code>)</h4>
 <div class="outline-text-4" id="text-6-1-3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span class="org-keyword">require</span> '<span class="org-constant">package</span>)
@@ -520,19 +520,19 @@ I begin with the file header and
 </div>
 </div>
 
-<div id="outline-container-org44b17b3" class="outline-3">
-<h3 id="org44b17b3"><span class="section-number-3">6.2</span> Tests Configurations</h3>
+<div id="outline-container-orgfe71af6" class="outline-3">
+<h3 id="orgfe71af6"><span class="section-number-3">6.2</span> Tests Configurations</h3>
 <div class="outline-text-3" id="text-6-2">
 </div>
-<div id="outline-container-org532218d" class="outline-4">
-<h4 id="org532218d"><span class="section-number-4">6.2.1</span> The Cask File</h4>
+<div id="outline-container-org30e55ac" class="outline-4">
+<h4 id="org30e55ac"><span class="section-number-4">6.2.1</span> The Cask File</h4>
 <div class="outline-text-4" id="text-6-2-1">
 <p>
 The <code>Cask</code> file will fetch the dependencies for our tests like <a href="https://github.com/jorgenschaefer/emacs-buttercup">buttercup</a>.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp" id="org7c351df">(source gnu)
+<pre class="src src-emacs-lisp" id="org044ec36">(source gnu)
 (source melpa-stable)
 
 (development
@@ -547,7 +547,7 @@ The <code>Cask</code> file will fetch the dependencies for our tests like <a hre
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Jean Gregory Verret</p>
-<p class="date">Created: 2020-11-26 Thu 19:42</p>
+<p class="date">Created: 2020-11-26 Thu 19:43</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
