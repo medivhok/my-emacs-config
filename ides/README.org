@@ -1,7 +1,8 @@
 #+TITLE: IDEs
 #+STARTUP: overview
-#+PROPERTY: header-args:emacs-lisp :tangle ../ides/init.el :mkdirp yes
+#+PROPERTY: header-args:emacs-lisp :tangle init.el :mkdirp yes
 #+OPTIONS: H:2 toc:nil
+#+EXPORT_FILE_NAME: index
 
 #+TOC: headlines:2
 
@@ -673,15 +674,16 @@ Major mode for editing JSON files with emacs.
         org-latex-compiler "lualatex"
         org-latex-listings 'minted
         org-latex-minted-options
-        '(("frame" "lines")
-          ("framesep" "2mm")
+        '(("frame" "none")
           ("baselinestretch" "1.2")
-          ("style" "pastie"))
+          ("style" "emacs")
+          ("breaklines"))
         org-latex-packages-alist
         '(("" "fontspec" t ("lualatex"))
           ("AUTO" "babel" t ("pdflatex" "lualatex"))
           ("" "booktabs" t)
           ("" "fancyhdr" t)
+          ("framemethod=tikz" "mdframed")
           ("" "minted")
           ("" "xcolor"))
         org-latex-pdf-process

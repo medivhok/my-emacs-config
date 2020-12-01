@@ -1,7 +1,8 @@
 #+TITLE: EXWM
 #+STARTUP: overview
-#+PROPERTY: header-args:emacs-lisp :tangle ../exwm/init.el :mkdirp yes
+#+PROPERTY: header-args:emacs-lisp :tangle init.el :mkdirp yes
 #+OPTIONS: H:2 toc:nil
+#+EXPORT_FILE_NAME: index
 
 #+TOC: headlines:2
 
@@ -23,6 +24,7 @@
 
 #+BEGIN_SRC emacs-lisp
 (use-package exwm
+  :if medivhok:exwm-enabled
   :init
   (setq exwm-layout-show-all-buffers t
         exwm-workspace-number 5

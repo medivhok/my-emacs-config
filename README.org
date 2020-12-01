@@ -23,6 +23,8 @@ I begin with the file header and
 
 * Bootstrapping
 
+The [[./bootstrapping/][boostrapping configurations]].
+
 #+BEGIN_SRC emacs-lisp
 (defconst medivhok:bootstrapping-directory
   (file-name-as-directory
@@ -34,6 +36,8 @@ I begin with the file header and
 #+END_SRC
 
 * EXWM
+
+The [[./exwm/][Emacs X Window Manager configurations]].
 
 #+BEGIN_SRC emacs-lisp
 (defconst medivhok:exwm-directory
@@ -47,6 +51,8 @@ I begin with the file header and
 
 * User Interface
 
+The [[./user-interface/][user interface configurations]].
+
 #+BEGIN_SRC emacs-lisp
 (defconst medivhok:user-interface-directory
   (file-name-as-directory
@@ -59,6 +65,8 @@ I begin with the file header and
 
 * Applications
 
+The [[./applications/][applications configurations]].
+
 #+BEGIN_SRC emacs-lisp
 (defconst medivhok:applications-directory
   (file-name-as-directory
@@ -70,6 +78,8 @@ I begin with the file header and
 #+END_SRC
 
 * IDEs
+
+The [[./ides/][Integrated Development Environments configurations]].
 
 #+BEGIN_SRC emacs-lisp
 (defconst medivhok:ides-directory

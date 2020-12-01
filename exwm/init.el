@@ -3,6 +3,7 @@
        (seq-contains command-line-args "--use-exwm")))
 
 (use-package exwm
+  :if medivhok:exwm-enabled
   :init
   (setq exwm-layout-show-all-buffers t
         exwm-workspace-number 5

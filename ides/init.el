@@ -264,15 +264,16 @@ Taken from https://github.com/syl20bnr/spacemacs/pull/179."
         org-latex-compiler "lualatex"
         org-latex-listings 'minted
         org-latex-minted-options
-        '(("frame" "lines")
-          ("framesep" "2mm")
+        '(("frame" "none")
           ("baselinestretch" "1.2")
-          ("style" "pastie"))
+          ("style" "emacs")
+          ("breaklines"))
         org-latex-packages-alist
         '(("" "fontspec" t ("lualatex"))
           ("AUTO" "babel" t ("pdflatex" "lualatex"))
           ("" "booktabs" t)
           ("" "fancyhdr" t)
+          ("framemethod=tikz" "mdframed")
           ("" "minted")
           ("" "xcolor"))
         org-latex-pdf-process
