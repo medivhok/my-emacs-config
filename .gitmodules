@@ -1,0 +1,3 @@
+[submodule "html-export/themes"]
+	path = html-export/themes
+	url = https://github.com/fniessen/org-html-themes.git

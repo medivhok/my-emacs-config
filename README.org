@@ -1,5 +1,5 @@
 #+TITLE: My Emacs Configuration
-#+SETUPFILE: html-export.setup
+#+SETUPFILE: html-export/export.setup
 #+STARTUP: overview
 #+PROPERTY: header-args:emacs-lisp :tangle init.el :mkdirp yes
 #+OPTIONS: H:3 toc:nil
