@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2020-12-01 Tue 18:07 -->
+<!-- 2020-12-02 Wed 18:01 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My Emacs Configuration</title>
@@ -191,52 +191,6 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<style>
-:root {
---main-bg-color:   #282c34;
---alt-bg-color:    #21242b;
---main-fg-color:   #bbc2cf;
---alt-fg-color:    #5b6268;
---grey-color:      #3f444a;
---red-color:       #ff6c6b;
---orange-color:    #da8548;
---green-color:     #98be65;
---teal-color:      #4db5bd;
---yellow-color:    #ecbe7b;
---blue-color:      #51afef;
---dark-blue-color: #2257a0;
---magenta-color:   #c678dd;
---violet-color:    #a9a1e1;
---cyan-color:      #46d9ff;
---dark-cyan-color: #5699af;
-}
-
-pre.src {
-background: var(--main-bg-color);
-color:#bbc2cf;
-}
-
-pre span.org-builtin {
-color: var(--magenta-color);
-font-weight: bold;
-}
-
-pre span.org-string {
-color: var(--teal-color);
-}
-
-pre span.org-keyword {
-color: var(--blue-color);
-}
-
-pre span.org-variable-name {color:var(--magenta-color);}
-pre span.org-function-name {color:var(--magenta-color);}
-pre span.org-type {color:var(--yellow-color);}
-pre span.org-preprocessor {color:#808080;font-weight:bold;}
-pre span.org-constant {color:var(--violet-color);}
-pre span.org-comment-delimiter {color:var(--dark-cyan-color);}
-pre span.org-comment {color:var(--dark-cyan-color);font-style:italic}
-</style>
 <script type="text/javascript">
 // @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
 <!--/*--><![CDATA[/*><!--*/
@@ -287,23 +241,23 @@ I begin with the file header and
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgd727a19">1. Bootstrapping</a></li>
-<li><a href="#org4cb6188">2. EXWM</a></li>
-<li><a href="#orgf573d09">3. User Interface</a></li>
-<li><a href="#org8b868ef">4. Applications</a></li>
-<li><a href="#org01cbb09">5. IDEs</a></li>
-<li><a href="#org521368c">6. Appendix</a>
+<li><a href="#org8706667">1. Bootstrapping</a></li>
+<li><a href="#org66f8a0e">2. EXWM</a></li>
+<li><a href="#org59f5abc">3. User Interface</a></li>
+<li><a href="#org663b252">4. Applications</a></li>
+<li><a href="#org50995e4">5. IDEs</a></li>
+<li><a href="#orgfd15dbe">6. Appendix</a>
 <ul>
-<li><a href="#org60ae325">6.1. Export Scripts</a>
+<li><a href="#org1ba0036">6.1. Export Scripts</a>
 <ul>
-<li><a href="#org30da67b">6.1.1. Org Export Setup (<code>html-export.setup</code>)</a></li>
-<li><a href="#org8c2eaa1">6.1.2. The Build Script (<code>builddocs.sh</code>)</a></li>
-<li><a href="#orgc46b854">6.1.3. The Publish Script (<code>publish.el</code>)</a></li>
+<li><a href="#orge279762">6.1.1. Org Export Setup (<code>html-export.setup</code>)</a></li>
+<li><a href="#orge941fce">6.1.2. The Build Script (<code>builddocs.sh</code>)</a></li>
+<li><a href="#org69be62c">6.1.3. The Publish Script (<code>publish.el</code>)</a></li>
 </ul>
 </li>
-<li><a href="#org723d070">6.2. Tests Configurations</a>
+<li><a href="#orgf9d860f">6.2. Tests Configurations</a>
 <ul>
-<li><a href="#org9f3ea6b">6.2.1. The Cask File</a></li>
+<li><a href="#org57f628e">6.2.1. The Cask File</a></li>
 </ul>
 </li>
 </ul>
@@ -312,8 +266,8 @@ I begin with the file header and
 </div>
 </nav>
 
-<div id="outline-container-orgd727a19" class="outline-2">
-<h2 id="orgd727a19"><span class="section-number-2">1</span> Bootstrapping</h2>
+<div id="outline-container-org8706667" class="outline-2">
+<h2 id="org8706667"><span class="section-number-2">1</span> Bootstrapping</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 The <a href="./bootstrapping/">boostrapping configurations</a>.
@@ -332,8 +286,8 @@ The <a href="./bootstrapping/">boostrapping configurations</a>.
 </div>
 </div>
 
-<div id="outline-container-org4cb6188" class="outline-2">
-<h2 id="org4cb6188"><span class="section-number-2">2</span> EXWM</h2>
+<div id="outline-container-org66f8a0e" class="outline-2">
+<h2 id="org66f8a0e"><span class="section-number-2">2</span> EXWM</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 The <a href="./exwm/">Emacs X Window Manager configurations</a>.
@@ -352,8 +306,8 @@ The <a href="./exwm/">Emacs X Window Manager configurations</a>.
 </div>
 </div>
 
-<div id="outline-container-orgf573d09" class="outline-2">
-<h2 id="orgf573d09"><span class="section-number-2">3</span> User Interface</h2>
+<div id="outline-container-org59f5abc" class="outline-2">
+<h2 id="org59f5abc"><span class="section-number-2">3</span> User Interface</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 The <a href="./user-interface/">user interface configurations</a>.
@@ -372,8 +326,8 @@ The <a href="./user-interface/">user interface configurations</a>.
 </div>
 </div>
 
-<div id="outline-container-org8b868ef" class="outline-2">
-<h2 id="org8b868ef"><span class="section-number-2">4</span> Applications</h2>
+<div id="outline-container-org663b252" class="outline-2">
+<h2 id="org663b252"><span class="section-number-2">4</span> Applications</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 The <a href="./applications/">applications configurations</a>.
@@ -392,8 +346,8 @@ The <a href="./applications/">applications configurations</a>.
 </div>
 </div>
 
-<div id="outline-container-org01cbb09" class="outline-2">
-<h2 id="org01cbb09"><span class="section-number-2">5</span> IDEs</h2>
+<div id="outline-container-org50995e4" class="outline-2">
+<h2 id="org50995e4"><span class="section-number-2">5</span> IDEs</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 The <a href="./ides/">Integrated Development Environments configurations</a>.
@@ -412,17 +366,17 @@ The <a href="./ides/">Integrated Development Environments configurations</a>.
 </div>
 </div>
 
-<div id="outline-container-org521368c" class="outline-2">
-<h2 id="org521368c"><span class="section-number-2">6</span> Appendix</h2>
+<div id="outline-container-orgfd15dbe" class="outline-2">
+<h2 id="orgfd15dbe"><span class="section-number-2">6</span> Appendix</h2>
 <div class="outline-text-2" id="text-6">
 </div>
 
-<div id="outline-container-org60ae325" class="outline-3">
-<h3 id="org60ae325"><span class="section-number-3">6.1</span> Export Scripts</h3>
+<div id="outline-container-org1ba0036" class="outline-3">
+<h3 id="org1ba0036"><span class="section-number-3">6.1</span> Export Scripts</h3>
 <div class="outline-text-3" id="text-6-1">
 </div>
-<div id="outline-container-org30da67b" class="outline-4">
-<h4 id="org30da67b"><span class="section-number-4">6.1.1</span> Org Export Setup (<code>html-export.setup</code>)</h4>
+<div id="outline-container-orge279762" class="outline-4">
+<h4 id="orge279762"><span class="section-number-4">6.1.1</span> Org Export Setup (<code>html-export.setup</code>)</h4>
 <div class="outline-text-4" id="text-6-1-1">
 <div class="org-src-container">
 <pre class="src src-css"><span class="org-css-selector">:root</span> {
@@ -484,8 +438,8 @@ The <a href="./ides/">Integrated Development Environments configurations</a>.
 </div>
 </div>
 
-<div id="outline-container-org8c2eaa1" class="outline-4">
-<h4 id="org8c2eaa1"><span class="section-number-4">6.1.2</span> The Build Script (<code>builddocs.sh</code>)</h4>
+<div id="outline-container-orge941fce" class="outline-4">
+<h4 id="orge941fce"><span class="section-number-4">6.1.2</span> The Build Script (<code>builddocs.sh</code>)</h4>
 <div class="outline-text-4" id="text-6-1-2">
 <div class="org-src-container">
 <pre class="src src-sh">emacs --batch --no-init-file --load publish.el --funcall toggle-debug-on-error --funcall medivhok-publish
@@ -494,8 +448,8 @@ The <a href="./ides/">Integrated Development Environments configurations</a>.
 </div>
 </div>
 
-<div id="outline-container-orgc46b854" class="outline-4">
-<h4 id="orgc46b854"><span class="section-number-4">6.1.3</span> The Publish Script (<code>publish.el</code>)</h4>
+<div id="outline-container-org69be62c" class="outline-4">
+<h4 id="org69be62c"><span class="section-number-4">6.1.3</span> The Publish Script (<code>publish.el</code>)</h4>
 <div class="outline-text-4" id="text-6-1-3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span class="org-keyword">require</span> '<span class="org-constant">package</span>)
@@ -540,19 +494,19 @@ The <a href="./ides/">Integrated Development Environments configurations</a>.
 </div>
 </div>
 
-<div id="outline-container-org723d070" class="outline-3">
-<h3 id="org723d070"><span class="section-number-3">6.2</span> Tests Configurations</h3>
+<div id="outline-container-orgf9d860f" class="outline-3">
+<h3 id="orgf9d860f"><span class="section-number-3">6.2</span> Tests Configurations</h3>
 <div class="outline-text-3" id="text-6-2">
 </div>
-<div id="outline-container-org9f3ea6b" class="outline-4">
-<h4 id="org9f3ea6b"><span class="section-number-4">6.2.1</span> The Cask File</h4>
+<div id="outline-container-org57f628e" class="outline-4">
+<h4 id="org57f628e"><span class="section-number-4">6.2.1</span> The Cask File</h4>
 <div class="outline-text-4" id="text-6-2-1">
 <p>
 The <code>Cask</code> file will fetch the dependencies for our tests like <a href="https://github.com/jorgenschaefer/emacs-buttercup">buttercup</a>.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp" id="org2356b33">(source gnu)
+<pre class="src src-emacs-lisp" id="orgb7f4f5e">(source gnu)
 (source melpa-stable)
 
 (development
@@ -567,7 +521,7 @@ The <code>Cask</code> file will fetch the dependencies for our tests like <a hre
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Jean Gregory Verret</p>
-<p class="date">Created: 2020-12-01 Tue 18:07</p>
+<p class="date">Created: 2020-12-02 Wed 18:01</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
