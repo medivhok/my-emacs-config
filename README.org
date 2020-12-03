@@ -1,199 +1,69 @@
 #+TITLE: My Emacs Configuration
 #+SETUPFILE: html-export.setup
 #+STARTUP: overview
-#+PROPERTY: header-args:emacs-lisp :tangle init.el :mkdirp yes
 #+OPTIONS: H:3 toc:nil
+#+PROPERTY: header-args:emacs-lisp :tangle ./init.el
 #+EXPORT_FILE_NAME: index
 
 Here begins my [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html][init file]], the first one that will be loaded to
-initialize [[https://https://www.gnu.org/software/emacs/][Emacs]].
+initialize [[https://https://www.gnu.org/software/emacs/][Emacs]]. The configurations are split in five modules :
 
-I begin with the file header and
-#+begin_src emacs-lisp :comments no
+- bootstrap : the bootstrapping of Emacs,
+- exwm : the Emacs X Window Manager (when used),
+- ui : the user interface configurations,
+- apps : the applications configurations, and
+- ides : the /integrated development environments/ configurations.
+
+So let's start our configuration journey...
+
+#+TOC: headlines:3
+
+* Global Variables
+
+#+BEGIN_SRC emacs-lisp :noweb-ref global-variables
 ;;; init.el --- My Emacs Config -*- lexical-binding: t; -*-
 ;; Author: Jean Gregory Verret
 ;; Url: https://github.com/medivhok/my-emacs-config
 ;; Code:
-(defconst medivhok:init-directory
-  (file-name-as-directory user-emacs-directory)
-  "The directory of the base init.el.")
-#+end_src
-
-#+TOC: headlines:3
-
-* Bootstrapping
-
-#+BEGIN_SRC emacs-lisp
-(defconst medivhok:bootstrapping-directory
-  (file-name-as-directory
-   (expand-file-name "bootstrapping" medivhok:init-directory))
-  "The bootstrapping configurations directory.")
-
-(load-file (expand-file-name "init.el"
-                             medivhok:bootstrapping-directory))
+(setq user-full-name "Jean Gregory Verret"
+      user-mail-address "gregory.verret@gmail.com")
 #+END_SRC
 
-* EXWM
+* The Modules Loading
+
+I prefer to define some configuration variables in a ~let~ environment to avoid poluting the already saturated Emacs ecosystem. Those variables will be available in my configurations modules during loading, and will disapear after.
 
 #+BEGIN_SRC emacs-lisp
-(defconst medivhok:exwm-directory
-  (file-name-as-directory
-   (expand-file-name "exwm" medivhok:init-directory))
-  "The Emacs X Window Manager configurations directory.")
+  (let* ((init-file-name "init.el")
+         (medivhok:cfg-directory
+          (file-name-as-directory user-emacs-directory))
+         (medivhok:cfg:bootstrap-directory
+          (file-name-as-directory (expand-file-name "+bootstrap" medivhok:cfg-directory)))
+         (medivhok:cfg:exwm-directory
+          (file-name-as-directory (expand-file-name "+exwm" medivhok:cfg-directory)))
+         (medivhok:cfg:ui-directory
+          (file-name-as-directory (expand-file-name "+ui" medivhok:cfg-directory)))
+         (medivhok:cfg:app-directory
+          (file-name-as-directory (expand-file-name "+app" medivhok:cfg-directory)))
+         (medivhok:cfg:ides-directory
+          (file-name-as-directory (expand-file-name "+ides" medivhok:cfg-directory))))
 
-(load-file (expand-file-name "init.el"
-                             medivhok:exwm-directory))
-#+END_SRC
-
-* User Interface
-
-#+BEGIN_SRC emacs-lisp
-(defconst medivhok:user-interface-directory
-  (file-name-as-directory
-   (expand-file-name "user-interface" medivhok:init-directory))
-  "The user interface configurations directory.")
-
-(load-file (expand-file-name "init.el"
-                             medivhok:user-interface-directory))
-#+END_SRC
-
-* Applications
-
-#+BEGIN_SRC emacs-lisp
-(defconst medivhok:applications-directory
-  (file-name-as-directory
-   (expand-file-name "applications" medivhok:init-directory))
-  "The applications configurations directory.")
-
-(load-file (expand-file-name "init.el"
-                             medivhok:applications-directory))
-#+END_SRC
-
-* IDEs
-
-#+BEGIN_SRC emacs-lisp
-(defconst medivhok:ides-directory
-  (file-name-as-directory
-   (expand-file-name "ides" medivhok:init-directory))
-  "The applications configurations directory.")
-
-(load-file (expand-file-name "init.el"
-                             medivhok:ides-directory))
+          (load-file (expand-file-name init-file-name medivhok:cfg:bootstrap-directory))
+          (load-file (expand-file-name init-file-name medivhok:cfg:exwm-directory))
+          (load-file (expand-file-name init-file-name medivhok:cfg:ui-directory))
+          (load-file (expand-file-name init-file-name medivhok:cfg:app-directory))
+          (load-file (expand-file-name init-file-name medivhok:cfg:ides-directory)))
+;; init.el ends here.
 #+END_SRC
 
 * Appendix
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle no
-:END:
+** The Source File
 
-** Export Scripts
-*** Org Export Setup (~html-export.setup~)
+The frame of our [[./init.el][source file]].
 
-#+begin_src css :noweb-ref html-export:css
-:root {
-    --main-bg-color:   #282c34;
-    --alt-bg-color:    #21242b;
-    --main-fg-color:   #bbc2cf;
-    --alt-fg-color:    #5b6268;
-    --grey-color:      #3f444a;
-    --red-color:       #ff6c6b;
-    --orange-color:    #da8548;
-    --green-color:     #98be65;
-    --teal-color:      #4db5bd;
-    --yellow-color:    #ecbe7b;
-    --blue-color:      #51afef;
-    --dark-blue-color: #2257a0;
-    --magenta-color:   #c678dd;
-    --violet-color:    #a9a1e1;
-    --cyan-color:      #46d9ff;
-    --dark-cyan-color: #5699af;
-}
-
-pre.src {
-    background: var(--main-bg-color);
-    color:#bbc2cf;
-}
-
-pre span.org-builtin {
-    color: var(--magenta-color);
-    font-weight: bold;
-}
-
-pre span.org-string {
-    color: var(--teal-color);
-}
-
-pre span.org-keyword {
-    color: var(--blue-color);
-}
-
-pre span.org-variable-name {color:var(--magenta-color);}
-pre span.org-function-name {color:var(--magenta-color);}
-pre span.org-type {color:var(--yellow-color);}
-pre span.org-preprocessor {color:#808080;font-weight:bold;}
-pre span.org-constant {color:var(--violet-color);}
-pre span.org-comment-delimiter {color:var(--dark-cyan-color);}
-pre span.org-comment {color:var(--dark-cyan-color);font-style:italic}
-#+end_src
-
-#+begin_src org :tangle html-export.setup :noweb no-export
-# -*- mode:org -*-
-,#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
-
-,#+html_head: <style>
-,#+html_head:   <<html-export:css>>
-,#+html_head: </style>
-#+end_src
-
-*** The Build Script (~builddocs.sh~)
-
-#+begin_src sh :tangle builddocs.sh :shebang #!/bin/sh
-emacs --batch --no-init-file --load publish.el --funcall toggle-debug-on-error --funcall medivhok-publish
-#+end_src
-
-*** The Publish Script (~publish.el~)
-:PROPERTIES:
-:header-args:emacs-lisp: :tangle publish.el
-:END:
-
-#+begin_src emacs-lisp
-(require 'package)
-(package-initialize)
-(unless package-archive-contents
-  (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
-  (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-  (package-refresh-contents))
-(dolist (pkg '(dash projectile org-plus-contrib htmlize))
-  (unless (package-installed-p pkg)
-    (package-install pkg)))
-
-(require 'org)
-(require 'ox-publish)
-
-(defun medivhok-publish ()
-  "Publish the blog to HTML."
-  (interactive)
-  (let ((make-backup-files nil)
-        (org-publish-project-alist
-         '(("site"
-            :base-directory "."
-            :base-extension "org"
-            :recursive nil
-            :publishing-directory "public/"
-            :publishing-function org-html-publish-to-html)))
-        (user-full-name "Jean Gregory Verret")
-        (user-mail-address "gregory.verret@gmail.com")
-        (org-export-creator-string
-         "<a href=\"https://www.gnu.org/software/emacs/\">Emacs</a> (<a href=\"https://orgmode.org\">Org</a>)")
-        (org-html-html5-fancy t)
-        (org-html-doctype "html5")
-        (org-html-htmlize-output-type 'css))
-    (org-publish-all)))
-
-(provide 'publish)
-;;; publish.el ends here
-#+end_src
+#+BEGIN_SRC emacs-lisp :tangle no
+<<init:code>>
+#+END_SRC
 
 ** Tests Configurations
 *** The Cask File

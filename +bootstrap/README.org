@@ -1,7 +1,9 @@
 #+TITLE: Bootstrapping
+#+SETUPFILE: ../html-export/export.setup
 #+STARTUP: overview
-#+PROPERTY: header-args:emacs-lisp :tangle ../bootstrapping/init.el :mkdirp yes
+#+PROPERTY: header-args:emacs-lisp :tangle init.el :mkdirp yes
 #+OPTIONS: H:2 toc:nil
+#+EXPORT_FILE_NAME: index
 
 #+TOC: headlines:2
 
@@ -15,9 +17,6 @@
 - [[#packages-management][Packages Management]]
   - [[#straightel][straight.el]]
   - [[#use-package][use-package]]
-- [[#personalization][Personalization]]
-  - [[#personnal-infos][Personnal Infos]]
-  - [[#directory-structure][Directory Structure]]
 :END:
 
 * Profiling
@@ -109,52 +108,4 @@ Using straight, we can now download, install and load /use-package/.
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 (setq use-package-verbose t)
-#+end_src
-
-* Personalization
-** Personnal Infos
-*** ~user-full-name~
-
-#+begin_src emacs-lisp
-(setq user-full-name "Jean Gregory Verret")
-#+end_src
-
-*** ~user-mail-address~
-
-#+begin_src emacs-lisp
-(setq user-mail-address "gregory.verret@gmail.com")
-#+end_src
-
-** Directory Structure
-*** ~medivhok:app-directory~
-
-#+begin_src emacs-lisp
-(setq medivhok:app-directory (file-name-as-directory "~/org"))
-#+end_src
-
-*** ~medivhok:agenda-directory~
-
-#+begin_src emacs-lisp
-(setq medivhok:agenda-directory
-      (file-name-as-directory
-       (expand-file-name "agenda"
-                         medivhok:app-directory)))
-#+end_src
-
-*** ~medivhok:budget-directory~
-
-#+begin_src emacs-lisp
-(setq medivhok:budget-directory
-      (file-name-as-directory
-       (expand-file-name "budget"
-                         medivhok:app-directory)))
-#+end_src
-
-*** ~medivhok:slip-box-directory~
-
-#+begin_src emacs-lisp
-(setq medivhok:slip-box-directory
-      (file-name-as-directory
-       (expand-file-name "roam"
-                         medivhok:app-directory)))
 #+end_src

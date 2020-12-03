@@ -43,24 +43,3 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 (setq use-package-verbose t)
-
-(setq user-full-name "Jean Gregory Verret")
-
-(setq user-mail-address "gregory.verret@gmail.com")
-
-(setq medivhok:app-directory (file-name-as-directory "~/org"))
-
-(setq medivhok:agenda-directory
-      (file-name-as-directory
-       (expand-file-name "agenda"
-                         medivhok:app-directory)))
-
-(setq medivhok:budget-directory
-      (file-name-as-directory
-       (expand-file-name "budget"
-                         medivhok:app-directory)))
-
-(setq medivhok:slip-box-directory
-      (file-name-as-directory
-       (expand-file-name "roam"
-                         medivhok:app-directory)))

@@ -2,61 +2,26 @@
 ;; Author: Jean Gregory Verret
 ;; Url: https://github.com/medivhok/my-emacs-config
 ;; Code:
-(defconst medivhok:init-directory
-  (file-name-as-directory user-emacs-directory)
-  "The directory of the base init.el.")
+(setq user-full-name "Jean Gregory Verret"
+      user-mail-address "gregory.verret@gmail.com")
 
-;; Bootstrapping
+(let* ((init-file-name "init.el")
+         (medivhok:cfg-directory
+          (file-name-as-directory user-emacs-directory))
+         (medivhok:cfg:bootstrap-directory
+          (file-name-as-directory (expand-file-name "+bootstrap" medivhok:cfg-directory)))
+         (medivhok:cfg:exwm-directory
+          (file-name-as-directory (expand-file-name "+exwm" medivhok:cfg-directory)))
+         (medivhok:cfg:ui-directory
+          (file-name-as-directory (expand-file-name "+ui" medivhok:cfg-directory)))
+         (medivhok:cfg:app-directory
+          (file-name-as-directory (expand-file-name "+app" medivhok:cfg-directory)))
+         (medivhok:cfg:ides-directory
+          (file-name-as-directory (expand-file-name "+ides" medivhok:cfg-directory))))
 
-
-(defconst medivhok:bootstrapping-directory
-  (file-name-as-directory
-   (expand-file-name "bootstrapping" medivhok:init-directory))
-  "The bootstrapping configurations directory.")
-
-(load-file (expand-file-name "init.el"
-                             medivhok:bootstrapping-directory))
-
-;; EXWM
-
-
-(defconst medivhok:exwm-directory
-  (file-name-as-directory
-   (expand-file-name "exwm" medivhok:init-directory))
-  "The Emacs X Window Manager configurations directory.")
-
-(load-file (expand-file-name "init.el"
-                             medivhok:exwm-directory))
-
-;; User Interface
-
-
-(defconst medivhok:user-interface-directory
-  (file-name-as-directory
-   (expand-file-name "user-interface" medivhok:init-directory))
-  "The user interface configurations directory.")
-
-(load-file (expand-file-name "init.el"
-                             medivhok:user-interface-directory))
-
-;; Applications
-
-
-(defconst medivhok:applications-directory
-  (file-name-as-directory
-   (expand-file-name "applications" medivhok:init-directory))
-  "The applications configurations directory.")
-
-(load-file (expand-file-name "init.el"
-                             medivhok:applications-directory))
-
-;; IDEs
-
-
-(defconst medivhok:ides-directory
-  (file-name-as-directory
-   (expand-file-name "ides" medivhok:init-directory))
-  "The applications configurations directory.")
-
-(load-file (expand-file-name "init.el"
-                             medivhok:ides-directory))
+          (load-file (expand-file-name init-file-name medivhok:cfg:bootstrap-directory))
+          (load-file (expand-file-name init-file-name medivhok:cfg:exwm-directory))
+          (load-file (expand-file-name init-file-name medivhok:cfg:ui-directory))
+          (load-file (expand-file-name init-file-name medivhok:cfg:app-directory))
+          (load-file (expand-file-name init-file-name medivhok:cfg:ides-directory)))
+;; init.el ends here.
