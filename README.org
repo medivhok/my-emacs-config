@@ -2,25 +2,26 @@
 #+SETUPFILE: html-export.setup
 #+STARTUP: overview
 #+OPTIONS: H:3 toc:nil
-#+PROPERTY: header-args:emacs-lisp :tangle ./init.el
 #+EXPORT_FILE_NAME: index
 
 Here begins my [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html][init file]], the first one that will be loaded to
 initialize [[https://https://www.gnu.org/software/emacs/][Emacs]]. The configurations are split in five modules :
 
-- bootstrap : the bootstrapping of Emacs,
-- exwm : the Emacs X Window Manager (when used),
-- ui : the user interface configurations,
-- apps : the applications configurations, and
-- ides : the /integrated development environments/ configurations.
+| Module    | Description                                        |
+|-----------+----------------------------------------------------|
+| [[#config--bootstrap][bootstrap]] | The bootstrapping of Emacs                         |
+| [[#config--exwm][exwm]]      | Emacs X Window Manager (when used)                 |
+| [[#config--ui][ui]]        | The user interface configurations                  |
+| [[#config--app][app]]       | Applications configurations                        |
+| [[#config--ides][ides]]      | Integrated development environments configurations |
 
 So let's start our configuration journey...
 
 #+TOC: headlines:3
 
-* Global Variables
+* The FIle Header
 
-#+BEGIN_SRC emacs-lisp :noweb-ref global-variables
+#+BEGIN_SRC emacs-lisp :tangle init.el
 ;;; init.el --- My Emacs Config -*- lexical-binding: t; -*-
 ;; Author: Jean Gregory Verret
 ;; Url: https://github.com/medivhok/my-emacs-config
@@ -29,53 +30,96 @@ So let's start our configuration journey...
       user-mail-address "gregory.verret@gmail.com")
 #+END_SRC
 
-* The Modules Loading
+* The Configurations Environment
 
 I prefer to define some configuration variables in a ~let~ environment to avoid poluting the already saturated Emacs ecosystem. Those variables will be available in my configurations modules during loading, and will disapear after.
 
-#+BEGIN_SRC emacs-lisp
-  (let* ((init-file-name "init.el")
-         (medivhok:cfg-directory
+#+BEGIN_SRC emacs-lisp :tangle init.el :noweb no-export
+  (let* ((medivhok:cfg-directory
           (file-name-as-directory user-emacs-directory))
-         (medivhok:cfg:bootstrap-directory
-          (file-name-as-directory (expand-file-name "+bootstrap" medivhok:cfg-directory)))
-         (medivhok:cfg:exwm-directory
-          (file-name-as-directory (expand-file-name "+exwm" medivhok:cfg-directory)))
-         (medivhok:cfg:ui-directory
-          (file-name-as-directory (expand-file-name "+ui" medivhok:cfg-directory)))
-         (medivhok:cfg:app-directory
-          (file-name-as-directory (expand-file-name "+app" medivhok:cfg-directory)))
-         (medivhok:cfg:ides-directory
-          (file-name-as-directory (expand-file-name "+ides" medivhok:cfg-directory))))
-
-          (load-file (expand-file-name init-file-name medivhok:cfg:bootstrap-directory))
-          (load-file (expand-file-name init-file-name medivhok:cfg:exwm-directory))
-          (load-file (expand-file-name init-file-name medivhok:cfg:ui-directory))
-          (load-file (expand-file-name init-file-name medivhok:cfg:app-directory))
-          (load-file (expand-file-name init-file-name medivhok:cfg:ides-directory)))
-;; init.el ends here.
+         <<env:definitions>>
+         (init-file-name "init.el"))
+          <<env:body>>
+  )
+  ;; init.el ends here.
 #+END_SRC
 
-* Appendix
-** The Source File
+* From Nothing to Something (Bootstrap)
+:PROPERTIES:
+:custom_id: config--bootstrap
+:END:
 
-The frame of our [[./init.el][source file]].
+The [[./+bootstrap/][bootstrap]] module loading.
 
-#+BEGIN_SRC emacs-lisp :tangle no
-<<init:code>>
+#+BEGIN_SRC emacs-lisp :noweb-ref env:definitions
+  (medivhok:cfg:bootstrap-directory
+   (file-name-as-directory (expand-file-name "+bootstrap" medivhok:cfg-directory)))
 #+END_SRC
 
-** Tests Configurations
-*** The Cask File
+#+BEGIN_SRC emacs-lisp :noweb-ref env:body
+  (load-file (expand-file-name init-file-name medivhok:cfg:bootstrap-directory))
+#+END_SRC
 
-The ~Cask~ file will fetch the dependencies for our tests like [[https://github.com/jorgenschaefer/emacs-buttercup][buttercup]].
+* Emacs X Window Manager
+:PROPERTIES:
+:custom_id: config--exwm
+:END:
 
-#+name: cask-file
-#+begin_src emacs-lisp :tangle ../Cask :noweb no-export
-(source gnu)
-(source melpa-stable)
+The [[./+exwm/][exwm]] module loading.
 
-(development
- <<tests:dependencies>>
- (depends-on "buttercup"))
-#+end_src
+#+BEGIN_SRC emacs-lisp :noweb-ref env:definitions
+  (medivhok:cfg:exwm-directory
+   (file-name-as-directory (expand-file-name "+exwm" medivhok:cfg-directory)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :noweb-ref env:body
+  (load-file (expand-file-name init-file-name medivhok:cfg:exwm-directory))
+#+END_SRC
+
+* The User Interface
+:PROPERTIES:
+:custom_id: config--ui
+:END:
+
+The [[./+ui/][ui]] module loading.
+
+#+BEGIN_SRC emacs-lisp :noweb-ref env:definitions
+  (medivhok:cfg:ui-directory
+   (file-name-as-directory (expand-file-name "+ui" medivhok:cfg-directory)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :noweb-ref env:body
+  (load-file (expand-file-name init-file-name medivhok:cfg:ui-directory))
+#+END_SRC
+
+* Applications
+:PROPERTIES:
+:custom_id: config--app
+:END:
+
+The [[./+app/][app]] module loading.
+
+#+BEGIN_SRC emacs-lisp :noweb-ref env:definitions
+  (medivhok:cfg:app-directory
+   (file-name-as-directory (expand-file-name "+app" medivhok:cfg-directory)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :noweb-ref env:body
+  (load-file (expand-file-name init-file-name medivhok:cfg:app-directory))
+#+END_SRC
+
+* Integrated Development Environments
+:PROPERTIES:
+:custom_id: config--ides
+:END:
+
+The [[./+ides/][ides]] module loading.
+
+#+BEGIN_SRC emacs-lisp :noweb-ref env:definitions
+  (medivhok:cfg:ides-directory
+   (file-name-as-directory (expand-file-name "+ides" medivhok:cfg-directory)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :noweb-ref env:body
+  (load-file (expand-file-name init-file-name medivhok:cfg:ides-directory)))
+#+END_SRC
