@@ -9,16 +9,28 @@ initialize [[https://https://www.gnu.org/software/emacs/][Emacs]]. The configura
 
 | Module    | Description                                        |
 |-----------+----------------------------------------------------|
-| [[#config--bootstrap][bootstrap]] | The bootstrapping of Emacs                         |
-| [[#config--exwm][exwm]]      | Emacs X Window Manager (when used)                 |
-| [[#config--ui][ui]]        | The user interface configurations                  |
-| [[#config--app][app]]       | Applications configurations                        |
-| [[#config--ides][ides]]      | Integrated development environments configurations |
+| bootstrap | The bootstrapping of Emacs                         |
+| exwm      | Emacs X Window Manager (when used)                 |
+| ui        | The user interface configurations                  |
+| app       | Applications configurations                        |
+| ides      | Integrated development environments configurations |
 
 So let's start our configuration journey...
 
-#+TOC: headlines:3
-
+#+TOC: headlines:2
+* Table of Contents  :noexport:
+:PROPERTIES:
+:TOC:      :include all :depth 2 :ignore (this)
+:END:
+:CONTENTS:
+- [[#the-file-header][The FIle Header]]
+- [[#the-configurations-environment][The Configurations Environment]]
+- [[#from-nothing-to-something-bootstrap][From Nothing to Something (Bootstrap)]]
+- [[#emacs-x-window-manager][Emacs X Window Manager]]
+- [[#the-user-interface][The User Interface]]
+- [[#applications][Applications]]
+- [[#integrated-development-environments][Integrated Development Environments]]
+:END:
 * The FIle Header
 
 #+BEGIN_SRC emacs-lisp :tangle init.el
