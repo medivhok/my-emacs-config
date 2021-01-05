@@ -1,20 +1,20 @@
-(defconst medivhok:org-directory
+(defconst medivhok:app-directory
   (file-name-as-directory "~/org")
   "The root directory of the org ecosystem.")
 
 (defconst medivhok:agenda-directory
   (file-name-as-directory
-   (expand-file-name "agenda" medivhok:org-directory))
+   (expand-file-name "agenda" medivhok:app-directory))
   "The directory of my agenda files.")
 
 (defconst medivhok:pdf-directory
   (file-name-as-directory
-   (expand-file-name "readings" medivhok:org-directory))
+   (expand-file-name "readings" medivhok:app-directory))
   "The directory of my pdf files.")
 
 (defconst medivhok:roam-directory
   (file-name-as-directory
-   (expand-file-name "roam" medivhok:org-directory))
+   (expand-file-name "roam" medivhok:app-directory))
   "The directory of my roam files.")
 
 (defconst medivhok:bibtex-file
@@ -23,7 +23,7 @@
 
 (use-package org
   :init
-  (setq org-directory medivhok:org-directory)
+  (setq org-directory medivhok:app-directory)
 
   :hook
   (org-mode . org-indent-mode)
@@ -180,7 +180,7 @@
   (setq org-ref-completion-library 'org-ref-helm-cite
         org-ref-default-bibliography (list medivhok:bibtex-file)))
 
-(load-file (expand-file-name "+agenda.el" medivhok:cfg:app-directory))
+(load-file (expand-file-name "+agenda.el" medivhok:config-app-directory))
 
 (use-package org-roam
   :after
