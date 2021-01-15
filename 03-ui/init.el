@@ -1,4 +1,4 @@
-(load-file (expand-file-name "+keybindings.el" medivhok:config-ui-directory))
+(load-file (expand-file-name "+keybindings.el" medivhok:ui-module-directory))
 
 (use-package doom-themes
   :config

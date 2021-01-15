@@ -1,8 +1,7 @@
 #+TITLE: My Emacs Configuration
-#+SETUPFILE: html-export.setup
 #+STARTUP: overview
 #+OPTIONS: H:3 toc:nil
-#+PROPERTY: header-args:emacs-lisp :tangle init.el :comments org
+#+PROPERTY: header-args:emacs-lisp :tangle init.el :mkdirp yes
 #+EXPORT_FILE_NAME: index
 
 Here begins my [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html][init file]], the first one that will be loaded to
@@ -23,198 +22,93 @@ So let's start our configuration journey...
 :TOC:      :include all :depth 2 :ignore (this)
 :END:
 :CONTENTS:
-- [[#the-source-file][The Source File]]
-- [[#profiling][Profiling]]
-- [[#configuration-definitions][Configuration Definitions]]
-- [[#cache-configuration][Cache Configuration]]
-- [[#packages-management][Packages Management]]
-  - [[#straightel][straight.el]]
-  - [[#use-package][use-package]]
-- [[#configuration-modules][Configuration Modules]]
-  - [[#emacs-x-window-manager][Emacs X Window Manager]]
-  - [[#the-user-interface][The User Interface]]
-  - [[#applications][Applications]]
-  - [[#integrated-development-environments][Integrated Development Environments]]
+- [[#00---configuration-definitions][00 - Configuration Definitions]]
+- [[#01---boostrapping-emacs][01 - Boostrapping Emacs]]
+- [[#02---emacs-x-window-manager][02 - Emacs X Window Manager]]
+- [[#03---the-user-interface][03 - The User Interface]]
+- [[#04---applications][04 - Applications]]
+- [[#05---integrated-development-environments][05 - Integrated Development Environments]]
 :END:
 
+* 00 - Configuration Definitions
 
-* The Source File
-:PROPERTIES:
-:header-args:emacs-lisp+: :comments no
-:END:
-
-#+BEGIN_SRC emacs-lisp :tangle init.el :noweb no-export :comments no
-;;; init.el --- My Emacs Config -*- lexical-binding: t; -*-
-;; Author: Jean Gregory Verret <gregory.verret@gmail.com>
-;; URL: https://github.com/medivhok/my-emacs-config
-;;; Commentary: My emacs configuration file.
-;;; Code:
-#+END_SRC
-
-* Profiling
-
-Make startup faster by reducing the frequency of garbage collection and then
-use a hook to measure Emacs startup time. The default is 800k (mesured in
-bytes).
+Since the /bootstrap module/ will change the value of the /user-emacs-directory/,
+I save its current value into a variable.
 
 #+BEGIN_SRC emacs-lisp
-(setq gc-cons-threshold (* 50 1000 1000))
-#+END_SRC
-
-Profile emacs startup.
-#+BEGIN_SRC emacs-lisp
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (message "*** Emacs loaded in %s with %d garbage collections."
-                     (format "%.2f seconds"
-                             (float-time
-                              (time-subtract after-init-time before-init-time)))
-                     gcs-done)))
-#+END_SRC
-
-* Configuration Definitions
-
-The configuration directory.
-
-#+BEGIN_SRC emacs-lisp
-  (defconst medivhok:config-directory
-    (file-name-as-directory user-emacs-directory)
+(defconst medivhok:config-directory
+          (file-name-as-directory user-emacs-directory)
     "The root directory containing the configuration files.")
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-  (defconst medivhok:config-exwm-directory
-    (file-name-as-directory
-     (expand-file-name "+exwm" medivhok:config-directory))
-    "The exwm module configurations directory.")
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (defconst medivhok:config-ui-directory
-    (file-name-as-directory
-     (expand-file-name "+ui" medivhok:config-directory)))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (defconst medivhok:config-app-directory
-   (file-name-as-directory (expand-file-name "+app" medivhok:config-directory)))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (defconst medivhok:config-ides-directory
-   (file-name-as-directory (expand-file-name "+ides" medivhok:config-directory)))
-#+END_SRC
-
-* Cache Configuration
-
-To keep our configuration directory clean, we are gonna use another directory
-for our cache. I don’t want a bunch of transient files showing up as untracked
-in the Git repository. But first, we save the root directory containing the
-configuration files.
-
-#+BEGIN_SRC emacs-lisp
-  (setq user-emacs-directory "~/.cache/emacs/"
-        backup-directory-alist `(("." . ,(expand-file-name "backups"
-                                                           user-emacs-directory)))
-        url-history-file (expand-file-name "url/history" user-emacs-directory)
-        auto-save-list-file-prefix (expand-file-name "auto-save-list/.saves-"
-                                                     user-emacs-directory)
-        projectile-known-projects-file (expand-file-name
-                                        "projectile-bookmarks.eld"
-                                        user-emacs-directory))
-
-  ;; Keep customization settings in a temporary file (thanks Ambrevar!).
-  (setq custom-file
-        (if (boundp 'server-socket-dir)
-            (expand-file-name "custom.el" server-socket-dir)
-          (expand-file-name (format "emacs-custom-%s.el" (user-uid))
-                            temporary-file-directory)))
-  (load custom-file t)
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(setq user-full-name "Jean Gregory Verret"
-      user-mail-address "gregory.verret@gmail.com")
-#+END_SRC
-
-* Packages Management
-
-And finally, we need to be able to download, install and load
-packages. For the download and the installation, [[https://github.com/raxod502/straight.el][straight.el]]
-will be used, and for the loading, [[https://github.com/jwiegley/use-package][use-package]] is gonna be the
-choosen one.
-
-** ~straight.el~
-
-Packages need to be installed first (if not already installed), and loaded
-before we can use them.
-
-To install them, [[https://github.com/raxod502/straight.el][straight.el]], the next-generation, purely functional
-package manager for the Emacs hacker is used and to load them, [[https://github.com/jwiegley/use-package][use-package]] is
-used and integrated to straight.
-
-#+BEGIN_SRC emacs-lisp
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el"
-                         user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-#+END_SRC
-
-** ~use-package~
-
-Using straight, we can now download, install and load /use-package/.
-
-#+BEGIN_SRC emacs-lisp
-(straight-use-package 'use-package)
-(setq straight-use-package-by-default t)
-(setq use-package-verbose t)
-#+END_SRC
-
-* Configuration Modules
-
-#+BEGIN_SRC emacs-lisp
-  (defconst init-file-name "init.el"
+  (defconst medivhok:module-init-file-name "init.el"
     "The name of the configuration file of a module to be loaded.")
 #+END_SRC
 
-** Emacs X Window Manager
+* 01 - Boostrapping Emacs
 
-The [[./+exwm/][exwm]] module loading.
+We create a variable to hold the name of the /bootstrap module/ directory.
 
 #+BEGIN_SRC emacs-lisp
-  (load-file (expand-file-name init-file-name medivhok:config-exwm-directory))
+(defconst medivhok:bootstrap-module-directory
+  (file-name-as-directory
+   (expand-file-name "01-bootstrap" medivhok:config-directory))
+  "The directory containing the bootstrap module configuration files.")
 #+END_SRC
 
-** The User Interface
-
-The [[./+ui/][ui]] module loading.
+And we load the bootstrap module.
 
 #+BEGIN_SRC emacs-lisp
-  (load-file (expand-file-name init-file-name medivhok:config-ui-directory))
+(load-file (expand-file-name medivhok:module-init-file-name
+                             medivhok:bootstrap-module-directory))
 #+END_SRC
 
-** Applications
-
-The [[./+app/][app]] module loading.
+* 02 - Emacs X Window Manager
 
 #+BEGIN_SRC emacs-lisp
-  (load-file (expand-file-name init-file-name medivhok:config-app-directory))
+(defconst medivhok:exwm-module-directory
+  (file-name-as-directory
+   (expand-file-name "02-exwm" medivhok:config-directory))
+  "The exwm module configurations directory.")
 #+END_SRC
 
-** Integrated Development Environments
+#+BEGIN_SRC emacs-lisp
+;;(load-file (expand-file-name module-init-file-name
+;;                             medivhok:exwm-module-directory))
+#+END_SRC
 
-The [[./+ides/][ides]] module loading.
+* 03 - The User Interface
 
 #+BEGIN_SRC emacs-lisp
-  (load-file (expand-file-name init-file-name medivhok:config-ides-directory))
+(defconst medivhok:ui-module-directory
+  (file-name-as-directory
+   (expand-file-name "03-ui" medivhok:config-directory)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(load-file (expand-file-name medivhok:module-init-file-name medivhok:ui-module-directory))
+#+END_SRC
+
+* 04 - Applications
+
+#+BEGIN_SRC emacs-lisp
+(defconst medivhok:app-module-directory
+  (file-name-as-directory (expand-file-name "04-applications" medivhok:config-directory)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(load-file (expand-file-name medivhok:module-init-file-name medivhok:app-module-directory))
+#+END_SRC
+
+* 05 - Integrated Development Environments
+
+#+BEGIN_SRC emacs-lisp
+(defconst medivhok:ides-module-directory
+ (file-name-as-directory (expand-file-name "05-ides" medivhok:config-directory)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(load-file (expand-file-name medivhok:module-init-file-name medivhok:ides-module-directory))
 #+END_SRC
 

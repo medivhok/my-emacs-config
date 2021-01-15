@@ -35,7 +35,7 @@
 * Keybindings
 
 #+BEGIN_SRC emacs-lisp
-(load-file (expand-file-name "+keybindings.el" medivhok:config-ui-directory))
+(load-file (expand-file-name "+keybindings.el" medivhok:ui-module-directory))
 #+END_SRC
 
 * Theme

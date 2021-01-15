@@ -180,7 +180,7 @@
   (setq org-ref-completion-library 'org-ref-helm-cite
         org-ref-default-bibliography (list medivhok:bibtex-file)))
 
-(load-file (expand-file-name "+agenda.el" medivhok:config-app-directory))
+(load-file (expand-file-name "+agenda.el" medivhok:app-module-directory))
 
 (use-package org-roam
   :after

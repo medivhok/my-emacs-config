@@ -301,7 +301,7 @@ Supplemental evil-mode keybindings to emacs org-mode. -- [[https://github.com/So
 The [[./Agenda.org][agenda configurations]].
 
 #+BEGIN_SRC emacs-lisp
-(load-file (expand-file-name "+agenda.el" medivhok:config-app-directory))
+(load-file (expand-file-name "+agenda.el" medivhok:app-module-directory))
 #+END_SRC
 
 * Taking Smart Notes
